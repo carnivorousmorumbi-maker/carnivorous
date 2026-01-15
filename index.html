@@ -1,202 +1,1890 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Carnivorous | Empório & Rotisseria</title>
-
+<title>Carnivorous | Catálogo</title>
 <style>
-:root{
-    --bg:#0f0f0f;
-    --card:#1b1b1b;
-    --red:#c62828;
-    --text:#ffffff;
-    --muted:#bbbbbb;
-    --price:#4caf50;
-}
-
-*{box-sizing:border-box}
-
-body{
-    margin:0;
-    font-family:Arial, Helvetica, sans-serif;
-    background:var(--bg);
-    color:var(--text);
-}
-
-header{
-    text-align:center;
-    padding:30px 15px;
-    border-bottom:2px solid var(--red);
-}
-
-.logo{
-    max-width:280px;
-    width:80%;
-    margin-bottom:15px;
-}
-
-header p{
-    color:var(--muted);
-    margin:8px 0 20px;
-}
-
-.controls{
-    max-width:900px;
-    margin:0 auto;
-    display:flex;
-    gap:10px;
-    flex-wrap:wrap;
-    justify-content:center;
-}
-
-.controls input,
-.controls select{
-    padding:12px;
-    border-radius:6px;
-    border:none;
-    font-size:16px;
-    min-width:260px;
-}
-
-section{
-    max-width:1300px;
-    margin:40px auto;
-    padding:0 15px;
-}
-
-h2{
-    margin:50px 0 20px;
-    border-left:5px solid var(--red);
-    padding-left:10px;
-}
-
-.grid{
-    display:grid;
-    grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
-    gap:20px;
-}
-
-.card{
-    background:var(--card);
-    padding:15px;
-    border-radius:12px;
-    transition:.2s;
-}
-
-.card:hover{
-    transform:scale(1.02);
-}
-
-.nome{
-    font-weight:bold;
-    margin-bottom:6px;
-}
-
-.info{
-    font-size:14px;
-    color:var(--muted);
-}
-
-.preco{
-    margin:10px 0;
-    font-size:18px;
-    font-weight:bold;
-    color:var(--price);
-}
-
-.whats{
-    display:block;
-    text-align:center;
-    background:#25d366;
-    color:#000;
-    text-decoration:none;
-    padding:10px;
-    border-radius:6px;
-    font-weight:bold;
-}
-
-footer{
-    text-align:center;
-    padding:20px;
-    color:#777;
-    border-top:1px solid #222;
-    margin-top:50px;
-}
+body{background:#0f0f0f;color:#fff;font-family:Arial;margin:0}
+header{padding:25px;text-align:center;border-bottom:2px solid #c62828}
+h1{color:#c62828}
+section{max-width:1200px;margin:30px auto;padding:0 15px}
+h2{border-left:5px solid #c62828;padding-left:10px;margin-top:40px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:20px}
+.card{background:#1b1b1b;padding:15px;border-radius:10px}
+.nome{font-weight:bold}
+.info{color:#bbb;font-size:14px}
+.preco{color:#4caf50;font-size:18px;font-weight:bold;margin-top:8px}
 </style>
 </head>
-
 <body>
 
 <header>
-    <img src="logo.png" alt="Carnivorous" class="logo">
-    <p>Catálogo Completo de Produtos</p>
-
-    <div class="controls">
-        <input type="text" id="busca" placeholder="Buscar produto..." onkeyup="filtrar()">
-        <select id="categoria" onchange="filtrar()">
-            <option value="">Todas as categorias</option>
-        </select>
-    </div>
+<h1>🥩 Carnivorous</h1>
+<p>Catálogo Completo de Produtos</p>
 </header>
 
-<section id="catalogo"></section>
+<section>
+<h2>Bovinos</h2>
+<div class='grid'>
 
-<footer>
-    © Carnivorous – Empório & Rotisseria
-</footer>
+<div class="card produto">
+  <div class="nome">Chorizo Estância 92 Resfr.</div>
+  <div class="info">Venda: Kilograma</div>
+  <div class="preco">R$ 76,99</div>
+</div>
 
-<script>
-const produtos = [
-    // ⚠️ AQUI entram TODOS os +200 produtos gerados da planilha
-    {nome:"Chorizo Estância 92 Resfr.", categoria:"Bovinos", unidade:"Kg", preco:"R$ 76,99"},
-    {nome:"Steak Chorizo Estância 92 Angus Resfr.", categoria:"Bovinos", unidade:"Kg", preco:"R$ 82,99"},
-    {nome:"Picanha Estância 92 Resfr.", categoria:"Picanhas Nacionais", unidade:"Kg", preco:"R$ 134,99"}
-];
+<div class="card produto">
+  <div class="nome">Steak Chorizo Estância 92 Angus Resfr.</div>
+  <div class="info">Venda: Kilograma</div>
+  <div class="preco">R$ 82,99</div>
+</div>
 
-const catalogo = document.getElementById("catalogo");
-const select = document.getElementById("categoria");
+<div class="card produto">
+  <div class="nome">Entrecôte (Ancho) BBQ Secrets Grass Feed Resfr.</div>
+  <div class="info">Venda: Kilograma</div>
+  <div class="preco">R$ 81,99</div>
+</div>
 
-const categorias = [...new Set(produtos.map(p => p.categoria))];
-categorias.forEach(c => {
-    let opt = document.createElement("option");
-    opt.value = c;
-    opt.textContent = c;
-    select.appendChild(opt);
-});
+<div class="card produto">
+  <div class="nome">Prime Steak BBQ Secrets Angus Resfr.</div>
+  <div class="info">Venda: Kilograma</div>
+  <div class="preco">R$ 85,99</div>
+</div>
 
-function render(lista){
-    catalogo.innerHTML = "";
-    categorias.forEach(cat => {
-        const itens = lista.filter(p => p.categoria === cat);
-        if(itens.length){
-            catalogo.innerHTML += `<h2>${cat}</h2><div class="grid">` +
-                itens.map(p => `
-                <div class="card produto">
-                    <div class="nome">${p.nome}</div>
-                    <div class="info">Venda: ${p.unidade}</div>
-                    <div class="preco">${p.preco}</div>
-                    <a class="whats" target="_blank"
-                       href="https://wa.me/5511999562721?text=Olá! Quero o produto: ${encodeURIComponent(p.nome)}">
-                       Pedir no WhatsApp
-                    </a>
-                </div>`).join("") +
-            `</div>`;
-        }
-    });
-}
+<div class="card produto">
+  <div class="nome">Fraldinha Estância 92 Resfr.</div>
+  <div class="info">Venda: Kilograma</div>
+  <div class="preco">R$ 69,99</div>
+</div>
 
-function filtrar(){
-    const texto = busca.value.toLowerCase();
-    const cat = categoria.value;
-    render(produtos.filter(p =>
-        p.nome.toLowerCase().includes(texto) &&
-        (cat === "" || p.categoria === cat)
-    ));
-}
+<div class="card produto">
+  <div class="nome">Baby Beef Cabaña Las Lilas Resfr.</div>
+  <div class="info">Venda: Kilograma</div>
+  <div class="preco">R$ 69,99</div>
+</div>
 
-render(produtos);
-</script>
+<div class="card produto">
+  <div class="nome">Maminha Estância 92 Resfr.</div>
+  <div class="info">Venda: Kilograma</div>
+  <div class="preco">R$ 62,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Shoulder Steak Estância 92 Resfr.</div>
+  <div class="info">Venda: Kilograma</div>
+  <div class="preco">R$ 95,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Bananinha Dom Glutão Classic Line Resfr.</div>
+  <div class="info">Venda: Kilograma</div>
+  <div class="preco">R$ 59,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Entrecôte (Ancho) Estância 92 Angus Resfr.</div>
+  <div class="info">Venda: Kilograma</div>
+  <div class="preco">R$ 119,99</div>
+</div>
+</div>
+<h2>Picanhas Nacionais</h2>
+<div class='grid'>
+
+<div class="card produto">
+  <div class="nome">Picanha Estância 92 Resfr.</div>
+  <div class="info">Venda: Kilograma</div>
+  <div class="preco">R$ 134,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Picanha 481 Cong.</div>
+  <div class="info">Venda: Kilograma</div>
+  <div class="preco">R$ 264,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Picanha Dom Glutão Extra Resfr.</div>
+  <div class="info">Venda: Kilograma</div>
+  <div class="preco">R$ 93,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Picanha Oranges Especial Resfr.</div>
+  <div class="info">Venda: Kilograma</div>
+  <div class="preco">R$ 109,99</div>
+</div>
+</div>
+<h2>Linguiças Especiais</h2>
+<div class='grid'>
+
+<div class="card produto">
+  <div class="nome">Ling Cuiabana Suína Frigo Espanha 600gr Cong.</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 26,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Ling Requeijão, Cerveja e Bacon Specialli 400gr Cong.</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 39,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Ling Tex Mex (Cheddar & Pimenta Jalapeño) Specialli 400gr Cong.</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 39,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Ling Suína Pimenta Biquinho Frigo Espanha 600gr Cong.</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 22,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Ling Cuiabana Bovina Frigo Espanha 600gr Cong.</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 27,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Ling Cuiabana Frango Frigo Espanha 600gr Cong.</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 25,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Ling Costela Bovina Cara Preta 300gr Cong.</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 16,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Ling Suína Toscana Frigo Espanha 600gr Cong.</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 19,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Ling Pernil Cordeiro Tradicional Cara Preta 300gr Cong.</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 23,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Ling Parmesão e Rúcula Specialli 400gr Cong.</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 39,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Ling Bovina 4 Queijos Frigo Espanha 600gr Cong.</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 29,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Ling de Frango Mineira Specialli 300gr Cong.</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 29,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Ling Suína Toscana Sadia 700gr Cong.</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 27,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Ling Suína Apimentada Nutibras 500gr Cong.</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 18,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Ling Gorgonzola Specialli 400gr Cong.</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 39,99</div>
+</div>
+</div>
+<h2>Espetos Especiais</h2>
+<div class='grid'>
+
+<div class="card produto">
+  <div class="nome">Espeto Queijo Coalho Quatá (7 espetos) Resfr.</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 29,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Espeto Coração de Frango Temperado Kispeto 500gr Cong.</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 34,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Espeto Mussarela Bolinha Defumada Coqueiros (5 espetos) Resfr.</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 36,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Espeto Provolone Defumado Coqueiros (5 espetos) Resfr.</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 36,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Espeto Medalhão Provolone com Bacon DaHora 350gr Cong.</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 44,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Espeto Peito de Frango Temperado Kispeto 500gr Cong.</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 26,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Espeto Medalhão Romeu & Julieta (Queijo com Goiabada) DaHora 450gr Cong.</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 42,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Espeto Kafta Bovina Frigo Espanha 600gr Cong.</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 31,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Espeto Kafta Bovina com Queijo Frigo Espanha (5 espetos) Cong.</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 33,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Espeto Carne Bovina Tudo Em Carnes 600gr Cong.</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 43,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Espeto Panceta Suína Tudo Em Carnes 600gr Cong.</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 42,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Espeto Frango com Bacon Tudo Em Carnes 500gr Cong.</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 49,99</div>
+</div>
+</div>
+<h2>Cordeiros</h2>
+<div class='grid'>
+
+<div class="card produto">
+  <div class="nome">Paleta de Cordeiro Estância 92 Cong.</div>
+  <div class="info">Venda: Kilograma</div>
+  <div class="preco">R$ 87,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Bife de Lombo de Cordeiro URU Nirea Cong.</div>
+  <div class="info">Venda: Kilograma</div>
+  <div class="preco">R$ 167,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Alcatra (Picanha) de Cordeiro Estância 92 Cong.</div>
+  <div class="info">Venda: Kilograma</div>
+  <div class="preco">R$ 124,99</div>
+</div>
+</div>
+<h2>Dia-a-Dia</h2>
+<div class='grid'>
+
+<div class="card produto">
+  <div class="nome">Filezinho Frango Empanado Baita 700gr Cong.</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 28,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Chicken de Frango Empanado Baita 700gr Cong.</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 19,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Filé de Merluza Pul 600gr Cong.</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 27,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Filé de Panga Pul 600gr Cong.</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 24,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Filé de Tilápia Pul 600gr Cong.</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 34,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Costelinha Suína Barbecue Cong.</div>
+  <div class="info">Venda: Kilograma</div>
+  <div class="preco">R$ 74,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Filezinho Sassami Aurora 1kg Cong.</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 28,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Peito de Frango Cozido Desfiado Aurora 360gr Cong.</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 17,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Meio da Asa (Tulipa) Temperada Aurora 800gr Cong.</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 26,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Coxinha da Asa Temperada Aurora 800gr Cong.</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 20,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Lasanha Bolonhesa Perdigão 600gr Cong.</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 18,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Meio da Asa (Tulipa) Sadia 1kg Cong.</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 28,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Bolinho de Bacalhau Ribera Alves 300gr Cong.</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 25,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Iscas de Panga Empanado Baita 700gr Cong.</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 39,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Meio da Asa (Tulipa) Sweet Chilli Aurora Premium 800gr Cong.</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 29,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Coxinha da Asa Aurora Premium Apimentada 800gr Cong.</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 18,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Filé de Sobrecoxa Aurora Premium Chimichurri 800gr Cong.</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 21,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Coração de Frango Aurora Bandeja 1kg Cong.</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 37,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Frango Passarinho Aurora 800gr Cong.</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 18,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Coxa e Sobrecoxa Aurora Cong.</div>
+  <div class="info">Venda: Kilograma</div>
+  <div class="preco">R$ 13,59</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Kani Kama Seapro 250gr Cong.</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 7,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Alga Marinha Ocean Treasure 10FL</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 20,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Bolinho de Salmão 320gr Cong.</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 27,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Coxinha de Camarão 320gr Cong.</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 27,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Croquete de Atum 320gr Cong.</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 27,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Alho Dourado Crocante Soul Chef 200gr</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 29,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Risoto De Funghi Secchi Cookit 260gr</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 39,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Risoto De Tomate Seco, Alho Poró e Manjericão Cookit 260gr</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 39,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Risoto De Beterraba Com Alecrim Cookit 260gr</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 39,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Risoto De Abobrinha Com Lemon Pepper Cookit 260gr</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 39,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Risoto De Damasco Com Castanha do Brasil Cookit 260gr</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 39,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Empada De Palmito Eccellenza (10 unidades)</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 34,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Empada De Frango Com Requeijão Eccellenza (10 unidades)</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 34,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Arroz Oriental Inari Solito 1kg</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 11,49</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Ovos Caipira Bandeja 12un</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 19,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Esfiha Gourmet KBL Sabor Carne (10 unidades)</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 32,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Esfiha Gourmet KBL Sabor Queijo (10 unidades)</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 32,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Couve Flor Wings Sadia 275gr Cong.</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 12,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Almôndega Bovina Sadia 500gr Cong.</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 23,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Fetuccini Bolonhesa Perdigão 300gr Cong.</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 9,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Iscas de Frango Tempura Sadia 300gr Cong.</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 16,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Kibe Bovino Sadia 500gr Cong.</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 24,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Lasanha de Frango Perdigão 600gr Cong.</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 18,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Lasanha 4 Queijos Sadia 600gr Cong.</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 18,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Nuggets de Frango Com Queijo Sadia 300gr</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 9,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Penne Parisiense Perdigão 300gr Cong</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 9,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Pop Nuggets de Frango Sadia 275gr Cong.</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 9,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Anéis de Cebola Empanados Bem Brasil 1,05kg Cong.</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 29,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Polenta Tolete Prontinha 1kg Cong.</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 15,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Batata Carinha Bem Brasil 400gr Cong.</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 9,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Batata Palito Bem Brasil 1,5kg Cong.</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 24,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Mandioca Premium Prontinha 1,2kg Cong.</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 22,99</div>
+</div>
+</div>
+<h2>Picanhas Importadas</h2>
+<div class='grid'>
+
+<div class="card produto">
+  <div class="nome">Picanha PAR Pul Resfr.</div>
+  <div class="info">Venda: Kilograma</div>
+  <div class="preco">R$ 79,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Picanha URU Las Piedras Family Selection Cong.</div>
+  <div class="info">Venda: Kilograma</div>
+  <div class="preco">R$ 239,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Picanha ARG Alabrasa Cong.</div>
+  <div class="info">Venda: Kilograma</div>
+  <div class="preco">R$ 184,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Picanha URU Steakhouse Cong.</div>
+  <div class="info">Venda: Kilograma</div>
+  <div class="preco">R$ 114,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Picanha ARG Pul Selection Cong.</div>
+  <div class="info">Venda: Kilograma</div>
+  <div class="preco">R$ 127,99</div>
+</div>
+</div>
+<h2>Pescados</h2>
+<div class='grid'>
+
+<div class="card produto">
+  <div class="nome">Filé de Salmão Chile Cong.</div>
+  <div class="info">Venda: Kilograma</div>
+  <div class="preco">R$ 119,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Camarão 7 Barbas Descascado Mar & Rio 400gr Cong.</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 41,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Filé de Salmão Resfr.</div>
+  <div class="info">Venda: Kilograma</div>
+  <div class="preco">R$ 119,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Filé de Tilápia Resfr.</div>
+  <div class="info">Venda: Kilograma</div>
+  <div class="preco">R$ 79,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Sashimi de Misto Dumar 400gr Resfr.</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 49,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Sashimi de Salmão Dumar 400gr Resfr.</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 49,99</div>
+</div>
+</div>
+<h2>Molhos e Geléias</h2>
+<div class='grid'>
+
+<div class="card produto">
+  <div class="nome">Sardela 130gr</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 24,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Patê Alho Poró 130gr</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 21,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Patê Ervas Finas 130gr</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 21,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Patê Azeitonas 130gr</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 21,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Patê Cebola Com Mostarda 130gr</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 21,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Molho Pesto De Manjericão 130gr</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 24,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Alho Crocante Gonzalo 100gr</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 28,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Molho Chimichurri Gonzalo 200gr</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 34,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Molho Hortelã Nonna Pasqua 130gr</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 23,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Molho Pimenta Buffalo Sauce Gonzalo 280gr</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 27,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Molho Pimenta Cana Quente Gonzalo 280gr</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 27,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Molho Pimenta Chimi Chilli Gonzalo 280gr</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 27,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Molho Pimenta Pico de Gallo Gonzalo 280gr</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 27,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Molho Salsa Mexicana Gonzalo 230gr</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 38,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Molho Chimichurri Tradicional Trend 330gr</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 28,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Molho Chimichurri Picante Trend 330gr</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 28,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Antepasto de Beringela Iscas 130gr</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 17,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Melado De Cana Carolina Black 300ml</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 36,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Patê Quatro Queijos 130gr</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 21,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Sachê De Wasabi Em Pasta 2,5gr Taichi</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 0,50</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Shoyu Tradicional Mitsuwa 250ml</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 13,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Ketchup Specialli 200ml</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 18,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Mostarda Amarela Specialli 200ml</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 18,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Molho American Burguer Specialli 200ml</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 18,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Passata Pomodoro Piatto Sapore 680gr</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 22,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Molho de Pimenta Especial Fogo Mineiro 60ml</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 11,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Molho de Pimenta Trinidad Scorpion Fogo Mineiro 60ml</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 17,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Molho de Pimenta Bhut Jolokia Fogo Mineiro 60ml</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 11,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Molho de Pimenta Habanero Fogo Mineiro 60ml</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 11,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Molho de Pimenta Cayena Fogo Mineiro 60ml</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 11,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Molho de Pimenta Cumari Fogo Mineiro 60ml</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 11,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Molho de Pimenta Carolina Reaper Fogo Mineiro 60ml</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 17,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Geléia de Pimenta Fogo Mineiro 200gr</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 16,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Geléia de Pimenta Defumada Fogo Mineiro 200gr</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 16,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Kit Pimentas (6 Pimentas x 60gr)</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 64,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Tomate Pelado Sofruta 400gr</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 6,99</div>
+</div>
+</div>
+<h2>Acompanhamentos</h2>
+<div class='grid'>
+
+<div class="card produto">
+  <div class="nome">Pão de Alho Tradicional Aurora 340gr Resfr.</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 13,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Pão de Alho Santa Massa Tradicional 400g Resfr.</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 17,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Pão de Alho Santa Massa Picante 400g Resfr.</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 17,99</div>
+</div>
+</div>
+<h2>Acessórios</h2>
+<div class='grid'>
+
+<div class="card produto">
+  <div class="nome">Acendedor Da Hora</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 1,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Aluminio Wyda 30cm x 4mt</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 4,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Carvão Prime 2kg</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 16,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Carvão Prime 4kg</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 31,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Filme de PVC Wyda 28cm x 15mt</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 5,49</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Fósforo Longo Fiat Lux 200un</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 5,49</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Gel Acendedor Luar Fire 440gr</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 9,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Copo Eisenhugel</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 39,00</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Clip Hashi Mix Color Taichi</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 0,50</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Hashi Bambu Redondo 4.5 Ganesh</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 0,50</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Assadeira Mello 4L</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 7,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Copo Descartável 200ml (100 un)</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 8,49</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Papel Toalha Trópicos 2x50 (100 Folhas)</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 5,49</div>
+</div>
+</div>
+<h2>Temperos</h2>
+<div class='grid'>
+
+<div class="card produto">
+  <div class="nome">Azeite Alma Lusa 500ml</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 35,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Dry Rub Redneck Gonzalo 250gr</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 34,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Fumaça Líquida Spray Gonzalo 150ml</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 23,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Shoyu Defumado Spray Gonzalo 150ml</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 18,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Sal de Parrilla Tradicional Churrasquero 450gr</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 14,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Sal de Parrilla Chimichurri Churrasquero 450gr</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 13,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Sal de Parrilla Alho Granulado Churrasquero 450gr</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 13,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Sal de Parrilla Pimenta Churrasquero 450gr</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 13,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Sal Grosso Lebre 1kg</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 5,49</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Sal de Parrilla Cordeiro Gonzalo 500gr</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 26,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Açucar Demerara Organico Native 1kg</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 8,49</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Vinagre De Alcool Vitalia 750ml</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 2,49</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Moedor Sal do Himalaia Tradicional 90gr Soul Chef</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 21,49</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Moedor Sal do Himalaia Com Pimenta Preta Tradicional 90gr Soul Chef</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 21,49</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Moedor Sal do Mix de Pimentas Tradicional 45gr Soul Chef</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 26,49</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Vinagre Defumado Spray Gonzalo 150ml</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 14,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Sal de Parrilla Cebola & Salsa Churrasquero 450gr</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 13,99</div>
+</div>
+</div>
+<h2>Farofas</h2>
+<div class='grid'>
+
+<div class="card produto">
+  <div class="nome">Farofa Picante Churrasquero 200gr</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 9,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Farofa Torresmo Churrasquero 200gr</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 9,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Farofa Tradicional Churrasquero 200gr</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 9,99</div>
+</div>
+</div>
+<h2>Hambúrguer</h2>
+<div class='grid'>
+
+<div class="card produto">
+  <div class="nome">Hambúrguer Costela Angus Cara Preta 360gr Cong.</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 24,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Hambúrguer Brisket Angus Cara Preta 360gr Cong.</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 24,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Hambúrguer Tradicional Angus Cara Preta 120gr Cong.</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 8,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Hambúrguer Tradicional Angus Cara Preta 360gr Cong.</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 23,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Hambúrguer Costela Angus Cara Preta 120gr Cong.</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 8,99</div>
+</div>
+</div>
+<h2>Suínos</h2>
+<div class='grid'>
+
+<div class="card produto">
+  <div class="nome">Panceta Suína Aurora Premium Cong.</div>
+  <div class="info">Venda: Kilograma</div>
+  <div class="preco">R$ 45,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Torresmo De Rolo Aurora Premium Cong.</div>
+  <div class="info">Venda: Kilograma</div>
+  <div class="preco">R$ 64,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Picanha Suína Perdigão Na Brasa Cong.</div>
+  <div class="info">Venda: Kilograma</div>
+  <div class="preco">R$ 43,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Picanha Suína Temperada Aurora Cong.</div>
+  <div class="info">Venda: Kilograma</div>
+  <div class="preco">R$ 41,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Costela Suína Em Tira Sadia Cong.</div>
+  <div class="info">Venda: Kilograma</div>
+  <div class="preco">R$ 28,99</div>
+</div>
+</div>
+<h2>Snacks</h2>
+<div class='grid'>
+
+<div class="card produto">
+  <div class="nome">Torresmo Santa Massa 40gr</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 8,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Salgadinho Takis Fuego 90gr</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 9,20</div>
+</div>
+</div>
+<h2>Bebidas</h2>
+<div class='grid'>
+
+<div class="card produto">
+  <div class="nome">Cerveja Eisenhugel English IPA 500ml</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 22,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Chá Verde Limão Siciliano Com Hortelã YAI 1L</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 11,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Chá Verde Laranja Com Gengibre YAI 1L</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 11,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Chá Verde Frutas Vermelhas YAI 1L</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 11,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Chá Verde Jabuticaba YAI 1L</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 11,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Gatorade Sabor Limão 500ml</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 7,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Gatorade Sabor Laranja 500ml</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 7,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Cerveja Heineken Long Neck 330ml</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 10,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Cerveja Corona Long Neck 330ml</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 11,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Água Tônica Antartica 350ml</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 5,49</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Água Sem Gás Cristal 510ml</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 1,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Água Com Gás Cristal 510ml</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 2,49</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Cerveja Heineken 0,0% Long Neck 330ml</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 11,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Cerveja Stella Artois Long Neck 330ml</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 10,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Coca Cola Lata 350ml</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 5,49</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Fanta Laranja Lata 350ml</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 4,49</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Guaraná Antartica Lata 350ml</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 4,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Soda Antartica Lata 350ml</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 4,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Itubaina Retrô Long Neck 355ml</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 4,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Saquê Kyoday 750ml</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 18,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Campari 748ml</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 59,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Gatorade Sabor Uva 500ml</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 7,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Suco Del Valle Sabor Pêssego 290ml</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 5,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Suco Del Valle Sabor Maracuja 290ml</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 5,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Suco Del Valle Sabor Uva 290ml</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 5,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Suco Del Valle Sabor Manga 290ml</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 5,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Suco Del Valle Sabor Goiaba 290ml</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 5,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Beats Senses 269ml</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 9,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Beats Red 269ml</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 9,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Vinho Casillero Del Diablo Merlot 760ml</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 59,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Vinho Casillero Del Diablo Carmenere 760ml</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 59,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Vinho Casillero Del Diablo Cabernet Sauvignon 760ml</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 59,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Vinho Casillero Del Diablo Malbec 760ml</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 59,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Espumante Salton Prosecco Rosé 750ml</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 69,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Espumante Salton Prosecco Blanc 750ml</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 69,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Espumante Salton Brut Blanc 750ml</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 69,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Espumante Salton Demi-Sec Blanc 750ml</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 69,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Espumante Salton Moscatel Blanc 750ml</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 69,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Energético Red Bull Melância 250ml</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 9,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Vodka Smirnoff 998ml</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 49,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Vodka Absolute 1L</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 109,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Whiskey Jack Daniels Tradicional 1L</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 179,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Whiskey Jack Daniels Honey 1L</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 179,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Whisky Johnnie Walker Black Laber 1L</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 199,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Gin Beefeater Tradicional 750ml</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 109,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Gin Beefeater Blackberry 700ml</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 119,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Espumante Salton Moscato Blanc Zero Alcool 750ml</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 69,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Cerveja Eisenhugel NEIPA 500ml</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 22,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Cerveja Eisenhugel Weiss 500ml</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 22,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Smirnoff Ice Original 275ml</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 9,99</div>
+</div>
+</div>
+<h2>Legumes & Vegetais</h2>
+<div class='grid'>
+
+<div class="card produto">
+  <div class="nome">Brocolis Nova Mesa 2kg Cong.</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 38,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Couve Flor Nova Mesa 2kg Cong.</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 33,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Seleta de Legumes Nova Mesa 2kg Cong.</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 36,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Alho Inteiro Campos Del Plata 1,05kg Cong.</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 29,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Cenoura Fatiada Campos Del Plata 1,05kg Cong.</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 13,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Vagem Campos Del Plata 1,05kg Cong.</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 19,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Couve Flor Pratigel 1,020kg Cong.</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 21,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Abobora Cabotiá Pedaços Resfr.</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 4,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Cenoura Ralada Resfr.</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 4,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Couve Manteiga Fatiada Resfr.</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 4,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Repolho Roxo Fatiado Resfr.</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 4,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Repolho Branco Fatiado Resfr.</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 4,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Acelga Fatiada Resfr.</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 4,99</div>
+</div>
+</div>
+<h2>Frutas</h2>
+<div class='grid'>
+
+<div class="card produto">
+  <div class="nome">Abacaxi Campos Del Plata 1,05kg Cong.</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 23,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Amora Campos Del Plata 1,05kg Cong.</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 33,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Pessego Campos Del Plata 1,05kg Cong.</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 24,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Morango Campos Del Plata 1,05kg Cong.</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 20,99</div>
+</div>
+</div>
+<h2>Laticinios & Charcutaria</h2>
+<div class='grid'>
+
+<div class="card produto">
+  <div class="nome">Queijo Mozzarella Cerejinha Bufalat 500gr</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 33,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Queijo Mozzarella Bocconcini Bufalat 500gr</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 33,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Queijo Mozzarella Bocconcini Defumado Bufalat 500gr</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 33,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Queijo Tipo Burrata Bufalat Pote 190gr</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 33,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Queijo Tipo Pallone de Gravina Bufalat</div>
+  <div class="info">Venda: Kilograma</div>
+  <div class="preco">R$ 129,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Queijo Tipo Caccio Cavalo Bufalat</div>
+  <div class="info">Venda: Kilograma</div>
+  <div class="preco">R$ 129,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Salsicha Com Queijo Kasewurst Specialli 320gr Resfr.</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 34,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Salsicha De Carne Bovina All Beef Specialli 290gr Resfr.</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 36,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Salame Fatiado Specialli 100gr</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 15,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Culatello Fatiado Specialli 100gr</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 26,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Salsicha Com Alho Specialli 220gr</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 19,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Pastrami de Picanha Specialli 100gr</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 29,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Cottage Tirolez 200gr</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 16,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Requeijão Cremoso Tirolez 200gr</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 9,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Provolonete Tirolez 335gr</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 54,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Brie Fracionado Tirolez 125gr</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 25,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Gouda Fracionado Tirolez</div>
+  <div class="info">Venda: Kilograma</div>
+  <div class="preco">R$ 184,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Manteiga Com Sal Tirolez 200gr</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 17,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Manteiga Sem Sal Tirolez 200gr</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 17,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Creme De Ricota Tirolez 370gr</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 17,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Mussarela Fatiada Tirolez 150gr</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 12,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Prato Fatiado Tirolez 150gr</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 12,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Requeijão Zero Lactose Tirolez 200gr</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 11,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Mussarela Fatiada Zero Lactose Tirolez 150gr</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 14,99</div>
+</div>
+</div>
+<h2>Massas</h2>
+<div class='grid'>
+
+<div class="card produto">
+  <div class="nome">Nhoque Tradicional Eccellenza 500gr</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 13,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Nhoque Recheado Eccellenza Com Queijo 500gr</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 21,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Macarrão Yakissoba Da Roz 500gr</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 9,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Macarrão Padre Nosso Com Ovos Camil 500gr</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 4,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Macarrão Penne Com Ovos Camil 500gr</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 4,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Macarrão Parafuso Sêmola Camil 500gr</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 4,99</div>
+</div>
+</div>
+<h2>Utensílios</h2>
+<div class='grid'>
+
+<div class="card produto">
+  <div class="nome">Espeto de Bambu 25cm (50un)</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 6,49</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Papel Manteiga 30cm x 7,5mt</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 5,49</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Aluminio 45cm x 4mt</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 9,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Espeto Duplo de Aço Mor</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 13,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Espeto Simples de Aço Mor</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 15,99</div>
+</div>
+</div>
+<h2>Conservas</h2>
+<div class='grid'>
+
+<div class="card produto">
+  <div class="nome">Pimenta Malagueta Verde em Conserva Fogo Mineiro 200gr</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 11,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Pimenta Cumari do Pará em Conserva Fogo Mineiro 200gr</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 11,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Pimenta Cumari Verde em Conserva Fogo Mineiro 200gr</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 11,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Pimenta Cumari em Conserva Fogo Mineiro 200gr</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 11,99</div>
+</div>
+
+<div class="card produto">
+  <div class="nome">Pimenta Malagueta em Conserva Fogo Mineiro 200gr</div>
+  <div class="info">Venda: Unidade</div>
+  <div class="preco">R$ 11,99</div>
+</div>
+</div>
+
+</section>
 
 </body>
 </html>
