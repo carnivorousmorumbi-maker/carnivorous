@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -7,1889 +6,3036 @@
 <title>Carnivorous | Catálogo</title>
 <style>
 body{background:#0f0f0f;color:#fff;font-family:Arial;margin:0}
-header{padding:25px;text-align:center;border-bottom:2px solid #c62828}
-h1{color:#c62828}
-section{max-width:1200px;margin:30px auto;padding:0 15px}
-h2{border-left:5px solid #c62828;padding-left:10px;margin-top:40px}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:20px}
+header{text-align:center;padding:20px;border-bottom:2px solid #c62828}
+header img{max-height:90px}
+.search{margin-top:10px}
+.search input{padding:8px;width:260px;border-radius:5px;border:none}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:20px;max-width:1200px;margin:30px auto;padding:0 15px}
 .card{background:#1b1b1b;padding:15px;border-radius:10px}
 .nome{font-weight:bold}
 .info{color:#bbb;font-size:14px}
-.preco{color:#4caf50;font-size:18px;font-weight:bold;margin-top:8px}
+.preco{color:#4caf50;font-size:18px;font-weight:bold}
+.qtd{margin-top:10px}
+.cart{position:fixed;bottom:20px;right:20px;background:#25d366;color:#000;padding:15px 18px;border-radius:50px;font-weight:bold;cursor:pointer}
 </style>
 </head>
 <body>
-<div class="cart-btn" onclick="finalizarZap()">
-    🛒 <span id="contador">0</span>
-</div>
+
 <header>
+<img src="logo.png">
 <h1>🥩 Carnivorous</h1>
-<p>Catálogo Completo de Produtos</p><div class="search-box">
-    <span class="lupa">🔍</span>
-    <input type="text" id="busca" placeholder="Buscar produto..." onkeyup="filtrar()">
+<div class="search">
+🔍 <input type="text" id="busca" placeholder="Buscar produto..." onkeyup="filtrar()">
 </div>
 </header>
 
-<section>
-<h2>Bovinos</h2>
-<div class='grid'>
+<div class="grid" id="catalogo">
 
 <div class="card produto">
-  <div class="nome">Chorizo Estância 92 Resfr.</div>
-  <div class="info">Venda: Kilograma</div>
-  <div class="preco">R$ 76,99</div>
+<div class="nome">Chorizo Estância 92 Resfr.</div>
+<div class="info">Bovinos • Kilograma</div>
+<div class="preco">R$ R$ 76,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q0">
+<button onclick="add('Chorizo Estância 92 Resfr.','R$ 76,99','q0')">Adicionar</button>
 </div>
+</div>
 
 <div class="card produto">
-  <div class="nome">Steak Chorizo Estância 92 Angus Resfr.</div>
-  <div class="info">Venda: Kilograma</div>
-  <div class="preco">R$ 82,99</div>
+<div class="nome">Steak Chorizo Estância 92 Angus Resfr.</div>
+<div class="info">Bovinos • Kilograma</div>
+<div class="preco">R$ R$ 82,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q1">
+<button onclick="add('Steak Chorizo Estância 92 Angus Resfr.','R$ 82,99','q1')">Adicionar</button>
+</div>
 </div>
 
 <div class="card produto">
-  <div class="nome">Entrecôte (Ancho) BBQ Secrets Grass Feed Resfr.</div>
-  <div class="info">Venda: Kilograma</div>
-  <div class="preco">R$ 81,99</div>
+<div class="nome">Picanha Estância 92 Resfr.</div>
+<div class="info">Picanhas Nacionais • Kilograma</div>
+<div class="preco">R$ R$ 134,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q2">
+<button onclick="add('Picanha Estância 92 Resfr.','R$ 134,99','q2')">Adicionar</button>
 </div>
+</div>
 
 <div class="card produto">
-  <div class="nome">Prime Steak BBQ Secrets Angus Resfr.</div>
-  <div class="info">Venda: Kilograma</div>
-  <div class="preco">R$ 85,99</div>
+<div class="nome">Ling Cuiabana Suína Frigo Espanha 600gr Cong.</div>
+<div class="info">Linguiças Especiais • Unidade</div>
+<div class="preco">R$ R$ 26,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q3">
+<button onclick="add('Ling Cuiabana Suína Frigo Espanha 600gr Cong.','R$ 26,99','q3')">Adicionar</button>
+</div>
 </div>
 
 <div class="card produto">
-  <div class="nome">Fraldinha Estância 92 Resfr.</div>
-  <div class="info">Venda: Kilograma</div>
-  <div class="preco">R$ 69,99</div>
+<div class="nome">Ling Requeijão, Cerveja e Bacon Specialli 400gr Cong.</div>
+<div class="info">Linguiças Especiais • Unidade</div>
+<div class="preco">R$ R$ 39,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q4">
+<button onclick="add('Ling Requeijão, Cerveja e Bacon Specialli 400gr Cong.','R$ 39,99','q4')">Adicionar</button>
 </div>
+</div>
 
 <div class="card produto">
-  <div class="nome">Baby Beef Cabaña Las Lilas Resfr.</div>
-  <div class="info">Venda: Kilograma</div>
-  <div class="preco">R$ 69,99</div>
+<div class="nome">Ling Tex Mex (Cheddar & Pimenta Jalapeño) Specialli 400gr Cong.</div>
+<div class="info">Linguiças Especiais • Unidade</div>
+<div class="preco">R$ R$ 39,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q5">
+<button onclick="add('Ling Tex Mex (Cheddar & Pimenta Jalapeño) Specialli 400gr Cong.','R$ 39,99','q5')">Adicionar</button>
+</div>
 </div>
 
 <div class="card produto">
-  <div class="nome">Maminha Estância 92 Resfr.</div>
-  <div class="info">Venda: Kilograma</div>
-  <div class="preco">R$ 62,99</div>
+<div class="nome">Ling Suína Pimenta Biquinho Frigo Espanha 600gr Cong.</div>
+<div class="info">Linguiças Especiais • Unidade</div>
+<div class="preco">R$ R$ 22,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q6">
+<button onclick="add('Ling Suína Pimenta Biquinho Frigo Espanha 600gr Cong.','R$ 22,99','q6')">Adicionar</button>
 </div>
+</div>
 
 <div class="card produto">
-  <div class="nome">Shoulder Steak Estância 92 Resfr.</div>
-  <div class="info">Venda: Kilograma</div>
-  <div class="preco">R$ 95,99</div>
+<div class="nome">Espeto Queijo Coalho Quatá (7 espetos) Resfr.</div>
+<div class="info">Espetos Especiais • Unidade</div>
+<div class="preco">R$ R$ 29,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q7">
+<button onclick="add('Espeto Queijo Coalho Quatá (7 espetos) Resfr.','R$ 29,99','q7')">Adicionar</button>
+</div>
 </div>
 
 <div class="card produto">
-  <div class="nome">Bananinha Dom Glutão Classic Line Resfr.</div>
-  <div class="info">Venda: Kilograma</div>
-  <div class="preco">R$ 59,99</div>
+<div class="nome">Espeto Coração de Frango Temperado Kispeto 500gr Cong.</div>
+<div class="info">Espetos Especiais • Unidade</div>
+<div class="preco">R$ R$ 34,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q8">
+<button onclick="add('Espeto Coração de Frango Temperado Kispeto 500gr Cong.','R$ 34,99','q8')">Adicionar</button>
 </div>
+</div>
 
 <div class="card produto">
-  <div class="nome">Entrecôte (Ancho) Estância 92 Angus Resfr.</div>
-  <div class="info">Venda: Kilograma</div>
-  <div class="preco">R$ 119,99</div>
+<div class="nome">Espeto Mussarela Bolinha Defumada Coqueiros (5 espetos) Resfr.</div>
+<div class="info">Espetos Especiais • Unidade</div>
+<div class="preco">R$ R$ 36,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q9">
+<button onclick="add('Espeto Mussarela Bolinha Defumada Coqueiros (5 espetos) Resfr.','R$ 36,99','q9')">Adicionar</button>
 </div>
 </div>
-<h2>Picanhas Nacionais</h2>
-<div class='grid'>
 
 <div class="card produto">
-  <div class="nome">Picanha Estância 92 Resfr.</div>
-  <div class="info">Venda: Kilograma</div>
-  <div class="preco">R$ 134,99</div>
+<div class="nome">Espeto Provolone Defumado Coqueiros (5 espetos) Resfr.</div>
+<div class="info">Espetos Especiais • Unidade</div>
+<div class="preco">R$ R$ 36,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q10">
+<button onclick="add('Espeto Provolone Defumado Coqueiros (5 espetos) Resfr.','R$ 36,99','q10')">Adicionar</button>
+</div>
 </div>
 
 <div class="card produto">
-  <div class="nome">Picanha 481 Cong.</div>
-  <div class="info">Venda: Kilograma</div>
-  <div class="preco">R$ 264,99</div>
+<div class="nome">Espeto Medalhão Provolone com Bacon DaHora 350gr Cong.</div>
+<div class="info">Espetos Especiais • Unidade</div>
+<div class="preco">R$ R$ 44,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q11">
+<button onclick="add('Espeto Medalhão Provolone com Bacon DaHora 350gr Cong.','R$ 44,99','q11')">Adicionar</button>
 </div>
+</div>
 
 <div class="card produto">
-  <div class="nome">Picanha Dom Glutão Extra Resfr.</div>
-  <div class="info">Venda: Kilograma</div>
-  <div class="preco">R$ 93,99</div>
+<div class="nome">Paleta de Cordeiro Estância 92 Cong.</div>
+<div class="info">Cordeiros • Kilograma</div>
+<div class="preco">R$ R$ 87,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q12">
+<button onclick="add('Paleta de Cordeiro Estância 92 Cong.','R$ 87,99','q12')">Adicionar</button>
+</div>
 </div>
 
 <div class="card produto">
-  <div class="nome">Picanha Oranges Especial Resfr.</div>
-  <div class="info">Venda: Kilograma</div>
-  <div class="preco">R$ 109,99</div>
+<div class="nome">Filezinho Frango Empanado Baita 700gr Cong.</div>
+<div class="info">Dia-a-Dia • Unidade</div>
+<div class="preco">R$ R$ 28,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q13">
+<button onclick="add('Filezinho Frango Empanado Baita 700gr Cong.','R$ 28,99','q13')">Adicionar</button>
 </div>
 </div>
-<h2>Linguiças Especiais</h2>
-<div class='grid'>
 
 <div class="card produto">
-  <div class="nome">Ling Cuiabana Suína Frigo Espanha 600gr Cong.</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 26,99</div>
+<div class="nome">Chicken de Frango Empanado Baita 700gr Cong.</div>
+<div class="info">Dia-a-Dia • Unidade</div>
+<div class="preco">R$ R$ 19,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q14">
+<button onclick="add('Chicken de Frango Empanado Baita 700gr Cong.','R$ 19,99','q14')">Adicionar</button>
 </div>
+</div>
 
 <div class="card produto">
-  <div class="nome">Ling Requeijão, Cerveja e Bacon Specialli 400gr Cong.</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 39,99</div>
+<div class="nome">Picanha PAR Pul Resfr.</div>
+<div class="info">Picanhas Importadas • Kilograma</div>
+<div class="preco">R$ R$ 79,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q15">
+<button onclick="add('Picanha PAR Pul Resfr.','R$ 79,99','q15')">Adicionar</button>
+</div>
 </div>
 
 <div class="card produto">
-  <div class="nome">Ling Tex Mex (Cheddar & Pimenta Jalapeño) Specialli 400gr Cong.</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 39,99</div>
+<div class="nome">Filé de Merluza Pul 600gr Cong.</div>
+<div class="info">Dia-a-Dia • Unidade</div>
+<div class="preco">R$ R$ 27,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q16">
+<button onclick="add('Filé de Merluza Pul 600gr Cong.','R$ 27,99','q16')">Adicionar</button>
 </div>
+</div>
 
 <div class="card produto">
-  <div class="nome">Ling Suína Pimenta Biquinho Frigo Espanha 600gr Cong.</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 22,99</div>
+<div class="nome">Filé de Panga Pul 600gr Cong.</div>
+<div class="info">Dia-a-Dia • Unidade</div>
+<div class="preco">R$ R$ 24,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q17">
+<button onclick="add('Filé de Panga Pul 600gr Cong.','R$ 24,99','q17')">Adicionar</button>
 </div>
+</div>
 
 <div class="card produto">
-  <div class="nome">Ling Cuiabana Bovina Frigo Espanha 600gr Cong.</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 27,99</div>
+<div class="nome">Filé de Tilápia Pul 600gr Cong.</div>
+<div class="info">Dia-a-Dia • Unidade</div>
+<div class="preco">R$ R$ 34,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q18">
+<button onclick="add('Filé de Tilápia Pul 600gr Cong.','R$ 34,99','q18')">Adicionar</button>
+</div>
 </div>
 
 <div class="card produto">
-  <div class="nome">Ling Cuiabana Frango Frigo Espanha 600gr Cong.</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 25,99</div>
+<div class="nome">Espeto Peito de Frango Temperado Kispeto 500gr Cong.</div>
+<div class="info">Espetos Especiais • Unidade</div>
+<div class="preco">R$ R$ 26,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q19">
+<button onclick="add('Espeto Peito de Frango Temperado Kispeto 500gr Cong.','R$ 26,99','q19')">Adicionar</button>
 </div>
+</div>
 
 <div class="card produto">
-  <div class="nome">Ling Costela Bovina Cara Preta 300gr Cong.</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 16,99</div>
+<div class="nome">Filé de Salmão Chile Cong.</div>
+<div class="info">Pescados • Kilograma</div>
+<div class="preco">R$ R$ 119,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q20">
+<button onclick="add('Filé de Salmão Chile Cong.','R$ 119,99','q20')">Adicionar</button>
+</div>
 </div>
 
 <div class="card produto">
-  <div class="nome">Ling Suína Toscana Frigo Espanha 600gr Cong.</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 19,99</div>
+<div class="nome">Costelinha Suína Barbecue Cong.</div>
+<div class="info">Dia-a-Dia • Kilograma</div>
+<div class="preco">R$ R$ 74,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q21">
+<button onclick="add('Costelinha Suína Barbecue Cong.','R$ 74,99','q21')">Adicionar</button>
 </div>
+</div>
 
 <div class="card produto">
-  <div class="nome">Ling Pernil Cordeiro Tradicional Cara Preta 300gr Cong.</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 23,99</div>
+<div class="nome">Sardela 130gr</div>
+<div class="info">Molhos e Geléias • Unidade</div>
+<div class="preco">R$ R$ 24,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q22">
+<button onclick="add('Sardela 130gr','R$ 24,99','q22')">Adicionar</button>
+</div>
 </div>
 
 <div class="card produto">
-  <div class="nome">Ling Parmesão e Rúcula Specialli 400gr Cong.</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 39,99</div>
+<div class="nome">Patê Alho Poró 130gr</div>
+<div class="info">Molhos e Geléias • Unidade</div>
+<div class="preco">R$ R$ 21,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q23">
+<button onclick="add('Patê Alho Poró 130gr','R$ 21,99','q23')">Adicionar</button>
 </div>
+</div>
 
 <div class="card produto">
-  <div class="nome">Ling Bovina 4 Queijos Frigo Espanha 600gr Cong.</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 29,99</div>
+<div class="nome">Patê Ervas Finas 130gr</div>
+<div class="info">Molhos e Geléias • Unidade</div>
+<div class="preco">R$ R$ 21,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q24">
+<button onclick="add('Patê Ervas Finas 130gr','R$ 21,99','q24')">Adicionar</button>
+</div>
 </div>
 
 <div class="card produto">
-  <div class="nome">Ling de Frango Mineira Specialli 300gr Cong.</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 29,99</div>
+<div class="nome">Patê Azeitonas 130gr</div>
+<div class="info">Molhos e Geléias • Unidade</div>
+<div class="preco">R$ R$ 21,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q25">
+<button onclick="add('Patê Azeitonas 130gr','R$ 21,99','q25')">Adicionar</button>
 </div>
+</div>
 
 <div class="card produto">
-  <div class="nome">Ling Suína Toscana Sadia 700gr Cong.</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 27,99</div>
+<div class="nome">Patê Cebola Com Mostarda 130gr</div>
+<div class="info">Molhos e Geléias • Unidade</div>
+<div class="preco">R$ R$ 21,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q26">
+<button onclick="add('Patê Cebola Com Mostarda 130gr','R$ 21,99','q26')">Adicionar</button>
+</div>
 </div>
 
 <div class="card produto">
-  <div class="nome">Ling Suína Apimentada Nutibras 500gr Cong.</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 18,99</div>
+<div class="nome">Bife de Lombo de Cordeiro URU Nirea Cong.</div>
+<div class="info">Cordeiros • Kilograma</div>
+<div class="preco">R$ R$ 167,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q27">
+<button onclick="add('Bife de Lombo de Cordeiro URU Nirea Cong.','R$ 167,99','q27')">Adicionar</button>
 </div>
+</div>
 
 <div class="card produto">
-  <div class="nome">Ling Gorgonzola Specialli 400gr Cong.</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 39,99</div>
+<div class="nome">Entrecôte (Ancho) BBQ Secrets Grass Feed Resfr.</div>
+<div class="info">Bovinos • Kilograma</div>
+<div class="preco">R$ R$ 81,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q28">
+<button onclick="add('Entrecôte (Ancho) BBQ Secrets Grass Feed Resfr.','R$ 81,99','q28')">Adicionar</button>
 </div>
 </div>
-<h2>Espetos Especiais</h2>
-<div class='grid'>
 
 <div class="card produto">
-  <div class="nome">Espeto Queijo Coalho Quatá (7 espetos) Resfr.</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 29,99</div>
+<div class="nome">Prime Steak BBQ Secrets Angus Resfr.</div>
+<div class="info">Bovinos • Kilograma</div>
+<div class="preco">R$ R$ 85,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q29">
+<button onclick="add('Prime Steak BBQ Secrets Angus Resfr.','R$ 85,99','q29')">Adicionar</button>
+</div>
 </div>
 
 <div class="card produto">
-  <div class="nome">Espeto Coração de Frango Temperado Kispeto 500gr Cong.</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 34,99</div>
+<div class="nome">Pão de Alho Tradicional Aurora 340gr Resfr.</div>
+<div class="info">Acompanhamentos • Unidade</div>
+<div class="preco">R$ R$ 13,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q30">
+<button onclick="add('Pão de Alho Tradicional Aurora 340gr Resfr.','R$ 13,99','q30')">Adicionar</button>
 </div>
+</div>
 
 <div class="card produto">
-  <div class="nome">Espeto Mussarela Bolinha Defumada Coqueiros (5 espetos) Resfr.</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 36,99</div>
+<div class="nome">Filezinho Sassami Aurora 1kg Cong.</div>
+<div class="info">Dia-a-Dia • Unidade</div>
+<div class="preco">R$ R$ 28,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q31">
+<button onclick="add('Filezinho Sassami Aurora 1kg Cong.','R$ 28,99','q31')">Adicionar</button>
+</div>
 </div>
 
 <div class="card produto">
-  <div class="nome">Espeto Provolone Defumado Coqueiros (5 espetos) Resfr.</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 36,99</div>
+<div class="nome">Molho Pesto De Manjericão 130gr</div>
+<div class="info">Molhos e Geléias • Unidade</div>
+<div class="preco">R$ R$ 24,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q32">
+<button onclick="add('Molho Pesto De Manjericão 130gr','R$ 24,99','q32')">Adicionar</button>
 </div>
+</div>
 
 <div class="card produto">
-  <div class="nome">Espeto Medalhão Provolone com Bacon DaHora 350gr Cong.</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 44,99</div>
+<div class="nome">Peito de Frango Cozido Desfiado Aurora 360gr Cong.</div>
+<div class="info">Dia-a-Dia • Unidade</div>
+<div class="preco">R$ R$ 17,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q33">
+<button onclick="add('Peito de Frango Cozido Desfiado Aurora 360gr Cong.','R$ 17,99','q33')">Adicionar</button>
+</div>
 </div>
 
 <div class="card produto">
-  <div class="nome">Espeto Peito de Frango Temperado Kispeto 500gr Cong.</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 26,99</div>
+<div class="nome">Meio da Asa (Tulipa) Temperada Aurora 800gr Cong.</div>
+<div class="info">Dia-a-Dia • Unidade</div>
+<div class="preco">R$ R$ 26,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q34">
+<button onclick="add('Meio da Asa (Tulipa) Temperada Aurora 800gr Cong.','R$ 26,99','q34')">Adicionar</button>
 </div>
+</div>
 
 <div class="card produto">
-  <div class="nome">Espeto Medalhão Romeu & Julieta (Queijo com Goiabada) DaHora 450gr Cong.</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 42,99</div>
+<div class="nome">Coxinha da Asa Temperada Aurora 800gr Cong.</div>
+<div class="info">Dia-a-Dia • Unidade</div>
+<div class="preco">R$ R$ 20,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q35">
+<button onclick="add('Coxinha da Asa Temperada Aurora 800gr Cong.','R$ 20,99','q35')">Adicionar</button>
 </div>
+</div>
 
 <div class="card produto">
-  <div class="nome">Espeto Kafta Bovina Frigo Espanha 600gr Cong.</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 31,99</div>
+<div class="nome">Pão de Alho Santa Massa Tradicional 400g Resfr.</div>
+<div class="info">Acompanhamentos • Unidade</div>
+<div class="preco">R$ R$ 17,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q36">
+<button onclick="add('Pão de Alho Santa Massa Tradicional 400g Resfr.','R$ 17,99','q36')">Adicionar</button>
+</div>
 </div>
 
 <div class="card produto">
-  <div class="nome">Espeto Kafta Bovina com Queijo Frigo Espanha (5 espetos) Cong.</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 33,99</div>
+<div class="nome">Picanha 481 Cong.</div>
+<div class="info">Picanhas Nacionais • Kilograma</div>
+<div class="preco">R$ R$ 264,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q37">
+<button onclick="add('Picanha 481 Cong.','R$ 264,99','q37')">Adicionar</button>
 </div>
+</div>
 
 <div class="card produto">
-  <div class="nome">Espeto Carne Bovina Tudo Em Carnes 600gr Cong.</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 43,99</div>
+<div class="nome">Espeto Medalhão Romeu & Julieta (Queijo com Goiabada) DaHora 450gr Cong.</div>
+<div class="info">Espetos Especiais • Unidade</div>
+<div class="preco">R$ R$ 42,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q38">
+<button onclick="add('Espeto Medalhão Romeu & Julieta (Queijo com Goiabada) DaHora 450gr Cong.','R$ 42,99','q38')">Adicionar</button>
+</div>
 </div>
 
 <div class="card produto">
-  <div class="nome">Espeto Panceta Suína Tudo Em Carnes 600gr Cong.</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 42,99</div>
+<div class="nome">Ling Cuiabana Bovina Frigo Espanha 600gr Cong.</div>
+<div class="info">Linguiças Especiais • Unidade</div>
+<div class="preco">R$ R$ 27,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q39">
+<button onclick="add('Ling Cuiabana Bovina Frigo Espanha 600gr Cong.','R$ 27,99','q39')">Adicionar</button>
 </div>
+</div>
 
 <div class="card produto">
-  <div class="nome">Espeto Frango com Bacon Tudo Em Carnes 500gr Cong.</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 49,99</div>
+<div class="nome">Ling Cuiabana Frango Frigo Espanha 600gr Cong.</div>
+<div class="info">Linguiças Especiais • Unidade</div>
+<div class="preco">R$ R$ 25,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q40">
+<button onclick="add('Ling Cuiabana Frango Frigo Espanha 600gr Cong.','R$ 25,99','q40')">Adicionar</button>
 </div>
 </div>
-<h2>Cordeiros</h2>
-<div class='grid'>
 
 <div class="card produto">
-  <div class="nome">Paleta de Cordeiro Estância 92 Cong.</div>
-  <div class="info">Venda: Kilograma</div>
-  <div class="preco">R$ 87,99</div>
+<div class="nome">Espeto Kafta Bovina Frigo Espanha 600gr Cong.</div>
+<div class="info">Espetos Especiais • Unidade</div>
+<div class="preco">R$ R$ 31,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q41">
+<button onclick="add('Espeto Kafta Bovina Frigo Espanha 600gr Cong.','R$ 31,99','q41')">Adicionar</button>
+</div>
 </div>
 
 <div class="card produto">
-  <div class="nome">Bife de Lombo de Cordeiro URU Nirea Cong.</div>
-  <div class="info">Venda: Kilograma</div>
-  <div class="preco">R$ 167,99</div>
+<div class="nome">Espeto Kafta Bovina com Queijo Frigo Espanha (5 espetos) Cong.</div>
+<div class="info">Espetos Especiais • Unidade</div>
+<div class="preco">R$ R$ 33,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q42">
+<button onclick="add('Espeto Kafta Bovina com Queijo Frigo Espanha (5 espetos) Cong.','R$ 33,99','q42')">Adicionar</button>
 </div>
+</div>
 
 <div class="card produto">
-  <div class="nome">Alcatra (Picanha) de Cordeiro Estância 92 Cong.</div>
-  <div class="info">Venda: Kilograma</div>
-  <div class="preco">R$ 124,99</div>
+<div class="nome">Acendedor Da Hora</div>
+<div class="info">Acessórios • Unidade</div>
+<div class="preco">R$ R$ 1,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q43">
+<button onclick="add('Acendedor Da Hora','R$ 1,99','q43')">Adicionar</button>
 </div>
 </div>
-<h2>Dia-a-Dia</h2>
-<div class='grid'>
 
 <div class="card produto">
-  <div class="nome">Filezinho Frango Empanado Baita 700gr Cong.</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 28,99</div>
+<div class="nome">Alho Crocante Gonzalo 100gr</div>
+<div class="info">Molhos e Geléias • Unidade</div>
+<div class="preco">R$ R$ 28,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q44">
+<button onclick="add('Alho Crocante Gonzalo 100gr','R$ 28,99','q44')">Adicionar</button>
+</div>
 </div>
 
 <div class="card produto">
-  <div class="nome">Chicken de Frango Empanado Baita 700gr Cong.</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 19,99</div>
+<div class="nome">Aluminio Wyda 30cm x 4mt</div>
+<div class="info">Acessórios • Unidade</div>
+<div class="preco">R$ R$ 4,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q45">
+<button onclick="add('Aluminio Wyda 30cm x 4mt','R$ 4,99','q45')">Adicionar</button>
 </div>
+</div>
 
 <div class="card produto">
-  <div class="nome">Filé de Merluza Pul 600gr Cong.</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 27,99</div>
+<div class="nome">Azeite Alma Lusa 500ml</div>
+<div class="info">Temperos • Unidade</div>
+<div class="preco">R$ R$ 35,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q46">
+<button onclick="add('Azeite Alma Lusa 500ml','R$ 35,99','q46')">Adicionar</button>
+</div>
 </div>
 
 <div class="card produto">
-  <div class="nome">Filé de Panga Pul 600gr Cong.</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 24,99</div>
+<div class="nome">Carvão Prime 2kg</div>
+<div class="info">Acessórios • Unidade</div>
+<div class="preco">R$ R$ 16,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q47">
+<button onclick="add('Carvão Prime 2kg','R$ 16,99','q47')">Adicionar</button>
 </div>
+</div>
 
 <div class="card produto">
-  <div class="nome">Filé de Tilápia Pul 600gr Cong.</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 34,99</div>
+<div class="nome">Carvão Prime 4kg</div>
+<div class="info">Acessórios • Unidade</div>
+<div class="preco">R$ R$ 31,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q48">
+<button onclick="add('Carvão Prime 4kg','R$ 31,99','q48')">Adicionar</button>
+</div>
 </div>
 
 <div class="card produto">
-  <div class="nome">Costelinha Suína Barbecue Cong.</div>
-  <div class="info">Venda: Kilograma</div>
-  <div class="preco">R$ 74,99</div>
+<div class="nome">Dry Rub Redneck Gonzalo 250gr</div>
+<div class="info">Temperos • Unidade</div>
+<div class="preco">R$ R$ 34,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q49">
+<button onclick="add('Dry Rub Redneck Gonzalo 250gr','R$ 34,99','q49')">Adicionar</button>
 </div>
+</div>
 
 <div class="card produto">
-  <div class="nome">Filezinho Sassami Aurora 1kg Cong.</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 28,99</div>
+<div class="nome">Farofa Picante Churrasquero 200gr</div>
+<div class="info">Farofas • Unidade</div>
+<div class="preco">R$ R$ 9,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q50">
+<button onclick="add('Farofa Picante Churrasquero 200gr','R$ 9,99','q50')">Adicionar</button>
+</div>
 </div>
 
 <div class="card produto">
-  <div class="nome">Peito de Frango Cozido Desfiado Aurora 360gr Cong.</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 17,99</div>
+<div class="nome">Farofa Torresmo Churrasquero 200gr</div>
+<div class="info">Farofas • Unidade</div>
+<div class="preco">R$ R$ 9,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q51">
+<button onclick="add('Farofa Torresmo Churrasquero 200gr','R$ 9,99','q51')">Adicionar</button>
 </div>
+</div>
 
 <div class="card produto">
-  <div class="nome">Meio da Asa (Tulipa) Temperada Aurora 800gr Cong.</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 26,99</div>
+<div class="nome">Farofa Tradicional Churrasquero 200gr</div>
+<div class="info">Farofas • Unidade</div>
+<div class="preco">R$ R$ 9,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q52">
+<button onclick="add('Farofa Tradicional Churrasquero 200gr','R$ 9,99','q52')">Adicionar</button>
+</div>
 </div>
 
 <div class="card produto">
-  <div class="nome">Coxinha da Asa Temperada Aurora 800gr Cong.</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 20,99</div>
+<div class="nome">Filme de PVC Wyda 28cm x 15mt</div>
+<div class="info">Acessórios • Unidade</div>
+<div class="preco">R$ R$ 5,49</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q53">
+<button onclick="add('Filme de PVC Wyda 28cm x 15mt','R$ 5,49','q53')">Adicionar</button>
 </div>
+</div>
 
 <div class="card produto">
-  <div class="nome">Lasanha Bolonhesa Perdigão 600gr Cong.</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 18,99</div>
+<div class="nome">Fósforo Longo Fiat Lux 200un</div>
+<div class="info">Acessórios • Unidade</div>
+<div class="preco">R$ R$ 5,49</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q54">
+<button onclick="add('Fósforo Longo Fiat Lux 200un','R$ 5,49','q54')">Adicionar</button>
 </div>
+</div>
 
 <div class="card produto">
-  <div class="nome">Meio da Asa (Tulipa) Sadia 1kg Cong.</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 28,99</div>
+<div class="nome">Fumaça Líquida Spray Gonzalo 150ml</div>
+<div class="info">Temperos • Unidade</div>
+<div class="preco">R$ R$ 23,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q55">
+<button onclick="add('Fumaça Líquida Spray Gonzalo 150ml','R$ 23,99','q55')">Adicionar</button>
+</div>
 </div>
 
 <div class="card produto">
-  <div class="nome">Bolinho de Bacalhau Ribera Alves 300gr Cong.</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 25,99</div>
+<div class="nome">Gel Acendedor Luar Fire 440gr</div>
+<div class="info">Acessórios • Unidade</div>
+<div class="preco">R$ R$ 9,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q56">
+<button onclick="add('Gel Acendedor Luar Fire 440gr','R$ 9,99','q56')">Adicionar</button>
 </div>
+</div>
 
 <div class="card produto">
-  <div class="nome">Iscas de Panga Empanado Baita 700gr Cong.</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 39,99</div>
+<div class="nome">Molho Chimichurri Gonzalo 200gr</div>
+<div class="info">Molhos e Geléias • Unidade</div>
+<div class="preco">R$ R$ 34,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q57">
+<button onclick="add('Molho Chimichurri Gonzalo 200gr','R$ 34,99','q57')">Adicionar</button>
+</div>
 </div>
 
 <div class="card produto">
-  <div class="nome">Meio da Asa (Tulipa) Sweet Chilli Aurora Premium 800gr Cong.</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 29,99</div>
+<div class="nome">Molho Hortelã Nonna Pasqua 130gr</div>
+<div class="info">Molhos e Geléias • Unidade</div>
+<div class="preco">R$ R$ 23,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q58">
+<button onclick="add('Molho Hortelã Nonna Pasqua 130gr','R$ 23,99','q58')">Adicionar</button>
 </div>
+</div>
 
 <div class="card produto">
-  <div class="nome">Coxinha da Asa Aurora Premium Apimentada 800gr Cong.</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 18,99</div>
+<div class="nome">Molho Pimenta Buffalo Sauce Gonzalo 280gr</div>
+<div class="info">Molhos e Geléias • Unidade</div>
+<div class="preco">R$ R$ 27,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q59">
+<button onclick="add('Molho Pimenta Buffalo Sauce Gonzalo 280gr','R$ 27,99','q59')">Adicionar</button>
+</div>
 </div>
 
 <div class="card produto">
-  <div class="nome">Filé de Sobrecoxa Aurora Premium Chimichurri 800gr Cong.</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 21,99</div>
+<div class="nome">Molho Pimenta Cana Quente Gonzalo 280gr</div>
+<div class="info">Molhos e Geléias • Unidade</div>
+<div class="preco">R$ R$ 27,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q60">
+<button onclick="add('Molho Pimenta Cana Quente Gonzalo 280gr','R$ 27,99','q60')">Adicionar</button>
 </div>
+</div>
 
 <div class="card produto">
-  <div class="nome">Coração de Frango Aurora Bandeja 1kg Cong.</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 37,99</div>
+<div class="nome">Molho Pimenta Chimi Chilli Gonzalo 280gr</div>
+<div class="info">Molhos e Geléias • Unidade</div>
+<div class="preco">R$ R$ 27,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q61">
+<button onclick="add('Molho Pimenta Chimi Chilli Gonzalo 280gr','R$ 27,99','q61')">Adicionar</button>
+</div>
 </div>
 
 <div class="card produto">
-  <div class="nome">Frango Passarinho Aurora 800gr Cong.</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 18,99</div>
+<div class="nome">Molho Pimenta Pico de Gallo Gonzalo 280gr</div>
+<div class="info">Molhos e Geléias • Unidade</div>
+<div class="preco">R$ R$ 27,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q62">
+<button onclick="add('Molho Pimenta Pico de Gallo Gonzalo 280gr','R$ 27,99','q62')">Adicionar</button>
 </div>
+</div>
 
 <div class="card produto">
-  <div class="nome">Coxa e Sobrecoxa Aurora Cong.</div>
-  <div class="info">Venda: Kilograma</div>
-  <div class="preco">R$ 13,59</div>
+<div class="nome">Molho Salsa Mexicana Gonzalo 230gr</div>
+<div class="info">Molhos e Geléias • Unidade</div>
+<div class="preco">R$ R$ 38,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q63">
+<button onclick="add('Molho Salsa Mexicana Gonzalo 230gr','R$ 38,99','q63')">Adicionar</button>
 </div>
+</div>
 
 <div class="card produto">
-  <div class="nome">Kani Kama Seapro 250gr Cong.</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 7,99</div>
+<div class="nome">Shoyu Defumado Spray Gonzalo 150ml</div>
+<div class="info">Temperos • Unidade</div>
+<div class="preco">R$ R$ 18,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q64">
+<button onclick="add('Shoyu Defumado Spray Gonzalo 150ml','R$ 18,99','q64')">Adicionar</button>
+</div>
 </div>
 
 <div class="card produto">
-  <div class="nome">Alga Marinha Ocean Treasure 10FL</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 20,99</div>
+<div class="nome">Hambúrguer Costela Angus Cara Preta 360gr Cong.</div>
+<div class="info">Hambúrguer • Unidade</div>
+<div class="preco">R$ R$ 24,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q65">
+<button onclick="add('Hambúrguer Costela Angus Cara Preta 360gr Cong.','R$ 24,99','q65')">Adicionar</button>
 </div>
+</div>
 
 <div class="card produto">
-  <div class="nome">Bolinho de Salmão 320gr Cong.</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 27,99</div>
+<div class="nome">Hambúrguer Brisket Angus Cara Preta 360gr Cong.</div>
+<div class="info">Hambúrguer • Unidade</div>
+<div class="preco">R$ R$ 24,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q66">
+<button onclick="add('Hambúrguer Brisket Angus Cara Preta 360gr Cong.','R$ 24,99','q66')">Adicionar</button>
+</div>
 </div>
 
 <div class="card produto">
-  <div class="nome">Coxinha de Camarão 320gr Cong.</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 27,99</div>
+<div class="nome">Hambúrguer Tradicional Angus Cara Preta 120gr Cong.</div>
+<div class="info">Hambúrguer • Unidade</div>
+<div class="preco">R$ R$ 8,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q67">
+<button onclick="add('Hambúrguer Tradicional Angus Cara Preta 120gr Cong.','R$ 8,99','q67')">Adicionar</button>
 </div>
+</div>
 
 <div class="card produto">
-  <div class="nome">Croquete de Atum 320gr Cong.</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 27,99</div>
+<div class="nome">Hambúrguer Tradicional Angus Cara Preta 360gr Cong.</div>
+<div class="info">Hambúrguer • Unidade</div>
+<div class="preco">R$ R$ 23,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q68">
+<button onclick="add('Hambúrguer Tradicional Angus Cara Preta 360gr Cong.','R$ 23,99','q68')">Adicionar</button>
+</div>
 </div>
 
 <div class="card produto">
-  <div class="nome">Alho Dourado Crocante Soul Chef 200gr</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 29,99</div>
+<div class="nome">Ling Costela Bovina Cara Preta 300gr Cong.</div>
+<div class="info">Linguiças Especiais • Unidade</div>
+<div class="preco">R$ R$ 16,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q69">
+<button onclick="add('Ling Costela Bovina Cara Preta 300gr Cong.','R$ 16,99','q69')">Adicionar</button>
 </div>
+</div>
 
 <div class="card produto">
-  <div class="nome">Risoto De Funghi Secchi Cookit 260gr</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 39,99</div>
+<div class="nome">Molho Chimichurri Tradicional Trend 330gr</div>
+<div class="info">Molhos e Geléias • Unidade</div>
+<div class="preco">R$ R$ 28,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q70">
+<button onclick="add('Molho Chimichurri Tradicional Trend 330gr','R$ 28,99','q70')">Adicionar</button>
+</div>
 </div>
 
 <div class="card produto">
-  <div class="nome">Risoto De Tomate Seco, Alho Poró e Manjericão Cookit 260gr</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 39,99</div>
+<div class="nome">Molho Chimichurri Picante Trend 330gr</div>
+<div class="info">Molhos e Geléias • Unidade</div>
+<div class="preco">R$ R$ 28,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q71">
+<button onclick="add('Molho Chimichurri Picante Trend 330gr','R$ 28,99','q71')">Adicionar</button>
 </div>
+</div>
 
 <div class="card produto">
-  <div class="nome">Risoto De Beterraba Com Alecrim Cookit 260gr</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 39,99</div>
+<div class="nome">Antepasto de Beringela Iscas 130gr</div>
+<div class="info">Molhos e Geléias • Unidade</div>
+<div class="preco">R$ R$ 17,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q72">
+<button onclick="add('Antepasto de Beringela Iscas 130gr','R$ 17,99','q72')">Adicionar</button>
 </div>
+</div>
 
 <div class="card produto">
-  <div class="nome">Risoto De Abobrinha Com Lemon Pepper Cookit 260gr</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 39,99</div>
+<div class="nome">Sal de Parrilla Tradicional Churrasquero 450gr</div>
+<div class="info">Temperos • Unidade</div>
+<div class="preco">R$ R$ 14,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q73">
+<button onclick="add('Sal de Parrilla Tradicional Churrasquero 450gr','R$ 14,99','q73')">Adicionar</button>
+</div>
 </div>
 
 <div class="card produto">
-  <div class="nome">Risoto De Damasco Com Castanha do Brasil Cookit 260gr</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 39,99</div>
+<div class="nome">Sal de Parrilla Chimichurri Churrasquero 450gr</div>
+<div class="info">Temperos • Unidade</div>
+<div class="preco">R$ R$ 13,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q74">
+<button onclick="add('Sal de Parrilla Chimichurri Churrasquero 450gr','R$ 13,99','q74')">Adicionar</button>
 </div>
+</div>
 
 <div class="card produto">
-  <div class="nome">Empada De Palmito Eccellenza (10 unidades)</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 34,99</div>
+<div class="nome">Sal de Parrilla Alho Granulado Churrasquero 450gr</div>
+<div class="info">Temperos • Unidade</div>
+<div class="preco">R$ R$ 13,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q75">
+<button onclick="add('Sal de Parrilla Alho Granulado Churrasquero 450gr','R$ 13,99','q75')">Adicionar</button>
+</div>
 </div>
 
 <div class="card produto">
-  <div class="nome">Empada De Frango Com Requeijão Eccellenza (10 unidades)</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 34,99</div>
+<div class="nome">Sal de Parrilla Pimenta Churrasquero 450gr</div>
+<div class="info">Temperos • Unidade</div>
+<div class="preco">R$ R$ 13,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q76">
+<button onclick="add('Sal de Parrilla Pimenta Churrasquero 450gr','R$ 13,99','q76')">Adicionar</button>
 </div>
+</div>
 
 <div class="card produto">
-  <div class="nome">Arroz Oriental Inari Solito 1kg</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 11,49</div>
+<div class="nome">Sal Grosso Lebre 1kg</div>
+<div class="info">Temperos • Unidade</div>
+<div class="preco">R$ R$ 5,49</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q77">
+<button onclick="add('Sal Grosso Lebre 1kg','R$ 5,49','q77')">Adicionar</button>
+</div>
 </div>
 
 <div class="card produto">
-  <div class="nome">Ovos Caipira Bandeja 12un</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 19,99</div>
+<div class="nome">Ling Suína Toscana Frigo Espanha 600gr Cong.</div>
+<div class="info">Linguiças Especiais • Unidade</div>
+<div class="preco">R$ R$ 19,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q78">
+<button onclick="add('Ling Suína Toscana Frigo Espanha 600gr Cong.','R$ 19,99','q78')">Adicionar</button>
 </div>
+</div>
 
 <div class="card produto">
-  <div class="nome">Esfiha Gourmet KBL Sabor Carne (10 unidades)</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 32,99</div>
+<div class="nome">Ling Pernil Cordeiro Tradicional Cara Preta 300gr Cong.</div>
+<div class="info">Linguiças Especiais • Unidade</div>
+<div class="preco">R$ R$ 23,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q79">
+<button onclick="add('Ling Pernil Cordeiro Tradicional Cara Preta 300gr Cong.','R$ 23,99','q79')">Adicionar</button>
+</div>
 </div>
 
 <div class="card produto">
-  <div class="nome">Esfiha Gourmet KBL Sabor Queijo (10 unidades)</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 32,99</div>
+<div class="nome">Hambúrguer Costela Angus Cara Preta 120gr Cong.</div>
+<div class="info">Hambúrguer • Unidade</div>
+<div class="preco">R$ R$ 8,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q80">
+<button onclick="add('Hambúrguer Costela Angus Cara Preta 120gr Cong.','R$ 8,99','q80')">Adicionar</button>
 </div>
+</div>
 
 <div class="card produto">
-  <div class="nome">Couve Flor Wings Sadia 275gr Cong.</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 12,99</div>
+<div class="nome">Fraldinha Estância 92 Resfr.</div>
+<div class="info">Bovinos • Kilograma</div>
+<div class="preco">R$ R$ 69,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q81">
+<button onclick="add('Fraldinha Estância 92 Resfr.','R$ 69,99','q81')">Adicionar</button>
+</div>
 </div>
 
 <div class="card produto">
-  <div class="nome">Almôndega Bovina Sadia 500gr Cong.</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 23,99</div>
+<div class="nome">Baby Beef Cabaña Las Lilas Resfr.</div>
+<div class="info">Bovinos • Kilograma</div>
+<div class="preco">R$ R$ 69,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q82">
+<button onclick="add('Baby Beef Cabaña Las Lilas Resfr.','R$ 69,99','q82')">Adicionar</button>
 </div>
+</div>
 
 <div class="card produto">
-  <div class="nome">Fetuccini Bolonhesa Perdigão 300gr Cong.</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 9,99</div>
+<div class="nome">Lasanha Bolonhesa Perdigão 600gr Cong.</div>
+<div class="info">Dia-a-Dia • Unidade</div>
+<div class="preco">R$ R$ 18,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q83">
+<button onclick="add('Lasanha Bolonhesa Perdigão 600gr Cong.','R$ 18,99','q83')">Adicionar</button>
+</div>
 </div>
 
 <div class="card produto">
-  <div class="nome">Iscas de Frango Tempura Sadia 300gr Cong.</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 16,99</div>
+<div class="nome">Meio da Asa (Tulipa) Sadia 1kg Cong.</div>
+<div class="info">Dia-a-Dia • Unidade</div>
+<div class="preco">R$ R$ 28,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q84">
+<button onclick="add('Meio da Asa (Tulipa) Sadia 1kg Cong.','R$ 28,99','q84')">Adicionar</button>
 </div>
+</div>
 
 <div class="card produto">
-  <div class="nome">Kibe Bovino Sadia 500gr Cong.</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 24,99</div>
+<div class="nome">Maminha Estância 92 Resfr.</div>
+<div class="info">Bovinos • Kilograma</div>
+<div class="preco">R$ R$ 62,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q85">
+<button onclick="add('Maminha Estância 92 Resfr.','R$ 62,99','q85')">Adicionar</button>
+</div>
 </div>
 
 <div class="card produto">
-  <div class="nome">Lasanha de Frango Perdigão 600gr Cong.</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 18,99</div>
+<div class="nome">Bolinho de Bacalhau Ribera Alves 300gr Cong.</div>
+<div class="info">Dia-a-Dia • Unidade</div>
+<div class="preco">R$ R$ 25,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q86">
+<button onclick="add('Bolinho de Bacalhau Ribera Alves 300gr Cong.','R$ 25,99','q86')">Adicionar</button>
 </div>
+</div>
 
 <div class="card produto">
-  <div class="nome">Lasanha 4 Queijos Sadia 600gr Cong.</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 18,99</div>
+<div class="nome">Iscas de Panga Empanado Baita 700gr Cong.</div>
+<div class="info">Dia-a-Dia • Unidade</div>
+<div class="preco">R$ R$ 39,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q87">
+<button onclick="add('Iscas de Panga Empanado Baita 700gr Cong.','R$ 39,99','q87')">Adicionar</button>
+</div>
 </div>
 
 <div class="card produto">
-  <div class="nome">Nuggets de Frango Com Queijo Sadia 300gr</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 9,99</div>
+<div class="nome">Ling Parmesão e Rúcula Specialli 400gr Cong.</div>
+<div class="info">Linguiças Especiais • Unidade</div>
+<div class="preco">R$ R$ 39,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q88">
+<button onclick="add('Ling Parmesão e Rúcula Specialli 400gr Cong.','R$ 39,99','q88')">Adicionar</button>
 </div>
+</div>
 
 <div class="card produto">
-  <div class="nome">Penne Parisiense Perdigão 300gr Cong</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 9,99</div>
+<div class="nome">Ling Bovina 4 Queijos Frigo Espanha 600gr Cong.</div>
+<div class="info">Linguiças Especiais • Unidade</div>
+<div class="preco">R$ R$ 29,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q89">
+<button onclick="add('Ling Bovina 4 Queijos Frigo Espanha 600gr Cong.','R$ 29,99','q89')">Adicionar</button>
 </div>
+</div>
 
 <div class="card produto">
-  <div class="nome">Pop Nuggets de Frango Sadia 275gr Cong.</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 9,99</div>
+<div class="nome">Ling de Frango Mineira Specialli 300gr Cong.</div>
+<div class="info">Linguiças Especiais • Unidade</div>
+<div class="preco">R$ R$ 29,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q90">
+<button onclick="add('Ling de Frango Mineira Specialli 300gr Cong.','R$ 29,99','q90')">Adicionar</button>
+</div>
 </div>
 
 <div class="card produto">
-  <div class="nome">Anéis de Cebola Empanados Bem Brasil 1,05kg Cong.</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 29,99</div>
+<div class="nome">Shoulder Steak Estância 92 Resfr.</div>
+<div class="info">Bovinos • Kilograma</div>
+<div class="preco">R$ R$ 95,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q91">
+<button onclick="add('Shoulder Steak Estância 92 Resfr.','R$ 95,99','q91')">Adicionar</button>
 </div>
+</div>
 
 <div class="card produto">
-  <div class="nome">Polenta Tolete Prontinha 1kg Cong.</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 15,99</div>
+<div class="nome">Panceta Suína Aurora Premium Cong.</div>
+<div class="info">Suínos • Kilograma</div>
+<div class="preco">R$ R$ 45,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q92">
+<button onclick="add('Panceta Suína Aurora Premium Cong.','R$ 45,99','q92')">Adicionar</button>
+</div>
 </div>
 
 <div class="card produto">
-  <div class="nome">Batata Carinha Bem Brasil 400gr Cong.</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 9,99</div>
+<div class="nome">Meio da Asa (Tulipa) Sweet Chilli Aurora Premium 800gr Cong.</div>
+<div class="info">Dia-a-Dia • Unidade</div>
+<div class="preco">R$ R$ 29,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q93">
+<button onclick="add('Meio da Asa (Tulipa) Sweet Chilli Aurora Premium 800gr Cong.','R$ 29,99','q93')">Adicionar</button>
 </div>
+</div>
 
 <div class="card produto">
-  <div class="nome">Batata Palito Bem Brasil 1,5kg Cong.</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 24,99</div>
+<div class="nome">Copo Eisenhugel</div>
+<div class="info">Acessórios • Unidade</div>
+<div class="preco">R$ R$ 39,00</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q94">
+<button onclick="add('Copo Eisenhugel','R$ 39,00','q94')">Adicionar</button>
+</div>
 </div>
 
 <div class="card produto">
-  <div class="nome">Mandioca Premium Prontinha 1,2kg Cong.</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 22,99</div>
+<div class="nome">Torresmo Santa Massa 40gr</div>
+<div class="info">Snacks • Unidade</div>
+<div class="preco">R$ R$ 8,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q95">
+<button onclick="add('Torresmo Santa Massa 40gr','R$ 8,99','q95')">Adicionar</button>
 </div>
 </div>
-<h2>Picanhas Importadas</h2>
-<div class='grid'>
 
 <div class="card produto">
-  <div class="nome">Picanha PAR Pul Resfr.</div>
-  <div class="info">Venda: Kilograma</div>
-  <div class="preco">R$ 79,99</div>
+<div class="nome">Coxinha da Asa Aurora Premium Apimentada 800gr Cong.</div>
+<div class="info">Dia-a-Dia • Unidade</div>
+<div class="preco">R$ R$ 18,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q96">
+<button onclick="add('Coxinha da Asa Aurora Premium Apimentada 800gr Cong.','R$ 18,99','q96')">Adicionar</button>
 </div>
+</div>
 
 <div class="card produto">
-  <div class="nome">Picanha URU Las Piedras Family Selection Cong.</div>
-  <div class="info">Venda: Kilograma</div>
-  <div class="preco">R$ 239,99</div>
+<div class="nome">Filé de Sobrecoxa Aurora Premium Chimichurri 800gr Cong.</div>
+<div class="info">Dia-a-Dia • Unidade</div>
+<div class="preco">R$ R$ 21,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q97">
+<button onclick="add('Filé de Sobrecoxa Aurora Premium Chimichurri 800gr Cong.','R$ 21,99','q97')">Adicionar</button>
+</div>
 </div>
 
 <div class="card produto">
-  <div class="nome">Picanha ARG Alabrasa Cong.</div>
-  <div class="info">Venda: Kilograma</div>
-  <div class="preco">R$ 184,99</div>
+<div class="nome">Picanha Dom Glutão Extra Resfr.</div>
+<div class="info">Picanhas Nacionais • Kilograma</div>
+<div class="preco">R$ R$ 93,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q98">
+<button onclick="add('Picanha Dom Glutão Extra Resfr.','R$ 93,99','q98')">Adicionar</button>
 </div>
+</div>
 
 <div class="card produto">
-  <div class="nome">Picanha URU Steakhouse Cong.</div>
-  <div class="info">Venda: Kilograma</div>
-  <div class="preco">R$ 114,99</div>
+<div class="nome">Cerveja Eisenhugel English IPA 500ml</div>
+<div class="info">Bebidas • Unidade</div>
+<div class="preco">R$ R$ 22,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q99">
+<button onclick="add('Cerveja Eisenhugel English IPA 500ml','R$ 22,99','q99')">Adicionar</button>
 </div>
+</div>
 
 <div class="card produto">
-  <div class="nome">Picanha ARG Pul Selection Cong.</div>
-  <div class="info">Venda: Kilograma</div>
-  <div class="preco">R$ 127,99</div>
+<div class="nome">Coração de Frango Aurora Bandeja 1kg Cong.</div>
+<div class="info">Dia-a-Dia • Unidade</div>
+<div class="preco">R$ R$ 37,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q100">
+<button onclick="add('Coração de Frango Aurora Bandeja 1kg Cong.','R$ 37,99','q100')">Adicionar</button>
 </div>
 </div>
-<h2>Pescados</h2>
-<div class='grid'>
 
 <div class="card produto">
-  <div class="nome">Filé de Salmão Chile Cong.</div>
-  <div class="info">Venda: Kilograma</div>
-  <div class="preco">R$ 119,99</div>
+<div class="nome">Melado De Cana Carolina Black 300ml</div>
+<div class="info">Molhos e Geléias • Unidade</div>
+<div class="preco">R$ R$ 36,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q101">
+<button onclick="add('Melado De Cana Carolina Black 300ml','R$ 36,99','q101')">Adicionar</button>
+</div>
 </div>
 
 <div class="card produto">
-  <div class="nome">Camarão 7 Barbas Descascado Mar & Rio 400gr Cong.</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 41,99</div>
+<div class="nome">Espeto Carne Bovina Tudo Em Carnes 600gr Cong.</div>
+<div class="info">Espetos Especiais • Unidade</div>
+<div class="preco">R$ R$ 43,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q102">
+<button onclick="add('Espeto Carne Bovina Tudo Em Carnes 600gr Cong.','R$ 43,99','q102')">Adicionar</button>
 </div>
+</div>
 
 <div class="card produto">
-  <div class="nome">Filé de Salmão Resfr.</div>
-  <div class="info">Venda: Kilograma</div>
-  <div class="preco">R$ 119,99</div>
+<div class="nome">Espeto Panceta Suína Tudo Em Carnes 600gr Cong.</div>
+<div class="info">Espetos Especiais • Unidade</div>
+<div class="preco">R$ R$ 42,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q103">
+<button onclick="add('Espeto Panceta Suína Tudo Em Carnes 600gr Cong.','R$ 42,99','q103')">Adicionar</button>
+</div>
 </div>
 
 <div class="card produto">
-  <div class="nome">Filé de Tilápia Resfr.</div>
-  <div class="info">Venda: Kilograma</div>
-  <div class="preco">R$ 79,99</div>
+<div class="nome">Espeto Frango com Bacon Tudo Em Carnes 500gr Cong.</div>
+<div class="info">Espetos Especiais • Unidade</div>
+<div class="preco">R$ R$ 49,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q104">
+<button onclick="add('Espeto Frango com Bacon Tudo Em Carnes 500gr Cong.','R$ 49,99','q104')">Adicionar</button>
 </div>
+</div>
 
 <div class="card produto">
-  <div class="nome">Sashimi de Misto Dumar 400gr Resfr.</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 49,99</div>
+<div class="nome">Torresmo De Rolo Aurora Premium Cong.</div>
+<div class="info">Suínos • Kilograma</div>
+<div class="preco">R$ R$ 64,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q105">
+<button onclick="add('Torresmo De Rolo Aurora Premium Cong.','R$ 64,99','q105')">Adicionar</button>
+</div>
 </div>
 
 <div class="card produto">
-  <div class="nome">Sashimi de Salmão Dumar 400gr Resfr.</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 49,99</div>
+<div class="nome">Bananinha Dom Glutão Classic Line Resfr.</div>
+<div class="info">Bovinos • Kilograma</div>
+<div class="preco">R$ R$ 59,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q106">
+<button onclick="add('Bananinha Dom Glutão Classic Line Resfr.','R$ 59,99','q106')">Adicionar</button>
 </div>
 </div>
-<h2>Molhos e Geléias</h2>
-<div class='grid'>
 
 <div class="card produto">
-  <div class="nome">Sardela 130gr</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 24,99</div>
+<div class="nome">Picanha Oranges Especial Resfr.</div>
+<div class="info">Picanhas Nacionais • Kilograma</div>
+<div class="preco">R$ R$ 109,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q107">
+<button onclick="add('Picanha Oranges Especial Resfr.','R$ 109,99','q107')">Adicionar</button>
 </div>
+</div>
 
 <div class="card produto">
-  <div class="nome">Patê Alho Poró 130gr</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 21,99</div>
+<div class="nome">Picanha URU Las Piedras Family Selection Cong.</div>
+<div class="info">Picanhas Importadas • Kilograma</div>
+<div class="preco">R$ R$ 239,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q108">
+<button onclick="add('Picanha URU Las Piedras Family Selection Cong.','R$ 239,99','q108')">Adicionar</button>
+</div>
 </div>
 
 <div class="card produto">
-  <div class="nome">Patê Ervas Finas 130gr</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 21,99</div>
+<div class="nome">Picanha Suína Perdigão Na Brasa Cong.</div>
+<div class="info">Suínos • Kilograma</div>
+<div class="preco">R$ R$ 43,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q109">
+<button onclick="add('Picanha Suína Perdigão Na Brasa Cong.','R$ 43,99','q109')">Adicionar</button>
 </div>
+</div>
 
 <div class="card produto">
-  <div class="nome">Patê Azeitonas 130gr</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 21,99</div>
+<div class="nome">Entrecôte (Ancho) Estância 92 Angus Resfr.</div>
+<div class="info">Bovinos • Kilograma</div>
+<div class="preco">R$ R$ 119,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q110">
+<button onclick="add('Entrecôte (Ancho) Estância 92 Angus Resfr.','R$ 119,99','q110')">Adicionar</button>
 </div>
+</div>
 
 <div class="card produto">
-  <div class="nome">Patê Cebola Com Mostarda 130gr</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 21,99</div>
+<div class="nome">Brocolis Nova Mesa 2kg Cong.</div>
+<div class="info">Legumes & Vegetais • Unidade</div>
+<div class="preco">R$ R$ 38,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q111">
+<button onclick="add('Brocolis Nova Mesa 2kg Cong.','R$ 38,99','q111')">Adicionar</button>
+</div>
 </div>
 
 <div class="card produto">
-  <div class="nome">Molho Pesto De Manjericão 130gr</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 24,99</div>
+<div class="nome">Couve Flor Nova Mesa 2kg Cong.</div>
+<div class="info">Legumes & Vegetais • Unidade</div>
+<div class="preco">R$ R$ 33,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q112">
+<button onclick="add('Couve Flor Nova Mesa 2kg Cong.','R$ 33,99','q112')">Adicionar</button>
 </div>
+</div>
 
 <div class="card produto">
-  <div class="nome">Alho Crocante Gonzalo 100gr</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 28,99</div>
+<div class="nome">Seleta de Legumes Nova Mesa 2kg Cong.</div>
+<div class="info">Legumes & Vegetais • Unidade</div>
+<div class="preco">R$ R$ 36,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q113">
+<button onclick="add('Seleta de Legumes Nova Mesa 2kg Cong.','R$ 36,99','q113')">Adicionar</button>
+</div>
 </div>
 
 <div class="card produto">
-  <div class="nome">Molho Chimichurri Gonzalo 200gr</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 34,99</div>
+<div class="nome">Frango Passarinho Aurora 800gr Cong.</div>
+<div class="info">Dia-a-Dia • Unidade</div>
+<div class="preco">R$ R$ 18,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q114">
+<button onclick="add('Frango Passarinho Aurora 800gr Cong.','R$ 18,99','q114')">Adicionar</button>
 </div>
+</div>
 
 <div class="card produto">
-  <div class="nome">Molho Hortelã Nonna Pasqua 130gr</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 23,99</div>
+<div class="nome">Picanha Suína Temperada Aurora Cong.</div>
+<div class="info">Suínos • Kilograma</div>
+<div class="preco">R$ R$ 41,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q115">
+<button onclick="add('Picanha Suína Temperada Aurora Cong.','R$ 41,99','q115')">Adicionar</button>
+</div>
 </div>
 
 <div class="card produto">
-  <div class="nome">Molho Pimenta Buffalo Sauce Gonzalo 280gr</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 27,99</div>
+<div class="nome">Coxa e Sobrecoxa Aurora Cong.</div>
+<div class="info">Dia-a-Dia • Kilograma</div>
+<div class="preco">R$ R$ 13,59</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q116">
+<button onclick="add('Coxa e Sobrecoxa Aurora Cong.','R$ 13,59','q116')">Adicionar</button>
 </div>
+</div>
 
 <div class="card produto">
-  <div class="nome">Molho Pimenta Cana Quente Gonzalo 280gr</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 27,99</div>
+<div class="nome">Ling Suína Toscana Sadia 700gr Cong.</div>
+<div class="info">Linguiças Especiais • Unidade</div>
+<div class="preco">R$ R$ 27,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q117">
+<button onclick="add('Ling Suína Toscana Sadia 700gr Cong.','R$ 27,99','q117')">Adicionar</button>
+</div>
 </div>
 
 <div class="card produto">
-  <div class="nome">Molho Pimenta Chimi Chilli Gonzalo 280gr</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 27,99</div>
+<div class="nome">Alho Inteiro Campos Del Plata 1,05kg Cong.</div>
+<div class="info">Legumes & Vegetais • Unidade</div>
+<div class="preco">R$ R$ 29,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q118">
+<button onclick="add('Alho Inteiro Campos Del Plata 1,05kg Cong.','R$ 29,99','q118')">Adicionar</button>
 </div>
+</div>
 
 <div class="card produto">
-  <div class="nome">Molho Pimenta Pico de Gallo Gonzalo 280gr</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 27,99</div>
+<div class="nome">Cenoura Fatiada Campos Del Plata 1,05kg Cong.</div>
+<div class="info">Legumes & Vegetais • Unidade</div>
+<div class="preco">R$ R$ 13,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q119">
+<button onclick="add('Cenoura Fatiada Campos Del Plata 1,05kg Cong.','R$ 13,99','q119')">Adicionar</button>
+</div>
 </div>
 
 <div class="card produto">
-  <div class="nome">Molho Salsa Mexicana Gonzalo 230gr</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 38,99</div>
+<div class="nome">Vagem Campos Del Plata 1,05kg Cong.</div>
+<div class="info">Legumes & Vegetais • Unidade</div>
+<div class="preco">R$ R$ 19,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q120">
+<button onclick="add('Vagem Campos Del Plata 1,05kg Cong.','R$ 19,99','q120')">Adicionar</button>
 </div>
+</div>
 
 <div class="card produto">
-  <div class="nome">Molho Chimichurri Tradicional Trend 330gr</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 28,99</div>
+<div class="nome">Abacaxi Campos Del Plata 1,05kg Cong.</div>
+<div class="info">Frutas • Unidade</div>
+<div class="preco">R$ R$ 23,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q121">
+<button onclick="add('Abacaxi Campos Del Plata 1,05kg Cong.','R$ 23,99','q121')">Adicionar</button>
+</div>
 </div>
 
 <div class="card produto">
-  <div class="nome">Molho Chimichurri Picante Trend 330gr</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 28,99</div>
+<div class="nome">Amora Campos Del Plata 1,05kg Cong.</div>
+<div class="info">Frutas • Unidade</div>
+<div class="preco">R$ R$ 33,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q122">
+<button onclick="add('Amora Campos Del Plata 1,05kg Cong.','R$ 33,99','q122')">Adicionar</button>
 </div>
+</div>
 
 <div class="card produto">
-  <div class="nome">Antepasto de Beringela Iscas 130gr</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 17,99</div>
+<div class="nome">Pessego Campos Del Plata 1,05kg Cong.</div>
+<div class="info">Frutas • Unidade</div>
+<div class="preco">R$ R$ 24,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q123">
+<button onclick="add('Pessego Campos Del Plata 1,05kg Cong.','R$ 24,99','q123')">Adicionar</button>
+</div>
 </div>
 
 <div class="card produto">
-  <div class="nome">Melado De Cana Carolina Black 300ml</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 36,99</div>
+<div class="nome">Morango Campos Del Plata 1,05kg Cong.</div>
+<div class="info">Frutas • Unidade</div>
+<div class="preco">R$ R$ 20,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q124">
+<button onclick="add('Morango Campos Del Plata 1,05kg Cong.','R$ 20,99','q124')">Adicionar</button>
 </div>
+</div>
 
 <div class="card produto">
-  <div class="nome">Patê Quatro Queijos 130gr</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 21,99</div>
+<div class="nome">Picanha ARG Alabrasa Cong.</div>
+<div class="info">Picanhas Importadas • Kilograma</div>
+<div class="preco">R$ R$ 184,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q125">
+<button onclick="add('Picanha ARG Alabrasa Cong.','R$ 184,99','q125')">Adicionar</button>
+</div>
 </div>
 
 <div class="card produto">
-  <div class="nome">Sachê De Wasabi Em Pasta 2,5gr Taichi</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 0,50</div>
+<div class="nome">Picanha URU Steakhouse Cong.</div>
+<div class="info">Picanhas Importadas • Kilograma</div>
+<div class="preco">R$ R$ 114,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q126">
+<button onclick="add('Picanha URU Steakhouse Cong.','R$ 114,99','q126')">Adicionar</button>
 </div>
+</div>
 
 <div class="card produto">
-  <div class="nome">Shoyu Tradicional Mitsuwa 250ml</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 13,99</div>
+<div class="nome">Kani Kama Seapro 250gr Cong.</div>
+<div class="info">Dia-a-Dia • Unidade</div>
+<div class="preco">R$ R$ 7,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q127">
+<button onclick="add('Kani Kama Seapro 250gr Cong.','R$ 7,99','q127')">Adicionar</button>
 </div>
+</div>
 
 <div class="card produto">
-  <div class="nome">Ketchup Specialli 200ml</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 18,99</div>
+<div class="nome">Ling Suína Apimentada Nutibras 500gr Cong.</div>
+<div class="info">Linguiças Especiais • Unidade</div>
+<div class="preco">R$ R$ 18,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q128">
+<button onclick="add('Ling Suína Apimentada Nutibras 500gr Cong.','R$ 18,99','q128')">Adicionar</button>
+</div>
 </div>
 
 <div class="card produto">
-  <div class="nome">Mostarda Amarela Specialli 200ml</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 18,99</div>
+<div class="nome">Picanha ARG Pul Selection Cong.</div>
+<div class="info">Picanhas Importadas • Kilograma</div>
+<div class="preco">R$ R$ 127,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q129">
+<button onclick="add('Picanha ARG Pul Selection Cong.','R$ 127,99','q129')">Adicionar</button>
 </div>
+</div>
 
 <div class="card produto">
-  <div class="nome">Molho American Burguer Specialli 200ml</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 18,99</div>
+<div class="nome">Patê Quatro Queijos 130gr</div>
+<div class="info">Molhos e Geléias • Unidade</div>
+<div class="preco">R$ R$ 21,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q130">
+<button onclick="add('Patê Quatro Queijos 130gr','R$ 21,99','q130')">Adicionar</button>
+</div>
 </div>
 
 <div class="card produto">
-  <div class="nome">Passata Pomodoro Piatto Sapore 680gr</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 22,99</div>
+<div class="nome">Alcatra (Picanha) de Cordeiro Estância 92 Cong.</div>
+<div class="info">Cordeiros • Kilograma</div>
+<div class="preco">R$ R$ 124,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q131">
+<button onclick="add('Alcatra (Picanha) de Cordeiro Estância 92 Cong.','R$ 124,99','q131')">Adicionar</button>
 </div>
+</div>
 
 <div class="card produto">
-  <div class="nome">Molho de Pimenta Especial Fogo Mineiro 60ml</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 11,99</div>
+<div class="nome">Alga Marinha Ocean Treasure 10FL</div>
+<div class="info">Dia-a-Dia • Unidade</div>
+<div class="preco">R$ R$ 20,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q132">
+<button onclick="add('Alga Marinha Ocean Treasure 10FL','R$ 20,99','q132')">Adicionar</button>
+</div>
 </div>
 
 <div class="card produto">
-  <div class="nome">Molho de Pimenta Trinidad Scorpion Fogo Mineiro 60ml</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 17,99</div>
+<div class="nome">Bolinho de Salmão 320gr Cong.</div>
+<div class="info">Dia-a-Dia • Unidade</div>
+<div class="preco">R$ R$ 27,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q133">
+<button onclick="add('Bolinho de Salmão 320gr Cong.','R$ 27,99','q133')">Adicionar</button>
 </div>
+</div>
 
 <div class="card produto">
-  <div class="nome">Molho de Pimenta Bhut Jolokia Fogo Mineiro 60ml</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 11,99</div>
+<div class="nome">Camarão 7 Barbas Descascado Mar & Rio 400gr Cong.</div>
+<div class="info">Pescados • Unidade</div>
+<div class="preco">R$ R$ 41,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q134">
+<button onclick="add('Camarão 7 Barbas Descascado Mar & Rio 400gr Cong.','R$ 41,99','q134')">Adicionar</button>
+</div>
 </div>
 
 <div class="card produto">
-  <div class="nome">Molho de Pimenta Habanero Fogo Mineiro 60ml</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 11,99</div>
+<div class="nome">Chá Verde Limão Siciliano Com Hortelã YAI 1L</div>
+<div class="info">Bebidas • Unidade</div>
+<div class="preco">R$ R$ 11,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q135">
+<button onclick="add('Chá Verde Limão Siciliano Com Hortelã YAI 1L','R$ 11,99','q135')">Adicionar</button>
 </div>
+</div>
 
 <div class="card produto">
-  <div class="nome">Molho de Pimenta Cayena Fogo Mineiro 60ml</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 11,99</div>
+<div class="nome">Chá Verde Laranja Com Gengibre YAI 1L</div>
+<div class="info">Bebidas • Unidade</div>
+<div class="preco">R$ R$ 11,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q136">
+<button onclick="add('Chá Verde Laranja Com Gengibre YAI 1L','R$ 11,99','q136')">Adicionar</button>
 </div>
+</div>
 
 <div class="card produto">
-  <div class="nome">Molho de Pimenta Cumari Fogo Mineiro 60ml</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 11,99</div>
+<div class="nome">Chá Verde Frutas Vermelhas YAI 1L</div>
+<div class="info">Bebidas • Unidade</div>
+<div class="preco">R$ R$ 11,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q137">
+<button onclick="add('Chá Verde Frutas Vermelhas YAI 1L','R$ 11,99','q137')">Adicionar</button>
+</div>
 </div>
 
 <div class="card produto">
-  <div class="nome">Molho de Pimenta Carolina Reaper Fogo Mineiro 60ml</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 17,99</div>
+<div class="nome">Chá Verde Jabuticaba YAI 1L</div>
+<div class="info">Bebidas • Unidade</div>
+<div class="preco">R$ R$ 11,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q138">
+<button onclick="add('Chá Verde Jabuticaba YAI 1L','R$ 11,99','q138')">Adicionar</button>
 </div>
+</div>
 
 <div class="card produto">
-  <div class="nome">Geléia de Pimenta Fogo Mineiro 200gr</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 16,99</div>
+<div class="nome">Clip Hashi Mix Color Taichi</div>
+<div class="info">Acessórios • Unidade</div>
+<div class="preco">R$ R$ 0,50</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q139">
+<button onclick="add('Clip Hashi Mix Color Taichi','R$ 0,50','q139')">Adicionar</button>
+</div>
 </div>
 
 <div class="card produto">
-  <div class="nome">Geléia de Pimenta Defumada Fogo Mineiro 200gr</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 16,99</div>
+<div class="nome">Couve Flor Pratigel 1,020kg Cong.</div>
+<div class="info">Legumes & Vegetais • Unidade</div>
+<div class="preco">R$ R$ 21,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q140">
+<button onclick="add('Couve Flor Pratigel 1,020kg Cong.','R$ 21,99','q140')">Adicionar</button>
 </div>
+</div>
 
 <div class="card produto">
-  <div class="nome">Kit Pimentas (6 Pimentas x 60gr)</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 64,99</div>
+<div class="nome">Coxinha de Camarão 320gr Cong.</div>
+<div class="info">Dia-a-Dia • Unidade</div>
+<div class="preco">R$ R$ 27,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q141">
+<button onclick="add('Coxinha de Camarão 320gr Cong.','R$ 27,99','q141')">Adicionar</button>
+</div>
 </div>
 
 <div class="card produto">
-  <div class="nome">Tomate Pelado Sofruta 400gr</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 6,99</div>
+<div class="nome">Croquete de Atum 320gr Cong.</div>
+<div class="info">Dia-a-Dia • Unidade</div>
+<div class="preco">R$ R$ 27,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q142">
+<button onclick="add('Croquete de Atum 320gr Cong.','R$ 27,99','q142')">Adicionar</button>
 </div>
 </div>
-<h2>Acompanhamentos</h2>
-<div class='grid'>
 
 <div class="card produto">
-  <div class="nome">Pão de Alho Tradicional Aurora 340gr Resfr.</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 13,99</div>
+<div class="nome">Hashi Bambu Redondo 4.5 Ganesh</div>
+<div class="info">Acessórios • Unidade</div>
+<div class="preco">R$ R$ 0,50</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q143">
+<button onclick="add('Hashi Bambu Redondo 4.5 Ganesh','R$ 0,50','q143')">Adicionar</button>
 </div>
+</div>
 
 <div class="card produto">
-  <div class="nome">Pão de Alho Santa Massa Tradicional 400g Resfr.</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 17,99</div>
+<div class="nome">Sachê De Wasabi Em Pasta 2,5gr Taichi</div>
+<div class="info">Molhos e Geléias • Unidade</div>
+<div class="preco">R$ R$ 0,50</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q144">
+<button onclick="add('Sachê De Wasabi Em Pasta 2,5gr Taichi','R$ 0,50','q144')">Adicionar</button>
+</div>
 </div>
 
 <div class="card produto">
-  <div class="nome">Pão de Alho Santa Massa Picante 400g Resfr.</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 17,99</div>
+<div class="nome">Shoyu Tradicional Mitsuwa 250ml</div>
+<div class="info">Molhos e Geléias • Unidade</div>
+<div class="preco">R$ R$ 13,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q145">
+<button onclick="add('Shoyu Tradicional Mitsuwa 250ml','R$ 13,99','q145')">Adicionar</button>
 </div>
 </div>
-<h2>Acessórios</h2>
-<div class='grid'>
 
 <div class="card produto">
-  <div class="nome">Acendedor Da Hora</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 1,99</div>
+<div class="nome">Alho Dourado Crocante Soul Chef 200gr</div>
+<div class="info">Dia-a-Dia • Unidade</div>
+<div class="preco">R$ R$ 29,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q146">
+<button onclick="add('Alho Dourado Crocante Soul Chef 200gr','R$ 29,99','q146')">Adicionar</button>
 </div>
+</div>
 
 <div class="card produto">
-  <div class="nome">Aluminio Wyda 30cm x 4mt</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 4,99</div>
+<div class="nome">Risoto De Funghi Secchi Cookit 260gr</div>
+<div class="info">Dia-a-Dia • Unidade</div>
+<div class="preco">R$ R$ 39,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q147">
+<button onclick="add('Risoto De Funghi Secchi Cookit 260gr','R$ 39,99','q147')">Adicionar</button>
 </div>
+</div>
 
 <div class="card produto">
-  <div class="nome">Carvão Prime 2kg</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 16,99</div>
+<div class="nome">Risoto De Tomate Seco, Alho Poró e Manjericão Cookit 260gr</div>
+<div class="info">Dia-a-Dia • Unidade</div>
+<div class="preco">R$ R$ 39,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q148">
+<button onclick="add('Risoto De Tomate Seco, Alho Poró e Manjericão Cookit 260gr','R$ 39,99','q148')">Adicionar</button>
+</div>
 </div>
 
 <div class="card produto">
-  <div class="nome">Carvão Prime 4kg</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 31,99</div>
+<div class="nome">Risoto De Beterraba Com Alecrim Cookit 260gr</div>
+<div class="info">Dia-a-Dia • Unidade</div>
+<div class="preco">R$ R$ 39,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q149">
+<button onclick="add('Risoto De Beterraba Com Alecrim Cookit 260gr','R$ 39,99','q149')">Adicionar</button>
 </div>
+</div>
 
 <div class="card produto">
-  <div class="nome">Filme de PVC Wyda 28cm x 15mt</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 5,49</div>
+<div class="nome">Risoto De Abobrinha Com Lemon Pepper Cookit 260gr</div>
+<div class="info">Dia-a-Dia • Unidade</div>
+<div class="preco">R$ R$ 39,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q150">
+<button onclick="add('Risoto De Abobrinha Com Lemon Pepper Cookit 260gr','R$ 39,99','q150')">Adicionar</button>
+</div>
 </div>
 
 <div class="card produto">
-  <div class="nome">Fósforo Longo Fiat Lux 200un</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 5,49</div>
+<div class="nome">Risoto De Damasco Com Castanha do Brasil Cookit 260gr</div>
+<div class="info">Dia-a-Dia • Unidade</div>
+<div class="preco">R$ R$ 39,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q151">
+<button onclick="add('Risoto De Damasco Com Castanha do Brasil Cookit 260gr','R$ 39,99','q151')">Adicionar</button>
 </div>
+</div>
 
 <div class="card produto">
-  <div class="nome">Gel Acendedor Luar Fire 440gr</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 9,99</div>
+<div class="nome">Queijo Mozzarella Cerejinha Bufalat 500gr</div>
+<div class="info">Laticinios & Charcutaria • Unidade</div>
+<div class="preco">R$ R$ 33,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q152">
+<button onclick="add('Queijo Mozzarella Cerejinha Bufalat 500gr','R$ 33,99','q152')">Adicionar</button>
+</div>
 </div>
 
 <div class="card produto">
-  <div class="nome">Copo Eisenhugel</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 39,00</div>
+<div class="nome">Queijo Mozzarella Bocconcini Bufalat 500gr</div>
+<div class="info">Laticinios & Charcutaria • Unidade</div>
+<div class="preco">R$ R$ 33,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q153">
+<button onclick="add('Queijo Mozzarella Bocconcini Bufalat 500gr','R$ 33,99','q153')">Adicionar</button>
 </div>
+</div>
 
 <div class="card produto">
-  <div class="nome">Clip Hashi Mix Color Taichi</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 0,50</div>
+<div class="nome">Queijo Mozzarella Bocconcini Defumado Bufalat 500gr</div>
+<div class="info">Laticinios & Charcutaria • Unidade</div>
+<div class="preco">R$ R$ 33,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q154">
+<button onclick="add('Queijo Mozzarella Bocconcini Defumado Bufalat 500gr','R$ 33,99','q154')">Adicionar</button>
+</div>
 </div>
 
 <div class="card produto">
-  <div class="nome">Hashi Bambu Redondo 4.5 Ganesh</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 0,50</div>
+<div class="nome">Queijo Tipo Burrata Bufalat Pote 190gr</div>
+<div class="info">Laticinios & Charcutaria • Unidade</div>
+<div class="preco">R$ R$ 33,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q155">
+<button onclick="add('Queijo Tipo Burrata Bufalat Pote 190gr','R$ 33,99','q155')">Adicionar</button>
 </div>
+</div>
 
 <div class="card produto">
-  <div class="nome">Assadeira Mello 4L</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 7,99</div>
+<div class="nome">Queijo Tipo Pallone de Gravina Bufalat</div>
+<div class="info">Laticinios & Charcutaria • Kilograma</div>
+<div class="preco">R$ R$ 129,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q156">
+<button onclick="add('Queijo Tipo Pallone de Gravina Bufalat','R$ 129,99','q156')">Adicionar</button>
+</div>
 </div>
 
 <div class="card produto">
-  <div class="nome">Copo Descartável 200ml (100 un)</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 8,49</div>
+<div class="nome">Queijo Tipo Caccio Cavalo Bufalat</div>
+<div class="info">Laticinios & Charcutaria • Kilograma</div>
+<div class="preco">R$ R$ 129,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q157">
+<button onclick="add('Queijo Tipo Caccio Cavalo Bufalat','R$ 129,99','q157')">Adicionar</button>
 </div>
+</div>
 
 <div class="card produto">
-  <div class="nome">Papel Toalha Trópicos 2x50 (100 Folhas)</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 5,49</div>
+<div class="nome">Costela Suína Em Tira Sadia Cong.</div>
+<div class="info">Suínos • Kilograma</div>
+<div class="preco">R$ R$ 28,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q158">
+<button onclick="add('Costela Suína Em Tira Sadia Cong.','R$ 28,99','q158')">Adicionar</button>
 </div>
 </div>
-<h2>Temperos</h2>
-<div class='grid'>
 
 <div class="card produto">
-  <div class="nome">Azeite Alma Lusa 500ml</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 35,99</div>
+<div class="nome">Sal de Parrilla Cordeiro Gonzalo 500gr</div>
+<div class="info">Temperos • Unidade</div>
+<div class="preco">R$ R$ 26,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q159">
+<button onclick="add('Sal de Parrilla Cordeiro Gonzalo 500gr','R$ 26,99','q159')">Adicionar</button>
+</div>
 </div>
 
 <div class="card produto">
-  <div class="nome">Dry Rub Redneck Gonzalo 250gr</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 34,99</div>
+<div class="nome">Empada De Palmito Eccellenza (10 unidades)</div>
+<div class="info">Dia-a-Dia • Unidade</div>
+<div class="preco">R$ R$ 34,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q160">
+<button onclick="add('Empada De Palmito Eccellenza (10 unidades)','R$ 34,99','q160')">Adicionar</button>
 </div>
+</div>
 
 <div class="card produto">
-  <div class="nome">Fumaça Líquida Spray Gonzalo 150ml</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 23,99</div>
+<div class="nome">Empada De Frango Com Requeijão Eccellenza (10 unidades)</div>
+<div class="info">Dia-a-Dia • Unidade</div>
+<div class="preco">R$ R$ 34,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q161">
+<button onclick="add('Empada De Frango Com Requeijão Eccellenza (10 unidades)','R$ 34,99','q161')">Adicionar</button>
+</div>
 </div>
 
 <div class="card produto">
-  <div class="nome">Shoyu Defumado Spray Gonzalo 150ml</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 18,99</div>
+<div class="nome">Nhoque Tradicional Eccellenza 500gr</div>
+<div class="info">Massas • Unidade</div>
+<div class="preco">R$ R$ 13,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q162">
+<button onclick="add('Nhoque Tradicional Eccellenza 500gr','R$ 13,99','q162')">Adicionar</button>
 </div>
+</div>
 
 <div class="card produto">
-  <div class="nome">Sal de Parrilla Tradicional Churrasquero 450gr</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 14,99</div>
+<div class="nome">Nhoque Recheado Eccellenza Com Queijo 500gr</div>
+<div class="info">Massas • Unidade</div>
+<div class="preco">R$ R$ 21,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q163">
+<button onclick="add('Nhoque Recheado Eccellenza Com Queijo 500gr','R$ 21,99','q163')">Adicionar</button>
+</div>
 </div>
 
 <div class="card produto">
-  <div class="nome">Sal de Parrilla Chimichurri Churrasquero 450gr</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 13,99</div>
+<div class="nome">Ling Gorgonzola Specialli 400gr Cong.</div>
+<div class="info">Linguiças Especiais • Unidade</div>
+<div class="preco">R$ R$ 39,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q164">
+<button onclick="add('Ling Gorgonzola Specialli 400gr Cong.','R$ 39,99','q164')">Adicionar</button>
 </div>
+</div>
 
 <div class="card produto">
-  <div class="nome">Sal de Parrilla Alho Granulado Churrasquero 450gr</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 13,99</div>
+<div class="nome">Salsicha Com Queijo Kasewurst Specialli 320gr Resfr.</div>
+<div class="info">Laticinios & Charcutaria • Unidade</div>
+<div class="preco">R$ R$ 34,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q165">
+<button onclick="add('Salsicha Com Queijo Kasewurst Specialli 320gr Resfr.','R$ 34,99','q165')">Adicionar</button>
 </div>
+</div>
 
 <div class="card produto">
-  <div class="nome">Sal de Parrilla Pimenta Churrasquero 450gr</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 13,99</div>
+<div class="nome">Salsicha De Carne Bovina All Beef Specialli 290gr Resfr.</div>
+<div class="info">Laticinios & Charcutaria • Unidade</div>
+<div class="preco">R$ R$ 36,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q166">
+<button onclick="add('Salsicha De Carne Bovina All Beef Specialli 290gr Resfr.','R$ 36,99','q166')">Adicionar</button>
+</div>
 </div>
 
 <div class="card produto">
-  <div class="nome">Sal Grosso Lebre 1kg</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 5,49</div>
+<div class="nome">Salame Fatiado Specialli 100gr</div>
+<div class="info">Laticinios & Charcutaria • Unidade</div>
+<div class="preco">R$ R$ 15,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q167">
+<button onclick="add('Salame Fatiado Specialli 100gr','R$ 15,99','q167')">Adicionar</button>
 </div>
+</div>
 
 <div class="card produto">
-  <div class="nome">Sal de Parrilla Cordeiro Gonzalo 500gr</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 26,99</div>
+<div class="nome">Culatello Fatiado Specialli 100gr</div>
+<div class="info">Laticinios & Charcutaria • Unidade</div>
+<div class="preco">R$ R$ 26,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q168">
+<button onclick="add('Culatello Fatiado Specialli 100gr','R$ 26,99','q168')">Adicionar</button>
+</div>
 </div>
 
 <div class="card produto">
-  <div class="nome">Açucar Demerara Organico Native 1kg</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 8,49</div>
+<div class="nome">Ketchup Specialli 200ml</div>
+<div class="info">Molhos e Geléias • Unidade</div>
+<div class="preco">R$ R$ 18,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q169">
+<button onclick="add('Ketchup Specialli 200ml','R$ 18,99','q169')">Adicionar</button>
 </div>
+</div>
 
 <div class="card produto">
-  <div class="nome">Vinagre De Alcool Vitalia 750ml</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 2,49</div>
+<div class="nome">Mostarda Amarela Specialli 200ml</div>
+<div class="info">Molhos e Geléias • Unidade</div>
+<div class="preco">R$ R$ 18,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q170">
+<button onclick="add('Mostarda Amarela Specialli 200ml','R$ 18,99','q170')">Adicionar</button>
+</div>
 </div>
 
 <div class="card produto">
-  <div class="nome">Moedor Sal do Himalaia Tradicional 90gr Soul Chef</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 21,49</div>
+<div class="nome">Molho American Burguer Specialli 200ml</div>
+<div class="info">Molhos e Geléias • Unidade</div>
+<div class="preco">R$ R$ 18,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q171">
+<button onclick="add('Molho American Burguer Specialli 200ml','R$ 18,99','q171')">Adicionar</button>
 </div>
+</div>
 
 <div class="card produto">
-  <div class="nome">Moedor Sal do Himalaia Com Pimenta Preta Tradicional 90gr Soul Chef</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 21,49</div>
+<div class="nome">Salsicha Com Alho Specialli 220gr</div>
+<div class="info">Laticinios & Charcutaria • Unidade</div>
+<div class="preco">R$ R$ 19,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q172">
+<button onclick="add('Salsicha Com Alho Specialli 220gr','R$ 19,99','q172')">Adicionar</button>
+</div>
 </div>
 
 <div class="card produto">
-  <div class="nome">Moedor Sal do Mix de Pimentas Tradicional 45gr Soul Chef</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 26,49</div>
+<div class="nome">Pastrami de Picanha Specialli 100gr</div>
+<div class="info">Laticinios & Charcutaria • Unidade</div>
+<div class="preco">R$ R$ 29,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q173">
+<button onclick="add('Pastrami de Picanha Specialli 100gr','R$ 29,99','q173')">Adicionar</button>
 </div>
+</div>
 
 <div class="card produto">
-  <div class="nome">Vinagre Defumado Spray Gonzalo 150ml</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 14,99</div>
+<div class="nome">Pão de Alho Santa Massa Picante 400g Resfr.</div>
+<div class="info">Acompanhamentos • Unidade</div>
+<div class="preco">R$ R$ 17,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q174">
+<button onclick="add('Pão de Alho Santa Massa Picante 400g Resfr.','R$ 17,99','q174')">Adicionar</button>
+</div>
 </div>
 
 <div class="card produto">
-  <div class="nome">Sal de Parrilla Cebola & Salsa Churrasquero 450gr</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 13,99</div>
+<div class="nome">Cottage Tirolez 200gr</div>
+<div class="info">Laticinios & Charcutaria • Unidade</div>
+<div class="preco">R$ R$ 16,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q175">
+<button onclick="add('Cottage Tirolez 200gr','R$ 16,99','q175')">Adicionar</button>
 </div>
 </div>
-<h2>Farofas</h2>
-<div class='grid'>
 
 <div class="card produto">
-  <div class="nome">Farofa Picante Churrasquero 200gr</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 9,99</div>
+<div class="nome">Requeijão Cremoso Tirolez 200gr</div>
+<div class="info">Laticinios & Charcutaria • Unidade</div>
+<div class="preco">R$ R$ 9,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q176">
+<button onclick="add('Requeijão Cremoso Tirolez 200gr','R$ 9,99','q176')">Adicionar</button>
 </div>
+</div>
 
 <div class="card produto">
-  <div class="nome">Farofa Torresmo Churrasquero 200gr</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 9,99</div>
+<div class="nome">Provolonete Tirolez 335gr</div>
+<div class="info">Laticinios & Charcutaria • Unidade</div>
+<div class="preco">R$ R$ 54,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q177">
+<button onclick="add('Provolonete Tirolez 335gr','R$ 54,99','q177')">Adicionar</button>
+</div>
 </div>
 
 <div class="card produto">
-  <div class="nome">Farofa Tradicional Churrasquero 200gr</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 9,99</div>
+<div class="nome">Brie Fracionado Tirolez 125gr</div>
+<div class="info">Laticinios & Charcutaria • Unidade</div>
+<div class="preco">R$ R$ 25,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q178">
+<button onclick="add('Brie Fracionado Tirolez 125gr','R$ 25,99','q178')">Adicionar</button>
 </div>
 </div>
-<h2>Hambúrguer</h2>
-<div class='grid'>
 
 <div class="card produto">
-  <div class="nome">Hambúrguer Costela Angus Cara Preta 360gr Cong.</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 24,99</div>
+<div class="nome">Gouda Fracionado Tirolez</div>
+<div class="info">Laticinios & Charcutaria • Kilograma</div>
+<div class="preco">R$ R$ 184,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q179">
+<button onclick="add('Gouda Fracionado Tirolez','R$ 184,99','q179')">Adicionar</button>
 </div>
+</div>
 
 <div class="card produto">
-  <div class="nome">Hambúrguer Brisket Angus Cara Preta 360gr Cong.</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 24,99</div>
+<div class="nome">Manteiga Com Sal Tirolez 200gr</div>
+<div class="info">Laticinios & Charcutaria • Unidade</div>
+<div class="preco">R$ R$ 17,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q180">
+<button onclick="add('Manteiga Com Sal Tirolez 200gr','R$ 17,99','q180')">Adicionar</button>
+</div>
 </div>
 
 <div class="card produto">
-  <div class="nome">Hambúrguer Tradicional Angus Cara Preta 120gr Cong.</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 8,99</div>
+<div class="nome">Manteiga Sem Sal Tirolez 200gr</div>
+<div class="info">Laticinios & Charcutaria • Unidade</div>
+<div class="preco">R$ R$ 17,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q181">
+<button onclick="add('Manteiga Sem Sal Tirolez 200gr','R$ 17,99','q181')">Adicionar</button>
 </div>
+</div>
 
 <div class="card produto">
-  <div class="nome">Hambúrguer Tradicional Angus Cara Preta 360gr Cong.</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 23,99</div>
+<div class="nome">Creme De Ricota Tirolez 370gr</div>
+<div class="info">Laticinios & Charcutaria • Unidade</div>
+<div class="preco">R$ R$ 17,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q182">
+<button onclick="add('Creme De Ricota Tirolez 370gr','R$ 17,99','q182')">Adicionar</button>
+</div>
 </div>
 
 <div class="card produto">
-  <div class="nome">Hambúrguer Costela Angus Cara Preta 120gr Cong.</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 8,99</div>
+<div class="nome">Mussarela Fatiada Tirolez 150gr</div>
+<div class="info">Laticinios & Charcutaria • Unidade</div>
+<div class="preco">R$ R$ 12,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q183">
+<button onclick="add('Mussarela Fatiada Tirolez 150gr','R$ 12,99','q183')">Adicionar</button>
 </div>
 </div>
-<h2>Suínos</h2>
-<div class='grid'>
 
 <div class="card produto">
-  <div class="nome">Panceta Suína Aurora Premium Cong.</div>
-  <div class="info">Venda: Kilograma</div>
-  <div class="preco">R$ 45,99</div>
+<div class="nome">Prato Fatiado Tirolez 150gr</div>
+<div class="info">Laticinios & Charcutaria • Unidade</div>
+<div class="preco">R$ R$ 12,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q184">
+<button onclick="add('Prato Fatiado Tirolez 150gr','R$ 12,99','q184')">Adicionar</button>
 </div>
+</div>
 
 <div class="card produto">
-  <div class="nome">Torresmo De Rolo Aurora Premium Cong.</div>
-  <div class="info">Venda: Kilograma</div>
-  <div class="preco">R$ 64,99</div>
+<div class="nome">Requeijão Zero Lactose Tirolez 200gr</div>
+<div class="info">Laticinios & Charcutaria • Unidade</div>
+<div class="preco">R$ R$ 11,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q185">
+<button onclick="add('Requeijão Zero Lactose Tirolez 200gr','R$ 11,99','q185')">Adicionar</button>
 </div>
+</div>
 
 <div class="card produto">
-  <div class="nome">Picanha Suína Perdigão Na Brasa Cong.</div>
-  <div class="info">Venda: Kilograma</div>
-  <div class="preco">R$ 43,99</div>
+<div class="nome">Mussarela Fatiada Zero Lactose Tirolez 150gr</div>
+<div class="info">Laticinios & Charcutaria • Unidade</div>
+<div class="preco">R$ R$ 14,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q186">
+<button onclick="add('Mussarela Fatiada Zero Lactose Tirolez 150gr','R$ 14,99','q186')">Adicionar</button>
+</div>
 </div>
 
 <div class="card produto">
-  <div class="nome">Picanha Suína Temperada Aurora Cong.</div>
-  <div class="info">Venda: Kilograma</div>
-  <div class="preco">R$ 41,99</div>
+<div class="nome">Assadeira Mello 4L</div>
+<div class="info">Acessórios • Unidade</div>
+<div class="preco">R$ R$ 7,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q187">
+<button onclick="add('Assadeira Mello 4L','R$ 7,99','q187')">Adicionar</button>
 </div>
+</div>
 
 <div class="card produto">
-  <div class="nome">Costela Suína Em Tira Sadia Cong.</div>
-  <div class="info">Venda: Kilograma</div>
-  <div class="preco">R$ 28,99</div>
+<div class="nome">Passata Pomodoro Piatto Sapore 680gr</div>
+<div class="info">Molhos e Geléias • Unidade</div>
+<div class="preco">R$ R$ 22,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q188">
+<button onclick="add('Passata Pomodoro Piatto Sapore 680gr','R$ 22,99','q188')">Adicionar</button>
 </div>
 </div>
-<h2>Snacks</h2>
-<div class='grid'>
 
 <div class="card produto">
-  <div class="nome">Torresmo Santa Massa 40gr</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 8,99</div>
+<div class="nome">Salgadinho Takis Fuego 90gr</div>
+<div class="info">Snacks • Unidade</div>
+<div class="preco">R$ R$ 9,20</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q189">
+<button onclick="add('Salgadinho Takis Fuego 90gr','R$ 9,20','q189')">Adicionar</button>
+</div>
 </div>
 
 <div class="card produto">
-  <div class="nome">Salgadinho Takis Fuego 90gr</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 9,20</div>
+<div class="nome">Açucar Demerara Organico Native 1kg</div>
+<div class="info">Temperos • Unidade</div>
+<div class="preco">R$ R$ 8,49</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q190">
+<button onclick="add('Açucar Demerara Organico Native 1kg','R$ 8,49','q190')">Adicionar</button>
 </div>
 </div>
-<h2>Bebidas</h2>
-<div class='grid'>
 
 <div class="card produto">
-  <div class="nome">Cerveja Eisenhugel English IPA 500ml</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 22,99</div>
+<div class="nome">Macarrão Yakissoba Da Roz 500gr</div>
+<div class="info">Massas • Unidade</div>
+<div class="preco">R$ R$ 9,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q191">
+<button onclick="add('Macarrão Yakissoba Da Roz 500gr','R$ 9,99','q191')">Adicionar</button>
 </div>
+</div>
 
 <div class="card produto">
-  <div class="nome">Chá Verde Limão Siciliano Com Hortelã YAI 1L</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 11,99</div>
+<div class="nome">Gatorade Sabor Limão 500ml</div>
+<div class="info">Bebidas • Unidade</div>
+<div class="preco">R$ R$ 7,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q192">
+<button onclick="add('Gatorade Sabor Limão 500ml','R$ 7,99','q192')">Adicionar</button>
+</div>
 </div>
 
 <div class="card produto">
-  <div class="nome">Chá Verde Laranja Com Gengibre YAI 1L</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 11,99</div>
+<div class="nome">Gatorade Sabor Laranja 500ml</div>
+<div class="info">Bebidas • Unidade</div>
+<div class="preco">R$ R$ 7,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q193">
+<button onclick="add('Gatorade Sabor Laranja 500ml','R$ 7,99','q193')">Adicionar</button>
 </div>
+</div>
 
 <div class="card produto">
-  <div class="nome">Chá Verde Frutas Vermelhas YAI 1L</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 11,99</div>
+<div class="nome">Vinagre De Alcool Vitalia 750ml</div>
+<div class="info">Temperos • Unidade</div>
+<div class="preco">R$ R$ 2,49</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q194">
+<button onclick="add('Vinagre De Alcool Vitalia 750ml','R$ 2,49','q194')">Adicionar</button>
+</div>
 </div>
 
 <div class="card produto">
-  <div class="nome">Chá Verde Jabuticaba YAI 1L</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 11,99</div>
+<div class="nome">Cerveja Heineken Long Neck 330ml</div>
+<div class="info">Bebidas • Unidade</div>
+<div class="preco">R$ R$ 10,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q195">
+<button onclick="add('Cerveja Heineken Long Neck 330ml','R$ 10,99','q195')">Adicionar</button>
 </div>
+</div>
 
 <div class="card produto">
-  <div class="nome">Gatorade Sabor Limão 500ml</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 7,99</div>
+<div class="nome">Cerveja Corona Long Neck 330ml</div>
+<div class="info">Bebidas • Unidade</div>
+<div class="preco">R$ R$ 11,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q196">
+<button onclick="add('Cerveja Corona Long Neck 330ml','R$ 11,99','q196')">Adicionar</button>
+</div>
 </div>
 
 <div class="card produto">
-  <div class="nome">Gatorade Sabor Laranja 500ml</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 7,99</div>
+<div class="nome">Água Tônica Antartica 350ml</div>
+<div class="info">Bebidas • Unidade</div>
+<div class="preco">R$ R$ 5,49</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q197">
+<button onclick="add('Água Tônica Antartica 350ml','R$ 5,49','q197')">Adicionar</button>
 </div>
+</div>
 
 <div class="card produto">
-  <div class="nome">Cerveja Heineken Long Neck 330ml</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 10,99</div>
+<div class="nome">Água Sem Gás Cristal 510ml</div>
+<div class="info">Bebidas • Unidade</div>
+<div class="preco">R$ R$ 1,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q198">
+<button onclick="add('Água Sem Gás Cristal 510ml','R$ 1,99','q198')">Adicionar</button>
+</div>
 </div>
 
 <div class="card produto">
-  <div class="nome">Cerveja Corona Long Neck 330ml</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 11,99</div>
+<div class="nome">Água Com Gás Cristal 510ml</div>
+<div class="info">Bebidas • Unidade</div>
+<div class="preco">R$ R$ 2,49</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q199">
+<button onclick="add('Água Com Gás Cristal 510ml','R$ 2,49','q199')">Adicionar</button>
 </div>
+</div>
 
 <div class="card produto">
-  <div class="nome">Água Tônica Antartica 350ml</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 5,49</div>
+<div class="nome">Cerveja Heineken 0,0% Long Neck 330ml</div>
+<div class="info">Bebidas • Unidade</div>
+<div class="preco">R$ R$ 11,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q200">
+<button onclick="add('Cerveja Heineken 0,0% Long Neck 330ml','R$ 11,99','q200')">Adicionar</button>
+</div>
 </div>
 
 <div class="card produto">
-  <div class="nome">Água Sem Gás Cristal 510ml</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 1,99</div>
+<div class="nome">Cerveja Stella Artois Long Neck 330ml</div>
+<div class="info">Bebidas • Unidade</div>
+<div class="preco">R$ R$ 10,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q201">
+<button onclick="add('Cerveja Stella Artois Long Neck 330ml','R$ 10,99','q201')">Adicionar</button>
 </div>
+</div>
 
 <div class="card produto">
-  <div class="nome">Água Com Gás Cristal 510ml</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 2,49</div>
+<div class="nome">Coca Cola Lata 350ml</div>
+<div class="info">Bebidas • Unidade</div>
+<div class="preco">R$ R$ 5,49</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q202">
+<button onclick="add('Coca Cola Lata 350ml','R$ 5,49','q202')">Adicionar</button>
+</div>
 </div>
 
 <div class="card produto">
-  <div class="nome">Cerveja Heineken 0,0% Long Neck 330ml</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 11,99</div>
+<div class="nome">Fanta Laranja Lata 350ml</div>
+<div class="info">Bebidas • Unidade</div>
+<div class="preco">R$ R$ 4,49</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q203">
+<button onclick="add('Fanta Laranja Lata 350ml','R$ 4,49','q203')">Adicionar</button>
 </div>
+</div>
 
 <div class="card produto">
-  <div class="nome">Cerveja Stella Artois Long Neck 330ml</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 10,99</div>
+<div class="nome">Guaraná Antartica Lata 350ml</div>
+<div class="info">Bebidas • Unidade</div>
+<div class="preco">R$ R$ 4,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q204">
+<button onclick="add('Guaraná Antartica Lata 350ml','R$ 4,99','q204')">Adicionar</button>
 </div>
+</div>
 
 <div class="card produto">
-  <div class="nome">Coca Cola Lata 350ml</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 5,49</div>
+<div class="nome">Soda Antartica Lata 350ml</div>
+<div class="info">Bebidas • Unidade</div>
+<div class="preco">R$ R$ 4,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q205">
+<button onclick="add('Soda Antartica Lata 350ml','R$ 4,99','q205')">Adicionar</button>
+</div>
 </div>
 
 <div class="card produto">
-  <div class="nome">Fanta Laranja Lata 350ml</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 4,49</div>
+<div class="nome">Itubaina Retrô Long Neck 355ml</div>
+<div class="info">Bebidas • Unidade</div>
+<div class="preco">R$ R$ 4,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q206">
+<button onclick="add('Itubaina Retrô Long Neck 355ml','R$ 4,99','q206')">Adicionar</button>
 </div>
+</div>
 
 <div class="card produto">
-  <div class="nome">Guaraná Antartica Lata 350ml</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 4,99</div>
+<div class="nome">Saquê Kyoday 750ml</div>
+<div class="info">Bebidas • Unidade</div>
+<div class="preco">R$ R$ 18,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q207">
+<button onclick="add('Saquê Kyoday 750ml','R$ 18,99','q207')">Adicionar</button>
+</div>
 </div>
 
 <div class="card produto">
-  <div class="nome">Soda Antartica Lata 350ml</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 4,99</div>
+<div class="nome">Campari 748ml</div>
+<div class="info">Bebidas • Unidade</div>
+<div class="preco">R$ R$ 59,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q208">
+<button onclick="add('Campari 748ml','R$ 59,99','q208')">Adicionar</button>
 </div>
+</div>
 
 <div class="card produto">
-  <div class="nome">Itubaina Retrô Long Neck 355ml</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 4,99</div>
+<div class="nome">Macarrão Padre Nosso Com Ovos Camil 500gr</div>
+<div class="info">Massas • Unidade</div>
+<div class="preco">R$ R$ 4,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q209">
+<button onclick="add('Macarrão Padre Nosso Com Ovos Camil 500gr','R$ 4,99','q209')">Adicionar</button>
+</div>
 </div>
 
 <div class="card produto">
-  <div class="nome">Saquê Kyoday 750ml</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 18,99</div>
+<div class="nome">Copo Descartável 200ml (100 un)</div>
+<div class="info">Acessórios • Unidade</div>
+<div class="preco">R$ R$ 8,49</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q210">
+<button onclick="add('Copo Descartável 200ml (100 un)','R$ 8,49','q210')">Adicionar</button>
 </div>
+</div>
 
 <div class="card produto">
-  <div class="nome">Campari 748ml</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 59,99</div>
+<div class="nome">Espeto de Bambu 25cm (50un)</div>
+<div class="info">Utensílios • Unidade</div>
+<div class="preco">R$ R$ 6,49</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q211">
+<button onclick="add('Espeto de Bambu 25cm (50un)','R$ 6,49','q211')">Adicionar</button>
+</div>
 </div>
 
 <div class="card produto">
-  <div class="nome">Gatorade Sabor Uva 500ml</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 7,99</div>
+<div class="nome">Macarrão Penne Com Ovos Camil 500gr</div>
+<div class="info">Massas • Unidade</div>
+<div class="preco">R$ R$ 4,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q212">
+<button onclick="add('Macarrão Penne Com Ovos Camil 500gr','R$ 4,99','q212')">Adicionar</button>
 </div>
+</div>
 
 <div class="card produto">
-  <div class="nome">Suco Del Valle Sabor Pêssego 290ml</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 5,99</div>
+<div class="nome">Macarrão Parafuso Sêmola Camil 500gr</div>
+<div class="info">Massas • Unidade</div>
+<div class="preco">R$ R$ 4,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q213">
+<button onclick="add('Macarrão Parafuso Sêmola Camil 500gr','R$ 4,99','q213')">Adicionar</button>
 </div>
+</div>
 
 <div class="card produto">
-  <div class="nome">Suco Del Valle Sabor Maracuja 290ml</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 5,99</div>
+<div class="nome">Papel Manteiga 30cm x 7,5mt</div>
+<div class="info">Utensílios • Unidade</div>
+<div class="preco">R$ R$ 5,49</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q214">
+<button onclick="add('Papel Manteiga 30cm x 7,5mt','R$ 5,49','q214')">Adicionar</button>
+</div>
 </div>
 
 <div class="card produto">
-  <div class="nome">Suco Del Valle Sabor Uva 290ml</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 5,99</div>
+<div class="nome">Aluminio 45cm x 4mt</div>
+<div class="info">Utensílios • Unidade</div>
+<div class="preco">R$ R$ 9,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q215">
+<button onclick="add('Aluminio 45cm x 4mt','R$ 9,99','q215')">Adicionar</button>
 </div>
+</div>
 
 <div class="card produto">
-  <div class="nome">Suco Del Valle Sabor Manga 290ml</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 5,99</div>
+<div class="nome">Espeto Duplo de Aço Mor</div>
+<div class="info">Utensílios • Unidade</div>
+<div class="preco">R$ R$ 13,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q216">
+<button onclick="add('Espeto Duplo de Aço Mor','R$ 13,99','q216')">Adicionar</button>
+</div>
 </div>
 
 <div class="card produto">
-  <div class="nome">Suco Del Valle Sabor Goiaba 290ml</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 5,99</div>
+<div class="nome">Espeto Simples de Aço Mor</div>
+<div class="info">Utensílios • Unidade</div>
+<div class="preco">R$ R$ 15,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q217">
+<button onclick="add('Espeto Simples de Aço Mor','R$ 15,99','q217')">Adicionar</button>
 </div>
+</div>
 
 <div class="card produto">
-  <div class="nome">Beats Senses 269ml</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 9,99</div>
+<div class="nome">Papel Toalha Trópicos 2x50 (100 Folhas)</div>
+<div class="info">Acessórios • Unidade</div>
+<div class="preco">R$ R$ 5,49</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q218">
+<button onclick="add('Papel Toalha Trópicos 2x50 (100 Folhas)','R$ 5,49','q218')">Adicionar</button>
+</div>
 </div>
 
 <div class="card produto">
-  <div class="nome">Beats Red 269ml</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 9,99</div>
+<div class="nome">Arroz Oriental Inari Solito 1kg</div>
+<div class="info">Dia-a-Dia • Unidade</div>
+<div class="preco">R$ R$ 11,49</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q219">
+<button onclick="add('Arroz Oriental Inari Solito 1kg','R$ 11,49','q219')">Adicionar</button>
 </div>
+</div>
 
 <div class="card produto">
-  <div class="nome">Vinho Casillero Del Diablo Merlot 760ml</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 59,99</div>
+<div class="nome">Gatorade Sabor Uva 500ml</div>
+<div class="info">Bebidas • Unidade</div>
+<div class="preco">R$ R$ 7,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q220">
+<button onclick="add('Gatorade Sabor Uva 500ml','R$ 7,99','q220')">Adicionar</button>
+</div>
 </div>
 
 <div class="card produto">
-  <div class="nome">Vinho Casillero Del Diablo Carmenere 760ml</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 59,99</div>
+<div class="nome">Suco Del Valle Sabor Pêssego 290ml</div>
+<div class="info">Bebidas • Unidade</div>
+<div class="preco">R$ R$ 5,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q221">
+<button onclick="add('Suco Del Valle Sabor Pêssego 290ml','R$ 5,99','q221')">Adicionar</button>
 </div>
+</div>
 
 <div class="card produto">
-  <div class="nome">Vinho Casillero Del Diablo Cabernet Sauvignon 760ml</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 59,99</div>
+<div class="nome">Suco Del Valle Sabor Maracuja 290ml</div>
+<div class="info">Bebidas • Unidade</div>
+<div class="preco">R$ R$ 5,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q222">
+<button onclick="add('Suco Del Valle Sabor Maracuja 290ml','R$ 5,99','q222')">Adicionar</button>
 </div>
+</div>
 
 <div class="card produto">
-  <div class="nome">Vinho Casillero Del Diablo Malbec 760ml</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 59,99</div>
+<div class="nome">Suco Del Valle Sabor Uva 290ml</div>
+<div class="info">Bebidas • Unidade</div>
+<div class="preco">R$ R$ 5,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q223">
+<button onclick="add('Suco Del Valle Sabor Uva 290ml','R$ 5,99','q223')">Adicionar</button>
+</div>
 </div>
 
 <div class="card produto">
-  <div class="nome">Espumante Salton Prosecco Rosé 750ml</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 69,99</div>
+<div class="nome">Suco Del Valle Sabor Manga 290ml</div>
+<div class="info">Bebidas • Unidade</div>
+<div class="preco">R$ R$ 5,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q224">
+<button onclick="add('Suco Del Valle Sabor Manga 290ml','R$ 5,99','q224')">Adicionar</button>
 </div>
+</div>
 
 <div class="card produto">
-  <div class="nome">Espumante Salton Prosecco Blanc 750ml</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 69,99</div>
+<div class="nome">Suco Del Valle Sabor Goiaba 290ml</div>
+<div class="info">Bebidas • Unidade</div>
+<div class="preco">R$ R$ 5,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q225">
+<button onclick="add('Suco Del Valle Sabor Goiaba 290ml','R$ 5,99','q225')">Adicionar</button>
+</div>
 </div>
 
 <div class="card produto">
-  <div class="nome">Espumante Salton Brut Blanc 750ml</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 69,99</div>
+<div class="nome">Beats Senses 269ml</div>
+<div class="info">Bebidas • Unidade</div>
+<div class="preco">R$ R$ 9,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q226">
+<button onclick="add('Beats Senses 269ml','R$ 9,99','q226')">Adicionar</button>
 </div>
+</div>
 
 <div class="card produto">
-  <div class="nome">Espumante Salton Demi-Sec Blanc 750ml</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 69,99</div>
+<div class="nome">Beats Red 269ml</div>
+<div class="info">Bebidas • Unidade</div>
+<div class="preco">R$ R$ 9,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q227">
+<button onclick="add('Beats Red 269ml','R$ 9,99','q227')">Adicionar</button>
+</div>
 </div>
 
 <div class="card produto">
-  <div class="nome">Espumante Salton Moscatel Blanc 750ml</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 69,99</div>
+<div class="nome">Vinho Casillero Del Diablo Merlot 760ml</div>
+<div class="info">Bebidas • Unidade</div>
+<div class="preco">R$ R$ 59,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q228">
+<button onclick="add('Vinho Casillero Del Diablo Merlot 760ml','R$ 59,99','q228')">Adicionar</button>
 </div>
+</div>
 
 <div class="card produto">
-  <div class="nome">Energético Red Bull Melância 250ml</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 9,99</div>
+<div class="nome">Vinho Casillero Del Diablo Carmenere 760ml</div>
+<div class="info">Bebidas • Unidade</div>
+<div class="preco">R$ R$ 59,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q229">
+<button onclick="add('Vinho Casillero Del Diablo Carmenere 760ml','R$ 59,99','q229')">Adicionar</button>
+</div>
 </div>
 
 <div class="card produto">
-  <div class="nome">Vodka Smirnoff 998ml</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 49,99</div>
+<div class="nome">Vinho Casillero Del Diablo Cabernet Sauvignon 760ml</div>
+<div class="info">Bebidas • Unidade</div>
+<div class="preco">R$ R$ 59,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q230">
+<button onclick="add('Vinho Casillero Del Diablo Cabernet Sauvignon 760ml','R$ 59,99','q230')">Adicionar</button>
 </div>
+</div>
 
 <div class="card produto">
-  <div class="nome">Vodka Absolute 1L</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 109,99</div>
+<div class="nome">Vinho Casillero Del Diablo Malbec 760ml</div>
+<div class="info">Bebidas • Unidade</div>
+<div class="preco">R$ R$ 59,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q231">
+<button onclick="add('Vinho Casillero Del Diablo Malbec 760ml','R$ 59,99','q231')">Adicionar</button>
+</div>
 </div>
 
 <div class="card produto">
-  <div class="nome">Whiskey Jack Daniels Tradicional 1L</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 179,99</div>
+<div class="nome">Espumante Salton Prosecco Rosé 750ml</div>
+<div class="info">Bebidas • Unidade</div>
+<div class="preco">R$ R$ 69,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q232">
+<button onclick="add('Espumante Salton Prosecco Rosé 750ml','R$ 69,99','q232')">Adicionar</button>
 </div>
+</div>
 
 <div class="card produto">
-  <div class="nome">Whiskey Jack Daniels Honey 1L</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 179,99</div>
+<div class="nome">Espumante Salton Prosecco Blanc 750ml</div>
+<div class="info">Bebidas • Unidade</div>
+<div class="preco">R$ R$ 69,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q233">
+<button onclick="add('Espumante Salton Prosecco Blanc 750ml','R$ 69,99','q233')">Adicionar</button>
+</div>
 </div>
 
 <div class="card produto">
-  <div class="nome">Whisky Johnnie Walker Black Laber 1L</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 199,99</div>
+<div class="nome">Espumante Salton Brut Blanc 750ml</div>
+<div class="info">Bebidas • Unidade</div>
+<div class="preco">R$ R$ 69,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q234">
+<button onclick="add('Espumante Salton Brut Blanc 750ml','R$ 69,99','q234')">Adicionar</button>
 </div>
+</div>
 
 <div class="card produto">
-  <div class="nome">Gin Beefeater Tradicional 750ml</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 109,99</div>
+<div class="nome">Espumante Salton Demi-Sec Blanc 750ml</div>
+<div class="info">Bebidas • Unidade</div>
+<div class="preco">R$ R$ 69,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q235">
+<button onclick="add('Espumante Salton Demi-Sec Blanc 750ml','R$ 69,99','q235')">Adicionar</button>
+</div>
 </div>
 
 <div class="card produto">
-  <div class="nome">Gin Beefeater Blackberry 700ml</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 119,99</div>
+<div class="nome">Espumante Salton Moscatel Blanc 750ml</div>
+<div class="info">Bebidas • Unidade</div>
+<div class="preco">R$ R$ 69,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q236">
+<button onclick="add('Espumante Salton Moscatel Blanc 750ml','R$ 69,99','q236')">Adicionar</button>
 </div>
+</div>
 
 <div class="card produto">
-  <div class="nome">Espumante Salton Moscato Blanc Zero Alcool 750ml</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 69,99</div>
+<div class="nome">Energético Red Bull Melância 250ml</div>
+<div class="info">Bebidas • Unidade</div>
+<div class="preco">R$ R$ 9,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q237">
+<button onclick="add('Energético Red Bull Melância 250ml','R$ 9,99','q237')">Adicionar</button>
+</div>
 </div>
 
 <div class="card produto">
-  <div class="nome">Cerveja Eisenhugel NEIPA 500ml</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 22,99</div>
+<div class="nome">Vodka Smirnoff 998ml</div>
+<div class="info">Bebidas • Unidade</div>
+<div class="preco">R$ R$ 49,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q238">
+<button onclick="add('Vodka Smirnoff 998ml','R$ 49,99','q238')">Adicionar</button>
 </div>
+</div>
 
 <div class="card produto">
-  <div class="nome">Cerveja Eisenhugel Weiss 500ml</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 22,99</div>
+<div class="nome">Vodka Absolute 1L</div>
+<div class="info">Bebidas • Unidade</div>
+<div class="preco">R$ R$ 109,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q239">
+<button onclick="add('Vodka Absolute 1L','R$ 109,99','q239')">Adicionar</button>
 </div>
+</div>
 
 <div class="card produto">
-  <div class="nome">Smirnoff Ice Original 275ml</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 9,99</div>
+<div class="nome">Whiskey Jack Daniels Tradicional 1L</div>
+<div class="info">Bebidas • Unidade</div>
+<div class="preco">R$ R$ 179,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q240">
+<button onclick="add('Whiskey Jack Daniels Tradicional 1L','R$ 179,99','q240')">Adicionar</button>
 </div>
 </div>
-<h2>Legumes & Vegetais</h2>
-<div class='grid'>
 
 <div class="card produto">
-  <div class="nome">Brocolis Nova Mesa 2kg Cong.</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 38,99</div>
+<div class="nome">Whiskey Jack Daniels Honey 1L</div>
+<div class="info">Bebidas • Unidade</div>
+<div class="preco">R$ R$ 179,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q241">
+<button onclick="add('Whiskey Jack Daniels Honey 1L','R$ 179,99','q241')">Adicionar</button>
+</div>
 </div>
 
 <div class="card produto">
-  <div class="nome">Couve Flor Nova Mesa 2kg Cong.</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 33,99</div>
+<div class="nome">Whisky Johnnie Walker Black Laber 1L</div>
+<div class="info">Bebidas • Unidade</div>
+<div class="preco">R$ R$ 199,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q242">
+<button onclick="add('Whisky Johnnie Walker Black Laber 1L','R$ 199,99','q242')">Adicionar</button>
 </div>
+</div>
 
 <div class="card produto">
-  <div class="nome">Seleta de Legumes Nova Mesa 2kg Cong.</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 36,99</div>
+<div class="nome">Gin Beefeater Tradicional 750ml</div>
+<div class="info">Bebidas • Unidade</div>
+<div class="preco">R$ R$ 109,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q243">
+<button onclick="add('Gin Beefeater Tradicional 750ml','R$ 109,99','q243')">Adicionar</button>
+</div>
 </div>
 
 <div class="card produto">
-  <div class="nome">Alho Inteiro Campos Del Plata 1,05kg Cong.</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 29,99</div>
+<div class="nome">Gin Beefeater Blackberry 700ml</div>
+<div class="info">Bebidas • Unidade</div>
+<div class="preco">R$ R$ 119,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q244">
+<button onclick="add('Gin Beefeater Blackberry 700ml','R$ 119,99','q244')">Adicionar</button>
 </div>
+</div>
 
 <div class="card produto">
-  <div class="nome">Cenoura Fatiada Campos Del Plata 1,05kg Cong.</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 13,99</div>
+<div class="nome">Espumante Salton Moscato Blanc Zero Alcool 750ml</div>
+<div class="info">Bebidas • Unidade</div>
+<div class="preco">R$ R$ 69,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q245">
+<button onclick="add('Espumante Salton Moscato Blanc Zero Alcool 750ml','R$ 69,99','q245')">Adicionar</button>
+</div>
 </div>
 
 <div class="card produto">
-  <div class="nome">Vagem Campos Del Plata 1,05kg Cong.</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 19,99</div>
+<div class="nome">Ovos Caipira Bandeja 12un</div>
+<div class="info">Dia-a-Dia • Unidade</div>
+<div class="preco">R$ R$ 19,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q246">
+<button onclick="add('Ovos Caipira Bandeja 12un','R$ 19,99','q246')">Adicionar</button>
 </div>
+</div>
 
 <div class="card produto">
-  <div class="nome">Couve Flor Pratigel 1,020kg Cong.</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 21,99</div>
+<div class="nome">Molho de Pimenta Especial Fogo Mineiro 60ml</div>
+<div class="info">Molhos e Geléias • Unidade</div>
+<div class="preco">R$ R$ 11,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q247">
+<button onclick="add('Molho de Pimenta Especial Fogo Mineiro 60ml','R$ 11,99','q247')">Adicionar</button>
+</div>
 </div>
 
 <div class="card produto">
-  <div class="nome">Abobora Cabotiá Pedaços Resfr.</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 4,99</div>
+<div class="nome">Molho de Pimenta Trinidad Scorpion Fogo Mineiro 60ml</div>
+<div class="info">Molhos e Geléias • Unidade</div>
+<div class="preco">R$ R$ 17,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q248">
+<button onclick="add('Molho de Pimenta Trinidad Scorpion Fogo Mineiro 60ml','R$ 17,99','q248')">Adicionar</button>
 </div>
+</div>
 
 <div class="card produto">
-  <div class="nome">Cenoura Ralada Resfr.</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 4,99</div>
+<div class="nome">Molho de Pimenta Bhut Jolokia Fogo Mineiro 60ml</div>
+<div class="info">Molhos e Geléias • Unidade</div>
+<div class="preco">R$ R$ 11,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q249">
+<button onclick="add('Molho de Pimenta Bhut Jolokia Fogo Mineiro 60ml','R$ 11,99','q249')">Adicionar</button>
 </div>
+</div>
 
 <div class="card produto">
-  <div class="nome">Couve Manteiga Fatiada Resfr.</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 4,99</div>
+<div class="nome">Molho de Pimenta Habanero Fogo Mineiro 60ml</div>
+<div class="info">Molhos e Geléias • Unidade</div>
+<div class="preco">R$ R$ 11,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q250">
+<button onclick="add('Molho de Pimenta Habanero Fogo Mineiro 60ml','R$ 11,99','q250')">Adicionar</button>
+</div>
 </div>
 
 <div class="card produto">
-  <div class="nome">Repolho Roxo Fatiado Resfr.</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 4,99</div>
+<div class="nome">Molho de Pimenta Cayena Fogo Mineiro 60ml</div>
+<div class="info">Molhos e Geléias • Unidade</div>
+<div class="preco">R$ R$ 11,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q251">
+<button onclick="add('Molho de Pimenta Cayena Fogo Mineiro 60ml','R$ 11,99','q251')">Adicionar</button>
 </div>
+</div>
 
 <div class="card produto">
-  <div class="nome">Repolho Branco Fatiado Resfr.</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 4,99</div>
+<div class="nome">Molho de Pimenta Cumari Fogo Mineiro 60ml</div>
+<div class="info">Molhos e Geléias • Unidade</div>
+<div class="preco">R$ R$ 11,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q252">
+<button onclick="add('Molho de Pimenta Cumari Fogo Mineiro 60ml','R$ 11,99','q252')">Adicionar</button>
+</div>
 </div>
 
 <div class="card produto">
-  <div class="nome">Acelga Fatiada Resfr.</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 4,99</div>
+<div class="nome">Molho de Pimenta Carolina Reaper Fogo Mineiro 60ml</div>
+<div class="info">Molhos e Geléias • Unidade</div>
+<div class="preco">R$ R$ 17,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q253">
+<button onclick="add('Molho de Pimenta Carolina Reaper Fogo Mineiro 60ml','R$ 17,99','q253')">Adicionar</button>
 </div>
 </div>
-<h2>Frutas</h2>
-<div class='grid'>
 
 <div class="card produto">
-  <div class="nome">Abacaxi Campos Del Plata 1,05kg Cong.</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 23,99</div>
+<div class="nome">Geléia de Pimenta Fogo Mineiro 200gr</div>
+<div class="info">Molhos e Geléias • Unidade</div>
+<div class="preco">R$ R$ 16,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q254">
+<button onclick="add('Geléia de Pimenta Fogo Mineiro 200gr','R$ 16,99','q254')">Adicionar</button>
 </div>
+</div>
 
 <div class="card produto">
-  <div class="nome">Amora Campos Del Plata 1,05kg Cong.</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 33,99</div>
+<div class="nome">Geléia de Pimenta Defumada Fogo Mineiro 200gr</div>
+<div class="info">Molhos e Geléias • Unidade</div>
+<div class="preco">R$ R$ 16,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q255">
+<button onclick="add('Geléia de Pimenta Defumada Fogo Mineiro 200gr','R$ 16,99','q255')">Adicionar</button>
+</div>
 </div>
 
 <div class="card produto">
-  <div class="nome">Pessego Campos Del Plata 1,05kg Cong.</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 24,99</div>
+<div class="nome">Pimenta Malagueta Verde em Conserva Fogo Mineiro 200gr</div>
+<div class="info">Conservas • Unidade</div>
+<div class="preco">R$ R$ 11,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q256">
+<button onclick="add('Pimenta Malagueta Verde em Conserva Fogo Mineiro 200gr','R$ 11,99','q256')">Adicionar</button>
 </div>
+</div>
 
 <div class="card produto">
-  <div class="nome">Morango Campos Del Plata 1,05kg Cong.</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 20,99</div>
+<div class="nome">Pimenta Cumari do Pará em Conserva Fogo Mineiro 200gr</div>
+<div class="info">Conservas • Unidade</div>
+<div class="preco">R$ R$ 11,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q257">
+<button onclick="add('Pimenta Cumari do Pará em Conserva Fogo Mineiro 200gr','R$ 11,99','q257')">Adicionar</button>
 </div>
 </div>
-<h2>Laticinios & Charcutaria</h2>
-<div class='grid'>
 
 <div class="card produto">
-  <div class="nome">Queijo Mozzarella Cerejinha Bufalat 500gr</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 33,99</div>
+<div class="nome">Pimenta Cumari Verde em Conserva Fogo Mineiro 200gr</div>
+<div class="info">Conservas • Unidade</div>
+<div class="preco">R$ R$ 11,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q258">
+<button onclick="add('Pimenta Cumari Verde em Conserva Fogo Mineiro 200gr','R$ 11,99','q258')">Adicionar</button>
+</div>
 </div>
 
 <div class="card produto">
-  <div class="nome">Queijo Mozzarella Bocconcini Bufalat 500gr</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 33,99</div>
+<div class="nome">Pimenta Cumari em Conserva Fogo Mineiro 200gr</div>
+<div class="info">Conservas • Unidade</div>
+<div class="preco">R$ R$ 11,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q259">
+<button onclick="add('Pimenta Cumari em Conserva Fogo Mineiro 200gr','R$ 11,99','q259')">Adicionar</button>
 </div>
+</div>
 
 <div class="card produto">
-  <div class="nome">Queijo Mozzarella Bocconcini Defumado Bufalat 500gr</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 33,99</div>
+<div class="nome">Pimenta Malagueta em Conserva Fogo Mineiro 200gr</div>
+<div class="info">Conservas • Unidade</div>
+<div class="preco">R$ R$ 11,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q260">
+<button onclick="add('Pimenta Malagueta em Conserva Fogo Mineiro 200gr','R$ 11,99','q260')">Adicionar</button>
 </div>
+</div>
 
 <div class="card produto">
-  <div class="nome">Queijo Tipo Burrata Bufalat Pote 190gr</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 33,99</div>
+<div class="nome">Kit Pimentas (6 Pimentas x 60gr)</div>
+<div class="info">Molhos e Geléias • Unidade</div>
+<div class="preco">R$ R$ 64,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q261">
+<button onclick="add('Kit Pimentas (6 Pimentas x 60gr)','R$ 64,99','q261')">Adicionar</button>
+</div>
 </div>
 
 <div class="card produto">
-  <div class="nome">Queijo Tipo Pallone de Gravina Bufalat</div>
-  <div class="info">Venda: Kilograma</div>
-  <div class="preco">R$ 129,99</div>
+<div class="nome">Filé de Salmão Resfr.</div>
+<div class="info">Pescados • Kilograma</div>
+<div class="preco">R$ R$ 119,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q262">
+<button onclick="add('Filé de Salmão Resfr.','R$ 119,99','q262')">Adicionar</button>
 </div>
+</div>
 
 <div class="card produto">
-  <div class="nome">Queijo Tipo Caccio Cavalo Bufalat</div>
-  <div class="info">Venda: Kilograma</div>
-  <div class="preco">R$ 129,99</div>
+<div class="nome">Filé de Tilápia Resfr.</div>
+<div class="info">Pescados • Kilograma</div>
+<div class="preco">R$ R$ 79,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q263">
+<button onclick="add('Filé de Tilápia Resfr.','R$ 79,99','q263')">Adicionar</button>
+</div>
 </div>
 
 <div class="card produto">
-  <div class="nome">Salsicha Com Queijo Kasewurst Specialli 320gr Resfr.</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 34,99</div>
+<div class="nome">Sashimi de Misto Dumar 400gr Resfr.</div>
+<div class="info">Pescados • Unidade</div>
+<div class="preco">R$ R$ 49,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q264">
+<button onclick="add('Sashimi de Misto Dumar 400gr Resfr.','R$ 49,99','q264')">Adicionar</button>
 </div>
+</div>
 
 <div class="card produto">
-  <div class="nome">Salsicha De Carne Bovina All Beef Specialli 290gr Resfr.</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 36,99</div>
+<div class="nome">Sashimi de Salmão Dumar 400gr Resfr.</div>
+<div class="info">Pescados • Unidade</div>
+<div class="preco">R$ R$ 49,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q265">
+<button onclick="add('Sashimi de Salmão Dumar 400gr Resfr.','R$ 49,99','q265')">Adicionar</button>
+</div>
 </div>
 
 <div class="card produto">
-  <div class="nome">Salame Fatiado Specialli 100gr</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 15,99</div>
+<div class="nome">Abobora Cabotiá Pedaços Resfr.</div>
+<div class="info">Legumes & Vegetais • Unidade</div>
+<div class="preco">R$ R$ 4,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q266">
+<button onclick="add('Abobora Cabotiá Pedaços Resfr.','R$ 4,99','q266')">Adicionar</button>
 </div>
+</div>
 
 <div class="card produto">
-  <div class="nome">Culatello Fatiado Specialli 100gr</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 26,99</div>
+<div class="nome">Cenoura Ralada Resfr.</div>
+<div class="info">Legumes & Vegetais • Unidade</div>
+<div class="preco">R$ R$ 4,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q267">
+<button onclick="add('Cenoura Ralada Resfr.','R$ 4,99','q267')">Adicionar</button>
+</div>
 </div>
 
 <div class="card produto">
-  <div class="nome">Salsicha Com Alho Specialli 220gr</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 19,99</div>
+<div class="nome">Couve Manteiga Fatiada Resfr.</div>
+<div class="info">Legumes & Vegetais • Unidade</div>
+<div class="preco">R$ R$ 4,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q268">
+<button onclick="add('Couve Manteiga Fatiada Resfr.','R$ 4,99','q268')">Adicionar</button>
 </div>
+</div>
 
 <div class="card produto">
-  <div class="nome">Pastrami de Picanha Specialli 100gr</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 29,99</div>
+<div class="nome">Repolho Roxo Fatiado Resfr.</div>
+<div class="info">Legumes & Vegetais • Unidade</div>
+<div class="preco">R$ R$ 4,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q269">
+<button onclick="add('Repolho Roxo Fatiado Resfr.','R$ 4,99','q269')">Adicionar</button>
+</div>
 </div>
 
 <div class="card produto">
-  <div class="nome">Cottage Tirolez 200gr</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 16,99</div>
+<div class="nome">Repolho Branco Fatiado Resfr.</div>
+<div class="info">Legumes & Vegetais • Unidade</div>
+<div class="preco">R$ R$ 4,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q270">
+<button onclick="add('Repolho Branco Fatiado Resfr.','R$ 4,99','q270')">Adicionar</button>
 </div>
+</div>
 
 <div class="card produto">
-  <div class="nome">Requeijão Cremoso Tirolez 200gr</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 9,99</div>
+<div class="nome">Acelga Fatiada Resfr.</div>
+<div class="info">Legumes & Vegetais • Unidade</div>
+<div class="preco">R$ R$ 4,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q271">
+<button onclick="add('Acelga Fatiada Resfr.','R$ 4,99','q271')">Adicionar</button>
+</div>
 </div>
 
 <div class="card produto">
-  <div class="nome">Provolonete Tirolez 335gr</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 54,99</div>
+<div class="nome">Moedor Sal do Himalaia Tradicional 90gr Soul Chef</div>
+<div class="info">Temperos • Unidade</div>
+<div class="preco">R$ R$ 21,49</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q272">
+<button onclick="add('Moedor Sal do Himalaia Tradicional 90gr Soul Chef','R$ 21,49','q272')">Adicionar</button>
 </div>
+</div>
 
 <div class="card produto">
-  <div class="nome">Brie Fracionado Tirolez 125gr</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 25,99</div>
+<div class="nome">Moedor Sal do Himalaia Com Pimenta Preta Tradicional 90gr Soul Chef</div>
+<div class="info">Temperos • Unidade</div>
+<div class="preco">R$ R$ 21,49</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q273">
+<button onclick="add('Moedor Sal do Himalaia Com Pimenta Preta Tradicional 90gr Soul Chef','R$ 21,49','q273')">Adicionar</button>
+</div>
 </div>
 
 <div class="card produto">
-  <div class="nome">Gouda Fracionado Tirolez</div>
-  <div class="info">Venda: Kilograma</div>
-  <div class="preco">R$ 184,99</div>
+<div class="nome">Moedor Sal do Mix de Pimentas Tradicional 45gr Soul Chef</div>
+<div class="info">Temperos • Unidade</div>
+<div class="preco">R$ R$ 26,49</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q274">
+<button onclick="add('Moedor Sal do Mix de Pimentas Tradicional 45gr Soul Chef','R$ 26,49','q274')">Adicionar</button>
 </div>
+</div>
 
 <div class="card produto">
-  <div class="nome">Manteiga Com Sal Tirolez 200gr</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 17,99</div>
+<div class="nome">Tomate Pelado Sofruta 400gr</div>
+<div class="info">Molhos e Geléias • Unidade</div>
+<div class="preco">R$ R$ 6,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q275">
+<button onclick="add('Tomate Pelado Sofruta 400gr','R$ 6,99','q275')">Adicionar</button>
+</div>
 </div>
 
 <div class="card produto">
-  <div class="nome">Manteiga Sem Sal Tirolez 200gr</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 17,99</div>
+<div class="nome">Esfiha Gourmet KBL Sabor Carne (10 unidades)</div>
+<div class="info">Dia-a-Dia • Unidade</div>
+<div class="preco">R$ R$ 32,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q276">
+<button onclick="add('Esfiha Gourmet KBL Sabor Carne (10 unidades)','R$ 32,99','q276')">Adicionar</button>
 </div>
+</div>
 
 <div class="card produto">
-  <div class="nome">Creme De Ricota Tirolez 370gr</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 17,99</div>
+<div class="nome">Esfiha Gourmet KBL Sabor Queijo (10 unidades)</div>
+<div class="info">Dia-a-Dia • Unidade</div>
+<div class="preco">R$ R$ 32,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q277">
+<button onclick="add('Esfiha Gourmet KBL Sabor Queijo (10 unidades)','R$ 32,99','q277')">Adicionar</button>
 </div>
+</div>
 
 <div class="card produto">
-  <div class="nome">Mussarela Fatiada Tirolez 150gr</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 12,99</div>
+<div class="nome">Vinagre Defumado Spray Gonzalo 150ml</div>
+<div class="info">Temperos • Unidade</div>
+<div class="preco">R$ R$ 14,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q278">
+<button onclick="add('Vinagre Defumado Spray Gonzalo 150ml','R$ 14,99','q278')">Adicionar</button>
+</div>
 </div>
 
 <div class="card produto">
-  <div class="nome">Prato Fatiado Tirolez 150gr</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 12,99</div>
+<div class="nome">Couve Flor Wings Sadia 275gr Cong.</div>
+<div class="info">Dia-a-Dia • Unidade</div>
+<div class="preco">R$ R$ 12,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q279">
+<button onclick="add('Couve Flor Wings Sadia 275gr Cong.','R$ 12,99','q279')">Adicionar</button>
 </div>
+</div>
 
 <div class="card produto">
-  <div class="nome">Requeijão Zero Lactose Tirolez 200gr</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 11,99</div>
+<div class="nome">Almôndega Bovina Sadia 500gr Cong.</div>
+<div class="info">Dia-a-Dia • Unidade</div>
+<div class="preco">R$ R$ 23,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q280">
+<button onclick="add('Almôndega Bovina Sadia 500gr Cong.','R$ 23,99','q280')">Adicionar</button>
+</div>
 </div>
 
 <div class="card produto">
-  <div class="nome">Mussarela Fatiada Zero Lactose Tirolez 150gr</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 14,99</div>
+<div class="nome">Fetuccini Bolonhesa Perdigão 300gr Cong.</div>
+<div class="info">Dia-a-Dia • Unidade</div>
+<div class="preco">R$ R$ 9,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q281">
+<button onclick="add('Fetuccini Bolonhesa Perdigão 300gr Cong.','R$ 9,99','q281')">Adicionar</button>
 </div>
 </div>
-<h2>Massas</h2>
-<div class='grid'>
 
 <div class="card produto">
-  <div class="nome">Nhoque Tradicional Eccellenza 500gr</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 13,99</div>
+<div class="nome">Iscas de Frango Tempura Sadia 300gr Cong.</div>
+<div class="info">Dia-a-Dia • Unidade</div>
+<div class="preco">R$ R$ 16,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q282">
+<button onclick="add('Iscas de Frango Tempura Sadia 300gr Cong.','R$ 16,99','q282')">Adicionar</button>
 </div>
+</div>
 
 <div class="card produto">
-  <div class="nome">Nhoque Recheado Eccellenza Com Queijo 500gr</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 21,99</div>
+<div class="nome">Kibe Bovino Sadia 500gr Cong.</div>
+<div class="info">Dia-a-Dia • Unidade</div>
+<div class="preco">R$ R$ 24,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q283">
+<button onclick="add('Kibe Bovino Sadia 500gr Cong.','R$ 24,99','q283')">Adicionar</button>
+</div>
 </div>
 
 <div class="card produto">
-  <div class="nome">Macarrão Yakissoba Da Roz 500gr</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 9,99</div>
+<div class="nome">Lasanha de Frango Perdigão 600gr Cong.</div>
+<div class="info">Dia-a-Dia • Unidade</div>
+<div class="preco">R$ R$ 18,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q284">
+<button onclick="add('Lasanha de Frango Perdigão 600gr Cong.','R$ 18,99','q284')">Adicionar</button>
 </div>
+</div>
 
 <div class="card produto">
-  <div class="nome">Macarrão Padre Nosso Com Ovos Camil 500gr</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 4,99</div>
+<div class="nome">Lasanha 4 Queijos Sadia 600gr Cong.</div>
+<div class="info">Dia-a-Dia • Unidade</div>
+<div class="preco">R$ R$ 18,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q285">
+<button onclick="add('Lasanha 4 Queijos Sadia 600gr Cong.','R$ 18,99','q285')">Adicionar</button>
+</div>
 </div>
 
 <div class="card produto">
-  <div class="nome">Macarrão Penne Com Ovos Camil 500gr</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 4,99</div>
+<div class="nome">Nuggets de Frango Com Queijo Sadia 300gr</div>
+<div class="info">Dia-a-Dia • Unidade</div>
+<div class="preco">R$ R$ 9,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q286">
+<button onclick="add('Nuggets de Frango Com Queijo Sadia 300gr','R$ 9,99','q286')">Adicionar</button>
 </div>
+</div>
 
 <div class="card produto">
-  <div class="nome">Macarrão Parafuso Sêmola Camil 500gr</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 4,99</div>
+<div class="nome">Penne Parisiense Perdigão 300gr Cong</div>
+<div class="info">Dia-a-Dia • Unidade</div>
+<div class="preco">R$ R$ 9,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q287">
+<button onclick="add('Penne Parisiense Perdigão 300gr Cong','R$ 9,99','q287')">Adicionar</button>
 </div>
 </div>
-<h2>Utensílios</h2>
-<div class='grid'>
 
 <div class="card produto">
-  <div class="nome">Espeto de Bambu 25cm (50un)</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 6,49</div>
+<div class="nome">Pop Nuggets de Frango Sadia 275gr Cong.</div>
+<div class="info">Dia-a-Dia • Unidade</div>
+<div class="preco">R$ R$ 9,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q288">
+<button onclick="add('Pop Nuggets de Frango Sadia 275gr Cong.','R$ 9,99','q288')">Adicionar</button>
 </div>
+</div>
 
 <div class="card produto">
-  <div class="nome">Papel Manteiga 30cm x 7,5mt</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 5,49</div>
+<div class="nome">Cerveja Eisenhugel NEIPA 500ml</div>
+<div class="info">Bebidas • Unidade</div>
+<div class="preco">R$ R$ 22,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q289">
+<button onclick="add('Cerveja Eisenhugel NEIPA 500ml','R$ 22,99','q289')">Adicionar</button>
+</div>
 </div>
 
 <div class="card produto">
-  <div class="nome">Aluminio 45cm x 4mt</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 9,99</div>
+<div class="nome">Cerveja Eisenhugel Weiss 500ml</div>
+<div class="info">Bebidas • Unidade</div>
+<div class="preco">R$ R$ 22,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q290">
+<button onclick="add('Cerveja Eisenhugel Weiss 500ml','R$ 22,99','q290')">Adicionar</button>
 </div>
+</div>
 
 <div class="card produto">
-  <div class="nome">Espeto Duplo de Aço Mor</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 13,99</div>
+<div class="nome">Anéis de Cebola Empanados Bem Brasil 1,05kg Cong.</div>
+<div class="info">Dia-a-Dia • Unidade</div>
+<div class="preco">R$ R$ 29,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q291">
+<button onclick="add('Anéis de Cebola Empanados Bem Brasil 1,05kg Cong.','R$ 29,99','q291')">Adicionar</button>
+</div>
 </div>
 
 <div class="card produto">
-  <div class="nome">Espeto Simples de Aço Mor</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 15,99</div>
+<div class="nome">Polenta Tolete Prontinha 1kg Cong.</div>
+<div class="info">Dia-a-Dia • Unidade</div>
+<div class="preco">R$ R$ 15,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q292">
+<button onclick="add('Polenta Tolete Prontinha 1kg Cong.','R$ 15,99','q292')">Adicionar</button>
 </div>
 </div>
-<h2>Conservas</h2>
-<div class='grid'>
 
 <div class="card produto">
-  <div class="nome">Pimenta Malagueta Verde em Conserva Fogo Mineiro 200gr</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 11,99</div>
+<div class="nome">Batata Carinha Bem Brasil 400gr Cong.</div>
+<div class="info">Dia-a-Dia • Unidade</div>
+<div class="preco">R$ R$ 9,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q293">
+<button onclick="add('Batata Carinha Bem Brasil 400gr Cong.','R$ 9,99','q293')">Adicionar</button>
 </div>
+</div>
 
 <div class="card produto">
-  <div class="nome">Pimenta Cumari do Pará em Conserva Fogo Mineiro 200gr</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 11,99</div>
+<div class="nome">Batata Palito Bem Brasil 1,5kg Cong.</div>
+<div class="info">Dia-a-Dia • Unidade</div>
+<div class="preco">R$ R$ 24,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q294">
+<button onclick="add('Batata Palito Bem Brasil 1,5kg Cong.','R$ 24,99','q294')">Adicionar</button>
+</div>
 </div>
 
 <div class="card produto">
-  <div class="nome">Pimenta Cumari Verde em Conserva Fogo Mineiro 200gr</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 11,99</div>
+<div class="nome">Mandioca Premium Prontinha 1,2kg Cong.</div>
+<div class="info">Dia-a-Dia • Unidade</div>
+<div class="preco">R$ R$ 22,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q295">
+<button onclick="add('Mandioca Premium Prontinha 1,2kg Cong.','R$ 22,99','q295')">Adicionar</button>
 </div>
+</div>
 
 <div class="card produto">
-  <div class="nome">Pimenta Cumari em Conserva Fogo Mineiro 200gr</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 11,99</div>
+<div class="nome">Smirnoff Ice Original 275ml</div>
+<div class="info">Bebidas • Unidade</div>
+<div class="preco">R$ R$ 9,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q296">
+<button onclick="add('Smirnoff Ice Original 275ml','R$ 9,99','q296')">Adicionar</button>
+</div>
 </div>
 
 <div class="card produto">
-  <div class="nome">Pimenta Malagueta em Conserva Fogo Mineiro 200gr</div>
-  <div class="info">Venda: Unidade</div>
-  <div class="preco">R$ 11,99</div>
+<div class="nome">Sal de Parrilla Cebola & Salsa Churrasquero 450gr</div>
+<div class="info">Temperos • Unidade</div>
+<div class="preco">R$ R$ 13,99</div>
+<div class="qtd">
+Qtd: <input type="number" min="1" value="1" id="q297">
+<button onclick="add('Sal de Parrilla Cebola & Salsa Churrasquero 450gr','R$ 13,99','q297')">Adicionar</button>
 </div>
 </div>
+
+</div>
+
+<div class="cart" onclick="zap()">🛒 <span id="count">0</span></div>
 
-</section>
+<script>
+let carrinho=[];
+function add(nome,preco,id){
+ let q=parseInt(document.getElementById(id).value);
+ carrinho.push({nome,preco,q});
+ document.getElementById('count').innerText=carrinho.length;
+}
+function zap(){
+ if(carrinho.length==0){alert('Carrinho vazio');return;}
+ let msg='Olá, gostaria de pedir:%0A';
+ carrinho.forEach(i=>{msg+=`- ${i.nome} | R$ ${i.preco} | Qtd: ${i.q}%0A`;});
+ window.open('https://wa.me/5511999562721?text='+msg,'_blank');
+}
+function filtrar(){
+ let f=document.getElementById('busca').value.toLowerCase();
+ document.querySelectorAll('.produto').forEach(p=>{
+  let n=p.querySelector('.nome').innerText.toLowerCase();
+  p.style.display=n.includes(f)?'block':'none';
+ });
+}
+</script>
 
 </body>
 </html>
