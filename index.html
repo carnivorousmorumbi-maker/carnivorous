@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<title>Carnivorous | Catálogo</title>
+<title>Carnivorous</title>
 <style>
 body {
   margin: 0;
@@ -10,68 +10,73 @@ body {
   background: #000;
   color: #fff;
 }
+
 header {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 15px;
   padding: 15px;
   background: #111;
 }
+
 header img {
-  height: 50px;
+  height: 60px;
 }
-input, select, button {
+
+header h1 {
+  font-size: 40px;
+  margin: 0;
+  flex: 1;
+}
+
+header input, header select {
   padding: 8px;
-  border-radius: 5px;
+  border-radius: 6px;
   border: none;
 }
+
 #produtos {
   padding: 20px;
 }
+
 .categoria {
   margin-top: 30px;
 }
+
+.categoria h2 {
+  border-bottom: 2px solid #444;
+}
+
 .produto {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  background: #111;
-  padding: 10px;
-  margin: 5px 0;
-  border-radius: 5px;
+  padding: 10px 0;
+  border-bottom: 1px solid #222;
 }
-.produto button {
-  background: #e63946;
-  color: #fff;
-  cursor: pointer;
+
+.controle button {
+  padding: 5px 10px;
 }
+
 #botaoCarrinho {
   position: fixed;
   bottom: 20px;
   right: 20px;
-  background: #e63946;
+  background: #25d366;
+  color: #000;
   padding: 15px;
   border-radius: 50%;
   cursor: pointer;
   text-align: center;
 }
-#botaoCarrinho div {
-  font-size: 12px;
-}
-#modalCarrinho {
+
+#carrinho {
   display: none;
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0,0,0,.9);
+  inset: 0;
+  background: #000;
   padding: 20px;
-}
-.itemCarrinho {
-  display: flex;
-  justify-content: space-between;
-  margin: 5px 0;
+  overflow: auto;
 }
 </style>
 </head>
@@ -79,24 +84,25 @@ input, select, button {
 <body>
 
 <header>
-  <img src="logo.png" alt="Carnivorous">
-  <input id="busca" placeholder="Buscar produto..." onkeyup="filtrarProdutos()">
+  <img src="logo.png">
+  <h1>Carnivorous</h1>
+  <input id="busca" placeholder="Buscar..." onkeyup="filtrarProdutos()">
   <select id="filtroCategoria" onchange="filtrarProdutos()">
-    <option value="">Todas categorias</option>
+    <option value="">Categorias</option>
   </select>
 </header>
 
 <div id="produtos"></div>
 
 <div id="botaoCarrinho" onclick="abrirCarrinho()">
-  🛒 <span id="qtdCarrinho">0</span>
-  <div id="totalCarrinho">R$ 0,00</div>
+  🛒 <span id="qtdCarrinho">0</span><br>
+  <span id="totalCarrinho">R$ 0,00</span>
 </div>
 
-<div id="modalCarrinho">
+<div id="carrinho">
   <h2>Carrinho</h2>
-  <div id="itensCarrinho"></div>
-  <h3 id="totalModal"></h3>
+  <div id="listaCarrinho"></div>
+  <h3 id="totalFinal"></h3>
   <button onclick="finalizarPedido()">Finalizar no WhatsApp</button>
   <button onclick="fecharCarrinho()">Fechar</button>
 </div>
@@ -1469,108 +1475,113 @@ const produtos = [
 
 const carrinho = {};
 
-function carregarCategorias(){
-  const select = document.getElementById("filtroCategoria");
-  [...new Set(produtos.map(p=>p.categoria))].forEach(c=>{
-    const o=document.createElement("option");
-    o.value=c; o.textContent=c;
-    select.appendChild(o);
+function carregarCategorias() {
+  const sel = filtroCategoria;
+  [...new Set(produtos.map(p => p.categoria))].forEach(c => {
+    sel.innerHTML += `<option value="${c}">${c}</option>`;
   });
 }
 
-function renderizarProdutos(lista=produtos){
-  const div=document.getElementById("produtos");
-  div.innerHTML="";
-  const grupos={};
-  lista.forEach(p=>{
-    if(!grupos[p.categoria])grupos[p.categoria]=[];
-    grupos[p.categoria].push(p);
+function renderizarProdutos(lista = produtos) {
+  produtosDiv.innerHTML = "";
+  const porCat = {};
+  lista.forEach(p => {
+    porCat[p.categoria] = porCat[p.categoria] || [];
+    porCat[p.categoria].push(p);
   });
-  for(const cat in grupos){
-    div.innerHTML+=`<h2 class="categoria">${cat}</h2>`;
-    grupos[cat].forEach(p=>{
-      div.innerHTML+=`
+
+  for (const cat in porCat) {
+    produtosDiv.innerHTML += `<div class="categoria"><h2>${cat}</h2></div>`;
+    porCat[cat].forEach(p => {
+      const id = p.nome.replace(/\W/g,'');
+      produtosDiv.innerHTML += `
       <div class="produto">
         <div>${p.nome} - R$ ${p.preco.toFixed(2)}</div>
-        <button onclick="adicionar('${p.nome}',${p.preco})">+</button>
+        <div class="controle">
+          <button onclick="remover('${p.nome}')">−</button>
+          <span id="qtd-${id}">0</span>
+          <button onclick="adicionar('${p.nome}',${p.preco})">+</button>
+        </div>
       </div>`;
     });
   }
 }
 
-function filtrarProdutos(){
-  const t=busca.value.toLowerCase();
-  const c=filtroCategoria.value;
-  renderizarProdutos(produtos.filter(p=>
+function adicionar(nome, preco) {
+  carrinho[nome] = carrinho[nome] || {nome, preco, qtd:0};
+  carrinho[nome].qtd++;
+  atualizar();
+}
+
+function remover(nome) {
+  if (!carrinho[nome]) return;
+  carrinho[nome].qtd--;
+  if (carrinho[nome].qtd <= 0) delete carrinho[nome];
+  atualizar();
+}
+
+function atualizar() {
+  let qtd = 0, total = 0;
+  for (const i in carrinho) {
+    qtd += carrinho[i].qtd;
+    total += carrinho[i].qtd * carrinho[i].preco;
+    const span = document.getElementById("qtd-" + i.replace(/\W/g,''));
+    if (span) span.innerText = carrinho[i].qtd;
+  }
+  qtdCarrinho.innerText = qtd;
+  totalCarrinho.innerText = "R$ " + total.toFixed(2);
+}
+
+function abrirCarrinho() {
+  carrinhoDiv.style.display = "block";
+  listaCarrinho.innerHTML = "";
+  let total = 0;
+  for (const i in carrinho) {
+    const it = carrinho[i];
+    const sub = it.qtd * it.preco;
+    total += sub;
+    listaCarrinho.innerHTML += `${it.nome} x${it.qtd} = R$ ${sub.toFixed(2)}<br>`;
+  }
+  totalFinal.innerText = "TOTAL: R$ " + total.toFixed(2);
+}
+
+function fecharCarrinho() {
+  carrinhoDiv.style.display = "none";
+}
+
+function finalizarPedido() {
+  let tipo = prompt("Entrega ou Retirada?").toLowerCase();
+  let entrega = tipo.includes("entrega") || tipo === "1";
+  let endereco = entrega ? prompt("Endereço completo:") : "";
+  let pagamento = prompt("Pagamento: Débito, Crédito, Vale ou Pix");
+
+  let msg = "Pedido Carnivorous%0A";
+  let total = 0;
+
+  for (const i in carrinho) {
+    let s = carrinho[i].qtd * carrinho[i].preco;
+    total += s;
+    msg += `${i} x${carrinho[i].qtd} = R$ ${s.toFixed(2)}%0A`;
+  }
+
+  msg += `TOTAL: R$ ${total.toFixed(2)}%0A`;
+  if (entrega) msg += `Endereço: ${endereco}%0A`;
+  msg += `Pagamento: ${pagamento}`;
+
+  window.open(`https://wa.me/5511999562721?text=${msg}`);
+}
+
+function filtrarProdutos() {
+  const t = busca.value.toLowerCase();
+  const c = filtroCategoria.value;
+  renderizarProdutos(produtos.filter(p =>
     p.nome.toLowerCase().includes(t) &&
-    (!c || p.categoria===c)
+    (!c || p.categoria === c)
   ));
 }
 
-function adicionar(nome,preco){
-  if(!carrinho[nome]) carrinho[nome]={nome,preco,qtd:0};
-  carrinho[nome].qtd++;
-  atualizarCarrinho();
-}
-
-function remover(nome){
-  carrinho[nome].qtd--;
-  if(carrinho[nome].qtd<=0) delete carrinho[nome];
-  atualizarCarrinho();
-}
-
-function atualizarCarrinho(){
-  let qtd=0,total=0;
-  for(const i in carrinho){
-    qtd+=carrinho[i].qtd;
-    total+=carrinho[i].qtd*carrinho[i].preco;
-  }
-  qtdCarrinho.innerText=qtd;
-  totalCarrinho.innerText="R$ "+total.toFixed(2);
-}
-
-function abrirCarrinho(){
-  modalCarrinho.style.display="block";
-  itensCarrinho.innerHTML="";
-  let total=0;
-  for(const i in carrinho){
-    const it=carrinho[i];
-    total+=it.qtd*it.preco;
-    itensCarrinho.innerHTML+=`
-    <div class="itemCarrinho">
-      ${it.nome} (${it.qtd}) R$ ${(it.qtd*it.preco).toFixed(2)}
-      <span>
-        <button onclick="adicionar('${it.nome}',${it.preco})">+</button>
-        <button onclick="remover('${it.nome}')">−</button>
-      </span>
-    </div>`;
-  }
-  totalModal.innerText="TOTAL: R$ "+total.toFixed(2);
-}
-
-function fecharCarrinho(){
-  modalCarrinho.style.display="none";
-}
-
-function finalizarPedido(){
-  let tipo=prompt("1-Entrega  2-Retirada");
-  if(!tipo)return;
-  let end="";
-  if(tipo==="1"){ end=prompt("Endereço completo:"); if(!end)return;}
-  let pag=prompt("Pagamento: Débito, Crédito, Vale, Pix");
-  let msg="🛒 Pedido Carnivorous%0A%0A";
-  let total=0;
-  for(const i in carrinho){
-    const it=carrinho[i];
-    const sub=it.qtd*it.preco;
-    total+=sub;
-    msg+=`${it.nome}%0AQtd:${it.qtd}%0AR$ ${sub.toFixed(2)}%0A%0A`;
-  }
-  msg+=`TOTAL: R$ ${total.toFixed(2)}%0A`;
-  if(tipo==="1") msg+=`Endereço: ${end}%0A`;
-  msg+=`Pagamento: ${pag}`;
-  window.open(`https://wa.me/5511999562721?text=${msg}`);
-}
+const produtosDiv = document.getElementById("produtos");
+const carrinhoDiv = document.getElementById("carrinho");
 
 carregarCategorias();
 renderizarProdutos();
