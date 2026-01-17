@@ -2,396 +2,1604 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Carnivorous | Catálogo</title>
+
 <style>
-body{background:#0f0f0f;color:#fff;font-family:Arial;margin:0}
-header{text-align:center;padding:20px;border-bottom:2px solid #c62828}
-header img{max-height:90px}
-.search{margin-top:10px}
-.search input{padding:8px;width:260px;border-radius:5px;border:none}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:20px;max-width:1200px;margin:30px auto;padding:0 15px}
-.card{background:#1b1b1b;padding:15px;border-radius:10px}
-.nome{font-weight:bold}
-.info{color:#bbb;font-size:14px}
-.preco{color:#4caf50;font-size:18px;font-weight:bold}
-.controls{display:flex;align-items:center;gap:8px;margin-top:10px}
-.controls button{padding:5px 10px;border:none;border-radius:5px;cursor:pointer}
-.controls span{min-width:20px;text-align:center}
-.cart{position:fixed;bottom:20px;right:20px;background:#25d366;color:#000;padding:15px 18px;border-radius:50px;font-weight:bold;cursor:pointer}
+body {
+  background:#000;
+  color:#fff;
+  font-family: Arial, sans-serif;
+  margin:0;
+}
+
+header {
+  position: sticky;
+  top:0;
+  background:#000;
+  padding:15px;
+  display:flex;
+  gap:10px;
+  align-items:center;
+  z-index:1000;
+}
+
+header h1 {
+  margin:0;
+  font-size:20px;
+}
+
+input {
+  flex:1;
+  padding:8px;
+  border-radius:6px;
+  border:none;
+}
+
+h2 {
+  margin:20px 10px 10px;
+}
+
+.produto {
+  background:#111;
+  margin:8px;
+  padding:10px;
+  border-radius:8px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+button {
+  padding:5px 10px;
+  cursor:pointer;
+}
+
+#cartBtn {
+  position:fixed;
+  bottom:20px;
+  right:20px;
+  background:#25d366;
+  color:#000;
+  padding:15px;
+  border-radius:50%;
+  text-align:center;
+}
+
+#modal {
+  display:none;
+  position:fixed;
+  inset:0;
+  background:#000;
+  padding:20px;
+  overflow:auto;
+}
+
+.item {
+  background:#111;
+  padding:10px;
+  border-radius:6px;
+  margin-bottom:10px;
+}
 </style>
 </head>
+
 <body>
 
 <header>
-<img src="logo.png">
-<h1>🥩 Carnivorous</h1>
-<div class="search">
-🔍 <input type="text" id="busca" placeholder="Buscar produto..." onkeyup="filtrar()">
-</div>
+  <h1>Carnivorous</h1>
+  <input id="busca" placeholder="Buscar produto..." oninput="renderProdutos()">
 </header>
 
-<div class="grid" id="catalogo"></div>
+<div id="lista"></div>
 
-<div class="cart" onclick="zap()">🛒 <span id="count">0</span></div>
+<div id="cartBtn" onclick="abrirCarrinho()">
+🛒 <span id="count">0</span><br>
+R$ <span id="total">0.00</span>
+</div>
 
-<script>
-let produtos = [];
-let carrinho = {};
-
-function render(){
- document.getElementById('catalogo').innerHTML='';
- produtos.forEach((p,i)=>{
-  let qtd = carrinho[p.nome] ? carrinho[p.nome].qtd : 0;
-  document.getElementById('catalogo').innerHTML+=`
-  <div class="card produto">
-   <div class="nome">${p.nome}</div>
-   <div class="info">${p.info}</div>
-   <div class="preco">R$ ${p.preco}</div>
-   <div class="controls">
-    <button onclick="remover('${p.nome}')">−</button>
-    <span>${qtd}</span>
-    <button onclick="adicionar('${p.nome}','${p.preco}')">+</button>
-   </div>
-  </div>`;
- });
- document.getElementById('count').innerText = Object.values(carrinho).reduce((a,b)=>a+b.qtd,0);
-}
-
-function adicionar(nome,preco){
- if(!carrinho[nome]) carrinho[nome]={preco,qtd:0};
- carrinho[nome].qtd++;
- render();
-}
-
-function remover(nome){
- if(carrinho[nome]){
-  carrinho[nome].qtd--;
-  if(carrinho[nome].qtd<=0) delete carrinho[nome];
-  render();
- }
-}
-
-function zap(){
- if(Object.keys(carrinho).length==0){alert('Carrinho vazio');return;}
- let msg='Olá, gostaria de pedir:%0A';
- Object.keys(carrinho).forEach(n=>{
-  msg+=`- ${n} | R$ ${carrinho[n].preco} | Qtd: ${carrinho[n].qtd}%0A`;
- });
- window.open('https://wa.me/5511999562721?text='+msg,'_blank');
-}
-
-function filtrar(){
- let f=document.getElementById('busca').value.toLowerCase();
- document.querySelectorAll('.produto').forEach(p=>{
-  let n=p.querySelector('.nome').innerText.toLowerCase();
-  p.style.display=n.includes(f)?'block':'none';
- });
-}
-</script>
+<div id="modal">
+  <h2>Carrinho</h2>
+  <div id="itens"></div>
+  <h3>Total: R$ <span id="totalFinal">0.00</span></h3>
+  <button onclick="finalizar()">Finalizar no WhatsApp</button>
+  <button onclick="fecharCarrinho()">Fechar</button>
+</div>
 
 <script>
-// Produtos carregados da planilha
-produtos.push({nome:`Chorizo Estância 92 Resfr.`,info:`Bovinos • Kilograma`,preco:`R$ 76,99`});
-produtos.push({nome:`Steak Chorizo Estância 92 Angus Resfr.`,info:`Bovinos • Kilograma`,preco:`R$ 82,99`});
-produtos.push({nome:`Picanha Estância 92 Resfr.`,info:`Picanhas Nacionais • Kilograma`,preco:`R$ 134,99`});
-produtos.push({nome:`Ling Cuiabana Suína Frigo Espanha 600gr Cong.`,info:`Linguiças Especiais • Unidade`,preco:`R$ 26,99`});
-produtos.push({nome:`Ling Requeijão, Cerveja e Bacon Specialli 400gr Cong.`,info:`Linguiças Especiais • Unidade`,preco:`R$ 39,99`});
-produtos.push({nome:`Ling Tex Mex (Cheddar & Pimenta Jalapeño) Specialli 400gr Cong.`,info:`Linguiças Especiais • Unidade`,preco:`R$ 39,99`});
-produtos.push({nome:`Ling Suína Pimenta Biquinho Frigo Espanha 600gr Cong.`,info:`Linguiças Especiais • Unidade`,preco:`R$ 22,99`});
-produtos.push({nome:`Espeto Queijo Coalho Quatá (7 espetos) Resfr.`,info:`Espetos Especiais • Unidade`,preco:`R$ 29,99`});
-produtos.push({nome:`Espeto Coração de Frango Temperado Kispeto 500gr Cong.`,info:`Espetos Especiais • Unidade`,preco:`R$ 34,99`});
-produtos.push({nome:`Espeto Mussarela Bolinha Defumada Coqueiros (5 espetos) Resfr.`,info:`Espetos Especiais • Unidade`,preco:`R$ 36,99`});
-produtos.push({nome:`Espeto Provolone Defumado Coqueiros (5 espetos) Resfr.`,info:`Espetos Especiais • Unidade`,preco:`R$ 36,99`});
-produtos.push({nome:`Espeto Medalhão Provolone com Bacon DaHora 350gr Cong.`,info:`Espetos Especiais • Unidade`,preco:`R$ 44,99`});
-produtos.push({nome:`Paleta de Cordeiro Estância 92 Cong.`,info:`Cordeiros • Kilograma`,preco:`R$ 87,99`});
-produtos.push({nome:`Filezinho Frango Empanado Baita 700gr Cong.`,info:`Dia-a-Dia • Unidade`,preco:`R$ 28,99`});
-produtos.push({nome:`Chicken de Frango Empanado Baita 700gr Cong.`,info:`Dia-a-Dia • Unidade`,preco:`R$ 19,99`});
-produtos.push({nome:`Picanha PAR Pul Resfr.`,info:`Picanhas Importadas • Kilograma`,preco:`R$ 79,99`});
-produtos.push({nome:`Filé de Merluza Pul 600gr Cong.`,info:`Dia-a-Dia • Unidade`,preco:`R$ 27,99`});
-produtos.push({nome:`Filé de Panga Pul 600gr Cong.`,info:`Dia-a-Dia • Unidade`,preco:`R$ 24,99`});
-produtos.push({nome:`Filé de Tilápia Pul 600gr Cong.`,info:`Dia-a-Dia • Unidade`,preco:`R$ 34,99`});
-produtos.push({nome:`Espeto Peito de Frango Temperado Kispeto 500gr Cong.`,info:`Espetos Especiais • Unidade`,preco:`R$ 26,99`});
-produtos.push({nome:`Filé de Salmão Chile Cong.`,info:`Pescados • Kilograma`,preco:`R$ 119,99`});
-produtos.push({nome:`Costelinha Suína Barbecue Cong.`,info:`Dia-a-Dia • Kilograma`,preco:`R$ 74,99`});
-produtos.push({nome:`Sardela 130gr`,info:`Molhos e Geléias • Unidade`,preco:`R$ 24,99`});
-produtos.push({nome:`Patê Alho Poró 130gr`,info:`Molhos e Geléias • Unidade`,preco:`R$ 21,99`});
-produtos.push({nome:`Patê Ervas Finas 130gr`,info:`Molhos e Geléias • Unidade`,preco:`R$ 21,99`});
-produtos.push({nome:`Patê Azeitonas 130gr`,info:`Molhos e Geléias • Unidade`,preco:`R$ 21,99`});
-produtos.push({nome:`Patê Cebola Com Mostarda 130gr`,info:`Molhos e Geléias • Unidade`,preco:`R$ 21,99`});
-produtos.push({nome:`Bife de Lombo de Cordeiro URU Nirea Cong.`,info:`Cordeiros • Kilograma`,preco:`R$ 167,99`});
-produtos.push({nome:`Entrecôte (Ancho) BBQ Secrets Grass Feed Resfr.`,info:`Bovinos • Kilograma`,preco:`R$ 81,99`});
-produtos.push({nome:`Prime Steak BBQ Secrets Angus Resfr.`,info:`Bovinos • Kilograma`,preco:`R$ 85,99`});
-produtos.push({nome:`Pão de Alho Tradicional Aurora 340gr Resfr.`,info:`Acompanhamentos • Unidade`,preco:`R$ 13,99`});
-produtos.push({nome:`Filezinho Sassami Aurora 1kg Cong.`,info:`Dia-a-Dia • Unidade`,preco:`R$ 28,99`});
-produtos.push({nome:`Molho Pesto De Manjericão 130gr`,info:`Molhos e Geléias • Unidade`,preco:`R$ 24,99`});
-produtos.push({nome:`Peito de Frango Cozido Desfiado Aurora 360gr Cong.`,info:`Dia-a-Dia • Unidade`,preco:`R$ 17,99`});
-produtos.push({nome:`Meio da Asa (Tulipa) Temperada Aurora 800gr Cong.`,info:`Dia-a-Dia • Unidade`,preco:`R$ 26,99`});
-produtos.push({nome:`Coxinha da Asa Temperada Aurora 800gr Cong.`,info:`Dia-a-Dia • Unidade`,preco:`R$ 20,99`});
-produtos.push({nome:`Pão de Alho Santa Massa Tradicional 400g Resfr.`,info:`Acompanhamentos • Unidade`,preco:`R$ 17,99`});
-produtos.push({nome:`Picanha 481 Cong.`,info:`Picanhas Nacionais • Kilograma`,preco:`R$ 264,99`});
-produtos.push({nome:`Espeto Medalhão Romeu & Julieta (Queijo com Goiabada) DaHora 450gr Cong.`,info:`Espetos Especiais • Unidade`,preco:`R$ 42,99`});
-produtos.push({nome:`Ling Cuiabana Bovina Frigo Espanha 600gr Cong.`,info:`Linguiças Especiais • Unidade`,preco:`R$ 27,99`});
-produtos.push({nome:`Ling Cuiabana Frango Frigo Espanha 600gr Cong.`,info:`Linguiças Especiais • Unidade`,preco:`R$ 25,99`});
-produtos.push({nome:`Espeto Kafta Bovina Frigo Espanha 600gr Cong.`,info:`Espetos Especiais • Unidade`,preco:`R$ 31,99`});
-produtos.push({nome:`Espeto Kafta Bovina com Queijo Frigo Espanha (5 espetos) Cong.`,info:`Espetos Especiais • Unidade`,preco:`R$ 33,99`});
-produtos.push({nome:`Acendedor Da Hora`,info:`Acessórios • Unidade`,preco:`R$ 1,99`});
-produtos.push({nome:`Alho Crocante Gonzalo 100gr`,info:`Molhos e Geléias • Unidade`,preco:`R$ 28,99`});
-produtos.push({nome:`Aluminio Wyda 30cm x 4mt`,info:`Acessórios • Unidade`,preco:`R$ 4,99`});
-produtos.push({nome:`Azeite Alma Lusa 500ml`,info:`Temperos • Unidade`,preco:`R$ 35,99`});
-produtos.push({nome:`Carvão Prime 2kg`,info:`Acessórios • Unidade`,preco:`R$ 16,99`});
-produtos.push({nome:`Carvão Prime 4kg`,info:`Acessórios • Unidade`,preco:`R$ 31,99`});
-produtos.push({nome:`Dry Rub Redneck Gonzalo 250gr`,info:`Temperos • Unidade`,preco:`R$ 34,99`});
-produtos.push({nome:`Farofa Picante Churrasquero 200gr`,info:`Farofas • Unidade`,preco:`R$ 9,99`});
-produtos.push({nome:`Farofa Torresmo Churrasquero 200gr`,info:`Farofas • Unidade`,preco:`R$ 9,99`});
-produtos.push({nome:`Farofa Tradicional Churrasquero 200gr`,info:`Farofas • Unidade`,preco:`R$ 9,99`});
-produtos.push({nome:`Filme de PVC Wyda 28cm x 15mt`,info:`Acessórios • Unidade`,preco:`R$ 5,49`});
-produtos.push({nome:`Fósforo Longo Fiat Lux 200un`,info:`Acessórios • Unidade`,preco:`R$ 5,49`});
-produtos.push({nome:`Fumaça Líquida Spray Gonzalo 150ml`,info:`Temperos • Unidade`,preco:`R$ 23,99`});
-produtos.push({nome:`Gel Acendedor Luar Fire 440gr`,info:`Acessórios • Unidade`,preco:`R$ 9,99`});
-produtos.push({nome:`Molho Chimichurri Gonzalo 200gr`,info:`Molhos e Geléias • Unidade`,preco:`R$ 34,99`});
-produtos.push({nome:`Molho Hortelã Nonna Pasqua 130gr`,info:`Molhos e Geléias • Unidade`,preco:`R$ 23,99`});
-produtos.push({nome:`Molho Pimenta Buffalo Sauce Gonzalo 280gr`,info:`Molhos e Geléias • Unidade`,preco:`R$ 27,99`});
-produtos.push({nome:`Molho Pimenta Cana Quente Gonzalo 280gr`,info:`Molhos e Geléias • Unidade`,preco:`R$ 27,99`});
-produtos.push({nome:`Molho Pimenta Chimi Chilli Gonzalo 280gr`,info:`Molhos e Geléias • Unidade`,preco:`R$ 27,99`});
-produtos.push({nome:`Molho Pimenta Pico de Gallo Gonzalo 280gr`,info:`Molhos e Geléias • Unidade`,preco:`R$ 27,99`});
-produtos.push({nome:`Molho Salsa Mexicana Gonzalo 230gr`,info:`Molhos e Geléias • Unidade`,preco:`R$ 38,99`});
-produtos.push({nome:`Shoyu Defumado Spray Gonzalo 150ml`,info:`Temperos • Unidade`,preco:`R$ 18,99`});
-produtos.push({nome:`Hambúrguer Costela Angus Cara Preta 360gr Cong.`,info:`Hambúrguer • Unidade`,preco:`R$ 24,99`});
-produtos.push({nome:`Hambúrguer Brisket Angus Cara Preta 360gr Cong.`,info:`Hambúrguer • Unidade`,preco:`R$ 24,99`});
-produtos.push({nome:`Hambúrguer Tradicional Angus Cara Preta 120gr Cong.`,info:`Hambúrguer • Unidade`,preco:`R$ 8,99`});
-produtos.push({nome:`Hambúrguer Tradicional Angus Cara Preta 360gr Cong.`,info:`Hambúrguer • Unidade`,preco:`R$ 23,99`});
-produtos.push({nome:`Ling Costela Bovina Cara Preta 300gr Cong.`,info:`Linguiças Especiais • Unidade`,preco:`R$ 16,99`});
-produtos.push({nome:`Molho Chimichurri Tradicional Trend 330gr`,info:`Molhos e Geléias • Unidade`,preco:`R$ 28,99`});
-produtos.push({nome:`Molho Chimichurri Picante Trend 330gr`,info:`Molhos e Geléias • Unidade`,preco:`R$ 28,99`});
-produtos.push({nome:`Antepasto de Beringela Iscas 130gr`,info:`Molhos e Geléias • Unidade`,preco:`R$ 17,99`});
-produtos.push({nome:`Sal de Parrilla Tradicional Churrasquero 450gr`,info:`Temperos • Unidade`,preco:`R$ 14,99`});
-produtos.push({nome:`Sal de Parrilla Chimichurri Churrasquero 450gr`,info:`Temperos • Unidade`,preco:`R$ 13,99`});
-produtos.push({nome:`Sal de Parrilla Alho Granulado Churrasquero 450gr`,info:`Temperos • Unidade`,preco:`R$ 13,99`});
-produtos.push({nome:`Sal de Parrilla Pimenta Churrasquero 450gr`,info:`Temperos • Unidade`,preco:`R$ 13,99`});
-produtos.push({nome:`Sal Grosso Lebre 1kg`,info:`Temperos • Unidade`,preco:`R$ 5,49`});
-produtos.push({nome:`Ling Suína Toscana Frigo Espanha 600gr Cong.`,info:`Linguiças Especiais • Unidade`,preco:`R$ 19,99`});
-produtos.push({nome:`Ling Pernil Cordeiro Tradicional Cara Preta 300gr Cong.`,info:`Linguiças Especiais • Unidade`,preco:`R$ 23,99`});
-produtos.push({nome:`Hambúrguer Costela Angus Cara Preta 120gr Cong.`,info:`Hambúrguer • Unidade`,preco:`R$ 8,99`});
-produtos.push({nome:`Fraldinha Estância 92 Resfr.`,info:`Bovinos • Kilograma`,preco:`R$ 69,99`});
-produtos.push({nome:`Baby Beef Cabaña Las Lilas Resfr.`,info:`Bovinos • Kilograma`,preco:`R$ 69,99`});
-produtos.push({nome:`Lasanha Bolonhesa Perdigão 600gr Cong.`,info:`Dia-a-Dia • Unidade`,preco:`R$ 18,99`});
-produtos.push({nome:`Meio da Asa (Tulipa) Sadia 1kg Cong.`,info:`Dia-a-Dia • Unidade`,preco:`R$ 28,99`});
-produtos.push({nome:`Maminha Estância 92 Resfr.`,info:`Bovinos • Kilograma`,preco:`R$ 62,99`});
-produtos.push({nome:`Bolinho de Bacalhau Ribera Alves 300gr Cong.`,info:`Dia-a-Dia • Unidade`,preco:`R$ 25,99`});
-produtos.push({nome:`Iscas de Panga Empanado Baita 700gr Cong.`,info:`Dia-a-Dia • Unidade`,preco:`R$ 39,99`});
-produtos.push({nome:`Ling Parmesão e Rúcula Specialli 400gr Cong.`,info:`Linguiças Especiais • Unidade`,preco:`R$ 39,99`});
-produtos.push({nome:`Ling Bovina 4 Queijos Frigo Espanha 600gr Cong.`,info:`Linguiças Especiais • Unidade`,preco:`R$ 29,99`});
-produtos.push({nome:`Ling de Frango Mineira Specialli 300gr Cong.`,info:`Linguiças Especiais • Unidade`,preco:`R$ 29,99`});
-produtos.push({nome:`Shoulder Steak Estância 92 Resfr.`,info:`Bovinos • Kilograma`,preco:`R$ 95,99`});
-produtos.push({nome:`Panceta Suína Aurora Premium Cong.`,info:`Suínos • Kilograma`,preco:`R$ 45,99`});
-produtos.push({nome:`Meio da Asa (Tulipa) Sweet Chilli Aurora Premium 800gr Cong.`,info:`Dia-a-Dia • Unidade`,preco:`R$ 29,99`});
-produtos.push({nome:`Copo Eisenhugel`,info:`Acessórios • Unidade`,preco:`R$ 39,00`});
-produtos.push({nome:`Torresmo Santa Massa 40gr`,info:`Snacks • Unidade`,preco:`R$ 8,99`});
-produtos.push({nome:`Coxinha da Asa Aurora Premium Apimentada 800gr Cong.`,info:`Dia-a-Dia • Unidade`,preco:`R$ 18,99`});
-produtos.push({nome:`Filé de Sobrecoxa Aurora Premium Chimichurri 800gr Cong.`,info:`Dia-a-Dia • Unidade`,preco:`R$ 21,99`});
-produtos.push({nome:`Picanha Dom Glutão Extra Resfr.`,info:`Picanhas Nacionais • Kilograma`,preco:`R$ 93,99`});
-produtos.push({nome:`Cerveja Eisenhugel English IPA 500ml`,info:`Bebidas • Unidade`,preco:`R$ 22,99`});
-produtos.push({nome:`Coração de Frango Aurora Bandeja 1kg Cong.`,info:`Dia-a-Dia • Unidade`,preco:`R$ 37,99`});
-produtos.push({nome:`Melado De Cana Carolina Black 300ml`,info:`Molhos e Geléias • Unidade`,preco:`R$ 36,99`});
-produtos.push({nome:`Espeto Carne Bovina Tudo Em Carnes 600gr Cong.`,info:`Espetos Especiais • Unidade`,preco:`R$ 43,99`});
-produtos.push({nome:`Espeto Panceta Suína Tudo Em Carnes 600gr Cong.`,info:`Espetos Especiais • Unidade`,preco:`R$ 42,99`});
-produtos.push({nome:`Espeto Frango com Bacon Tudo Em Carnes 500gr Cong.`,info:`Espetos Especiais • Unidade`,preco:`R$ 49,99`});
-produtos.push({nome:`Torresmo De Rolo Aurora Premium Cong.`,info:`Suínos • Kilograma`,preco:`R$ 64,99`});
-produtos.push({nome:`Bananinha Dom Glutão Classic Line Resfr.`,info:`Bovinos • Kilograma`,preco:`R$ 59,99`});
-produtos.push({nome:`Picanha Oranges Especial Resfr.`,info:`Picanhas Nacionais • Kilograma`,preco:`R$ 109,99`});
-produtos.push({nome:`Picanha URU Las Piedras Family Selection Cong.`,info:`Picanhas Importadas • Kilograma`,preco:`R$ 239,99`});
-produtos.push({nome:`Picanha Suína Perdigão Na Brasa Cong.`,info:`Suínos • Kilograma`,preco:`R$ 43,99`});
-produtos.push({nome:`Entrecôte (Ancho) Estância 92 Angus Resfr.`,info:`Bovinos • Kilograma`,preco:`R$ 119,99`});
-produtos.push({nome:`Brocolis Nova Mesa 2kg Cong.`,info:`Legumes & Vegetais • Unidade`,preco:`R$ 38,99`});
-produtos.push({nome:`Couve Flor Nova Mesa 2kg Cong.`,info:`Legumes & Vegetais • Unidade`,preco:`R$ 33,99`});
-produtos.push({nome:`Seleta de Legumes Nova Mesa 2kg Cong.`,info:`Legumes & Vegetais • Unidade`,preco:`R$ 36,99`});
-produtos.push({nome:`Frango Passarinho Aurora 800gr Cong.`,info:`Dia-a-Dia • Unidade`,preco:`R$ 18,99`});
-produtos.push({nome:`Picanha Suína Temperada Aurora Cong.`,info:`Suínos • Kilograma`,preco:`R$ 41,99`});
-produtos.push({nome:`Coxa e Sobrecoxa Aurora Cong.`,info:`Dia-a-Dia • Kilograma`,preco:`R$ 13,59`});
-produtos.push({nome:`Ling Suína Toscana Sadia 700gr Cong.`,info:`Linguiças Especiais • Unidade`,preco:`R$ 27,99`});
-produtos.push({nome:`Alho Inteiro Campos Del Plata 1,05kg Cong.`,info:`Legumes & Vegetais • Unidade`,preco:`R$ 29,99`});
-produtos.push({nome:`Cenoura Fatiada Campos Del Plata 1,05kg Cong.`,info:`Legumes & Vegetais • Unidade`,preco:`R$ 13,99`});
-produtos.push({nome:`Vagem Campos Del Plata 1,05kg Cong.`,info:`Legumes & Vegetais • Unidade`,preco:`R$ 19,99`});
-produtos.push({nome:`Abacaxi Campos Del Plata 1,05kg Cong.`,info:`Frutas • Unidade`,preco:`R$ 23,99`});
-produtos.push({nome:`Amora Campos Del Plata 1,05kg Cong.`,info:`Frutas • Unidade`,preco:`R$ 33,99`});
-produtos.push({nome:`Pessego Campos Del Plata 1,05kg Cong.`,info:`Frutas • Unidade`,preco:`R$ 24,99`});
-produtos.push({nome:`Morango Campos Del Plata 1,05kg Cong.`,info:`Frutas • Unidade`,preco:`R$ 20,99`});
-produtos.push({nome:`Picanha ARG Alabrasa Cong.`,info:`Picanhas Importadas • Kilograma`,preco:`R$ 184,99`});
-produtos.push({nome:`Picanha URU Steakhouse Cong.`,info:`Picanhas Importadas • Kilograma`,preco:`R$ 114,99`});
-produtos.push({nome:`Kani Kama Seapro 250gr Cong.`,info:`Dia-a-Dia • Unidade`,preco:`R$ 7,99`});
-produtos.push({nome:`Ling Suína Apimentada Nutibras 500gr Cong.`,info:`Linguiças Especiais • Unidade`,preco:`R$ 18,99`});
-produtos.push({nome:`Picanha ARG Pul Selection Cong.`,info:`Picanhas Importadas • Kilograma`,preco:`R$ 127,99`});
-produtos.push({nome:`Patê Quatro Queijos 130gr`,info:`Molhos e Geléias • Unidade`,preco:`R$ 21,99`});
-produtos.push({nome:`Alcatra (Picanha) de Cordeiro Estância 92 Cong.`,info:`Cordeiros • Kilograma`,preco:`R$ 124,99`});
-produtos.push({nome:`Alga Marinha Ocean Treasure 10FL`,info:`Dia-a-Dia • Unidade`,preco:`R$ 20,99`});
-produtos.push({nome:`Bolinho de Salmão 320gr Cong.`,info:`Dia-a-Dia • Unidade`,preco:`R$ 27,99`});
-produtos.push({nome:`Camarão 7 Barbas Descascado Mar & Rio 400gr Cong.`,info:`Pescados • Unidade`,preco:`R$ 41,99`});
-produtos.push({nome:`Chá Verde Limão Siciliano Com Hortelã YAI 1L`,info:`Bebidas • Unidade`,preco:`R$ 11,99`});
-produtos.push({nome:`Chá Verde Laranja Com Gengibre YAI 1L`,info:`Bebidas • Unidade`,preco:`R$ 11,99`});
-produtos.push({nome:`Chá Verde Frutas Vermelhas YAI 1L`,info:`Bebidas • Unidade`,preco:`R$ 11,99`});
-produtos.push({nome:`Chá Verde Jabuticaba YAI 1L`,info:`Bebidas • Unidade`,preco:`R$ 11,99`});
-produtos.push({nome:`Clip Hashi Mix Color Taichi`,info:`Acessórios • Unidade`,preco:`R$ 0,50`});
-produtos.push({nome:`Couve Flor Pratigel 1,020kg Cong.`,info:`Legumes & Vegetais • Unidade`,preco:`R$ 21,99`});
-produtos.push({nome:`Coxinha de Camarão 320gr Cong.`,info:`Dia-a-Dia • Unidade`,preco:`R$ 27,99`});
-produtos.push({nome:`Croquete de Atum 320gr Cong.`,info:`Dia-a-Dia • Unidade`,preco:`R$ 27,99`});
-produtos.push({nome:`Hashi Bambu Redondo 4.5 Ganesh`,info:`Acessórios • Unidade`,preco:`R$ 0,50`});
-produtos.push({nome:`Sachê De Wasabi Em Pasta 2,5gr Taichi`,info:`Molhos e Geléias • Unidade`,preco:`R$ 0,50`});
-produtos.push({nome:`Shoyu Tradicional Mitsuwa 250ml`,info:`Molhos e Geléias • Unidade`,preco:`R$ 13,99`});
-produtos.push({nome:`Alho Dourado Crocante Soul Chef 200gr`,info:`Dia-a-Dia • Unidade`,preco:`R$ 29,99`});
-produtos.push({nome:`Risoto De Funghi Secchi Cookit 260gr`,info:`Dia-a-Dia • Unidade`,preco:`R$ 39,99`});
-produtos.push({nome:`Risoto De Tomate Seco, Alho Poró e Manjericão Cookit 260gr`,info:`Dia-a-Dia • Unidade`,preco:`R$ 39,99`});
-produtos.push({nome:`Risoto De Beterraba Com Alecrim Cookit 260gr`,info:`Dia-a-Dia • Unidade`,preco:`R$ 39,99`});
-produtos.push({nome:`Risoto De Abobrinha Com Lemon Pepper Cookit 260gr`,info:`Dia-a-Dia • Unidade`,preco:`R$ 39,99`});
-produtos.push({nome:`Risoto De Damasco Com Castanha do Brasil Cookit 260gr`,info:`Dia-a-Dia • Unidade`,preco:`R$ 39,99`});
-produtos.push({nome:`Queijo Mozzarella Cerejinha Bufalat 500gr`,info:`Laticinios & Charcutaria • Unidade`,preco:`R$ 33,99`});
-produtos.push({nome:`Queijo Mozzarella Bocconcini Bufalat 500gr`,info:`Laticinios & Charcutaria • Unidade`,preco:`R$ 33,99`});
-produtos.push({nome:`Queijo Mozzarella Bocconcini Defumado Bufalat 500gr`,info:`Laticinios & Charcutaria • Unidade`,preco:`R$ 33,99`});
-produtos.push({nome:`Queijo Tipo Burrata Bufalat Pote 190gr`,info:`Laticinios & Charcutaria • Unidade`,preco:`R$ 33,99`});
-produtos.push({nome:`Queijo Tipo Pallone de Gravina Bufalat`,info:`Laticinios & Charcutaria • Kilograma`,preco:`R$ 129,99`});
-produtos.push({nome:`Queijo Tipo Caccio Cavalo Bufalat`,info:`Laticinios & Charcutaria • Kilograma`,preco:`R$ 129,99`});
-produtos.push({nome:`Costela Suína Em Tira Sadia Cong.`,info:`Suínos • Kilograma`,preco:`R$ 28,99`});
-produtos.push({nome:`Sal de Parrilla Cordeiro Gonzalo 500gr`,info:`Temperos • Unidade`,preco:`R$ 26,99`});
-produtos.push({nome:`Empada De Palmito Eccellenza (10 unidades)`,info:`Dia-a-Dia • Unidade`,preco:`R$ 34,99`});
-produtos.push({nome:`Empada De Frango Com Requeijão Eccellenza (10 unidades)`,info:`Dia-a-Dia • Unidade`,preco:`R$ 34,99`});
-produtos.push({nome:`Nhoque Tradicional Eccellenza 500gr`,info:`Massas • Unidade`,preco:`R$ 13,99`});
-produtos.push({nome:`Nhoque Recheado Eccellenza Com Queijo 500gr`,info:`Massas • Unidade`,preco:`R$ 21,99`});
-produtos.push({nome:`Ling Gorgonzola Specialli 400gr Cong.`,info:`Linguiças Especiais • Unidade`,preco:`R$ 39,99`});
-produtos.push({nome:`Salsicha Com Queijo Kasewurst Specialli 320gr Resfr.`,info:`Laticinios & Charcutaria • Unidade`,preco:`R$ 34,99`});
-produtos.push({nome:`Salsicha De Carne Bovina All Beef Specialli 290gr Resfr.`,info:`Laticinios & Charcutaria • Unidade`,preco:`R$ 36,99`});
-produtos.push({nome:`Salame Fatiado Specialli 100gr`,info:`Laticinios & Charcutaria • Unidade`,preco:`R$ 15,99`});
-produtos.push({nome:`Culatello Fatiado Specialli 100gr`,info:`Laticinios & Charcutaria • Unidade`,preco:`R$ 26,99`});
-produtos.push({nome:`Ketchup Specialli 200ml`,info:`Molhos e Geléias • Unidade`,preco:`R$ 18,99`});
-produtos.push({nome:`Mostarda Amarela Specialli 200ml`,info:`Molhos e Geléias • Unidade`,preco:`R$ 18,99`});
-produtos.push({nome:`Molho American Burguer Specialli 200ml`,info:`Molhos e Geléias • Unidade`,preco:`R$ 18,99`});
-produtos.push({nome:`Salsicha Com Alho Specialli 220gr`,info:`Laticinios & Charcutaria • Unidade`,preco:`R$ 19,99`});
-produtos.push({nome:`Pastrami de Picanha Specialli 100gr`,info:`Laticinios & Charcutaria • Unidade`,preco:`R$ 29,99`});
-produtos.push({nome:`Pão de Alho Santa Massa Picante 400g Resfr.`,info:`Acompanhamentos • Unidade`,preco:`R$ 17,99`});
-produtos.push({nome:`Cottage Tirolez 200gr`,info:`Laticinios & Charcutaria • Unidade`,preco:`R$ 16,99`});
-produtos.push({nome:`Requeijão Cremoso Tirolez 200gr`,info:`Laticinios & Charcutaria • Unidade`,preco:`R$ 9,99`});
-produtos.push({nome:`Provolonete Tirolez 335gr`,info:`Laticinios & Charcutaria • Unidade`,preco:`R$ 54,99`});
-produtos.push({nome:`Brie Fracionado Tirolez 125gr`,info:`Laticinios & Charcutaria • Unidade`,preco:`R$ 25,99`});
-produtos.push({nome:`Gouda Fracionado Tirolez`,info:`Laticinios & Charcutaria • Kilograma`,preco:`R$ 184,99`});
-produtos.push({nome:`Manteiga Com Sal Tirolez 200gr`,info:`Laticinios & Charcutaria • Unidade`,preco:`R$ 17,99`});
-produtos.push({nome:`Manteiga Sem Sal Tirolez 200gr`,info:`Laticinios & Charcutaria • Unidade`,preco:`R$ 17,99`});
-produtos.push({nome:`Creme De Ricota Tirolez 370gr`,info:`Laticinios & Charcutaria • Unidade`,preco:`R$ 17,99`});
-produtos.push({nome:`Mussarela Fatiada Tirolez 150gr`,info:`Laticinios & Charcutaria • Unidade`,preco:`R$ 12,99`});
-produtos.push({nome:`Prato Fatiado Tirolez 150gr`,info:`Laticinios & Charcutaria • Unidade`,preco:`R$ 12,99`});
-produtos.push({nome:`Requeijão Zero Lactose Tirolez 200gr`,info:`Laticinios & Charcutaria • Unidade`,preco:`R$ 11,99`});
-produtos.push({nome:`Mussarela Fatiada Zero Lactose Tirolez 150gr`,info:`Laticinios & Charcutaria • Unidade`,preco:`R$ 14,99`});
-produtos.push({nome:`Assadeira Mello 4L`,info:`Acessórios • Unidade`,preco:`R$ 7,99`});
-produtos.push({nome:`Passata Pomodoro Piatto Sapore 680gr`,info:`Molhos e Geléias • Unidade`,preco:`R$ 22,99`});
-produtos.push({nome:`Salgadinho Takis Fuego 90gr`,info:`Snacks • Unidade`,preco:`R$ 9,20`});
-produtos.push({nome:`Açucar Demerara Organico Native 1kg`,info:`Temperos • Unidade`,preco:`R$ 8,49`});
-produtos.push({nome:`Macarrão Yakissoba Da Roz 500gr`,info:`Massas • Unidade`,preco:`R$ 9,99`});
-produtos.push({nome:`Gatorade Sabor Limão 500ml`,info:`Bebidas • Unidade`,preco:`R$ 7,99`});
-produtos.push({nome:`Gatorade Sabor Laranja 500ml`,info:`Bebidas • Unidade`,preco:`R$ 7,99`});
-produtos.push({nome:`Vinagre De Alcool Vitalia 750ml`,info:`Temperos • Unidade`,preco:`R$ 2,49`});
-produtos.push({nome:`Cerveja Heineken Long Neck 330ml`,info:`Bebidas • Unidade`,preco:`R$ 10,99`});
-produtos.push({nome:`Cerveja Corona Long Neck 330ml`,info:`Bebidas • Unidade`,preco:`R$ 11,99`});
-produtos.push({nome:`Água Tônica Antartica 350ml`,info:`Bebidas • Unidade`,preco:`R$ 5,49`});
-produtos.push({nome:`Água Sem Gás Cristal 510ml`,info:`Bebidas • Unidade`,preco:`R$ 1,99`});
-produtos.push({nome:`Água Com Gás Cristal 510ml`,info:`Bebidas • Unidade`,preco:`R$ 2,49`});
-produtos.push({nome:`Cerveja Heineken 0,0% Long Neck 330ml`,info:`Bebidas • Unidade`,preco:`R$ 11,99`});
-produtos.push({nome:`Cerveja Stella Artois Long Neck 330ml`,info:`Bebidas • Unidade`,preco:`R$ 10,99`});
-produtos.push({nome:`Coca Cola Lata 350ml`,info:`Bebidas • Unidade`,preco:`R$ 5,49`});
-produtos.push({nome:`Fanta Laranja Lata 350ml`,info:`Bebidas • Unidade`,preco:`R$ 4,49`});
-produtos.push({nome:`Guaraná Antartica Lata 350ml`,info:`Bebidas • Unidade`,preco:`R$ 4,99`});
-produtos.push({nome:`Soda Antartica Lata 350ml`,info:`Bebidas • Unidade`,preco:`R$ 4,99`});
-produtos.push({nome:`Itubaina Retrô Long Neck 355ml`,info:`Bebidas • Unidade`,preco:`R$ 4,99`});
-produtos.push({nome:`Saquê Kyoday 750ml`,info:`Bebidas • Unidade`,preco:`R$ 18,99`});
-produtos.push({nome:`Campari 748ml`,info:`Bebidas • Unidade`,preco:`R$ 59,99`});
-produtos.push({nome:`Macarrão Padre Nosso Com Ovos Camil 500gr`,info:`Massas • Unidade`,preco:`R$ 4,99`});
-produtos.push({nome:`Copo Descartável 200ml (100 un)`,info:`Acessórios • Unidade`,preco:`R$ 8,49`});
-produtos.push({nome:`Espeto de Bambu 25cm (50un)`,info:`Utensílios • Unidade`,preco:`R$ 6,49`});
-produtos.push({nome:`Macarrão Penne Com Ovos Camil 500gr`,info:`Massas • Unidade`,preco:`R$ 4,99`});
-produtos.push({nome:`Macarrão Parafuso Sêmola Camil 500gr`,info:`Massas • Unidade`,preco:`R$ 4,99`});
-produtos.push({nome:`Papel Manteiga 30cm x 7,5mt`,info:`Utensílios • Unidade`,preco:`R$ 5,49`});
-produtos.push({nome:`Aluminio 45cm x 4mt`,info:`Utensílios • Unidade`,preco:`R$ 9,99`});
-produtos.push({nome:`Espeto Duplo de Aço Mor`,info:`Utensílios • Unidade`,preco:`R$ 13,99`});
-produtos.push({nome:`Espeto Simples de Aço Mor`,info:`Utensílios • Unidade`,preco:`R$ 15,99`});
-produtos.push({nome:`Papel Toalha Trópicos 2x50 (100 Folhas)`,info:`Acessórios • Unidade`,preco:`R$ 5,49`});
-produtos.push({nome:`Arroz Oriental Inari Solito 1kg`,info:`Dia-a-Dia • Unidade`,preco:`R$ 11,49`});
-produtos.push({nome:`Gatorade Sabor Uva 500ml`,info:`Bebidas • Unidade`,preco:`R$ 7,99`});
-produtos.push({nome:`Suco Del Valle Sabor Pêssego 290ml`,info:`Bebidas • Unidade`,preco:`R$ 5,99`});
-produtos.push({nome:`Suco Del Valle Sabor Maracuja 290ml`,info:`Bebidas • Unidade`,preco:`R$ 5,99`});
-produtos.push({nome:`Suco Del Valle Sabor Uva 290ml`,info:`Bebidas • Unidade`,preco:`R$ 5,99`});
-produtos.push({nome:`Suco Del Valle Sabor Manga 290ml`,info:`Bebidas • Unidade`,preco:`R$ 5,99`});
-produtos.push({nome:`Suco Del Valle Sabor Goiaba 290ml`,info:`Bebidas • Unidade`,preco:`R$ 5,99`});
-produtos.push({nome:`Beats Senses 269ml`,info:`Bebidas • Unidade`,preco:`R$ 9,99`});
-produtos.push({nome:`Beats Red 269ml`,info:`Bebidas • Unidade`,preco:`R$ 9,99`});
-produtos.push({nome:`Vinho Casillero Del Diablo Merlot 760ml`,info:`Bebidas • Unidade`,preco:`R$ 59,99`});
-produtos.push({nome:`Vinho Casillero Del Diablo Carmenere 760ml`,info:`Bebidas • Unidade`,preco:`R$ 59,99`});
-produtos.push({nome:`Vinho Casillero Del Diablo Cabernet Sauvignon 760ml`,info:`Bebidas • Unidade`,preco:`R$ 59,99`});
-produtos.push({nome:`Vinho Casillero Del Diablo Malbec 760ml`,info:`Bebidas • Unidade`,preco:`R$ 59,99`});
-produtos.push({nome:`Espumante Salton Prosecco Rosé 750ml`,info:`Bebidas • Unidade`,preco:`R$ 69,99`});
-produtos.push({nome:`Espumante Salton Prosecco Blanc 750ml`,info:`Bebidas • Unidade`,preco:`R$ 69,99`});
-produtos.push({nome:`Espumante Salton Brut Blanc 750ml`,info:`Bebidas • Unidade`,preco:`R$ 69,99`});
-produtos.push({nome:`Espumante Salton Demi-Sec Blanc 750ml`,info:`Bebidas • Unidade`,preco:`R$ 69,99`});
-produtos.push({nome:`Espumante Salton Moscatel Blanc 750ml`,info:`Bebidas • Unidade`,preco:`R$ 69,99`});
-produtos.push({nome:`Energético Red Bull Melância 250ml`,info:`Bebidas • Unidade`,preco:`R$ 9,99`});
-produtos.push({nome:`Vodka Smirnoff 998ml`,info:`Bebidas • Unidade`,preco:`R$ 49,99`});
-produtos.push({nome:`Vodka Absolute 1L`,info:`Bebidas • Unidade`,preco:`R$ 109,99`});
-produtos.push({nome:`Whiskey Jack Daniels Tradicional 1L`,info:`Bebidas • Unidade`,preco:`R$ 179,99`});
-produtos.push({nome:`Whiskey Jack Daniels Honey 1L`,info:`Bebidas • Unidade`,preco:`R$ 179,99`});
-produtos.push({nome:`Whisky Johnnie Walker Black Laber 1L`,info:`Bebidas • Unidade`,preco:`R$ 199,99`});
-produtos.push({nome:`Gin Beefeater Tradicional 750ml`,info:`Bebidas • Unidade`,preco:`R$ 109,99`});
-produtos.push({nome:`Gin Beefeater Blackberry 700ml`,info:`Bebidas • Unidade`,preco:`R$ 119,99`});
-produtos.push({nome:`Espumante Salton Moscato Blanc Zero Alcool 750ml`,info:`Bebidas • Unidade`,preco:`R$ 69,99`});
-produtos.push({nome:`Ovos Caipira Bandeja 12un`,info:`Dia-a-Dia • Unidade`,preco:`R$ 19,99`});
-produtos.push({nome:`Molho de Pimenta Especial Fogo Mineiro 60ml`,info:`Molhos e Geléias • Unidade`,preco:`R$ 11,99`});
-produtos.push({nome:`Molho de Pimenta Trinidad Scorpion Fogo Mineiro 60ml`,info:`Molhos e Geléias • Unidade`,preco:`R$ 17,99`});
-produtos.push({nome:`Molho de Pimenta Bhut Jolokia Fogo Mineiro 60ml`,info:`Molhos e Geléias • Unidade`,preco:`R$ 11,99`});
-produtos.push({nome:`Molho de Pimenta Habanero Fogo Mineiro 60ml`,info:`Molhos e Geléias • Unidade`,preco:`R$ 11,99`});
-produtos.push({nome:`Molho de Pimenta Cayena Fogo Mineiro 60ml`,info:`Molhos e Geléias • Unidade`,preco:`R$ 11,99`});
-produtos.push({nome:`Molho de Pimenta Cumari Fogo Mineiro 60ml`,info:`Molhos e Geléias • Unidade`,preco:`R$ 11,99`});
-produtos.push({nome:`Molho de Pimenta Carolina Reaper Fogo Mineiro 60ml`,info:`Molhos e Geléias • Unidade`,preco:`R$ 17,99`});
-produtos.push({nome:`Geléia de Pimenta Fogo Mineiro 200gr`,info:`Molhos e Geléias • Unidade`,preco:`R$ 16,99`});
-produtos.push({nome:`Geléia de Pimenta Defumada Fogo Mineiro 200gr`,info:`Molhos e Geléias • Unidade`,preco:`R$ 16,99`});
-produtos.push({nome:`Pimenta Malagueta Verde em Conserva Fogo Mineiro 200gr`,info:`Conservas • Unidade`,preco:`R$ 11,99`});
-produtos.push({nome:`Pimenta Cumari do Pará em Conserva Fogo Mineiro 200gr`,info:`Conservas • Unidade`,preco:`R$ 11,99`});
-produtos.push({nome:`Pimenta Cumari Verde em Conserva Fogo Mineiro 200gr`,info:`Conservas • Unidade`,preco:`R$ 11,99`});
-produtos.push({nome:`Pimenta Cumari em Conserva Fogo Mineiro 200gr`,info:`Conservas • Unidade`,preco:`R$ 11,99`});
-produtos.push({nome:`Pimenta Malagueta em Conserva Fogo Mineiro 200gr`,info:`Conservas • Unidade`,preco:`R$ 11,99`});
-produtos.push({nome:`Kit Pimentas (6 Pimentas x 60gr)`,info:`Molhos e Geléias • Unidade`,preco:`R$ 64,99`});
-produtos.push({nome:`Filé de Salmão Resfr.`,info:`Pescados • Kilograma`,preco:`R$ 119,99`});
-produtos.push({nome:`Filé de Tilápia Resfr.`,info:`Pescados • Kilograma`,preco:`R$ 79,99`});
-produtos.push({nome:`Sashimi de Misto Dumar 400gr Resfr.`,info:`Pescados • Unidade`,preco:`R$ 49,99`});
-produtos.push({nome:`Sashimi de Salmão Dumar 400gr Resfr.`,info:`Pescados • Unidade`,preco:`R$ 49,99`});
-produtos.push({nome:`Abobora Cabotiá Pedaços Resfr.`,info:`Legumes & Vegetais • Unidade`,preco:`R$ 4,99`});
-produtos.push({nome:`Cenoura Ralada Resfr.`,info:`Legumes & Vegetais • Unidade`,preco:`R$ 4,99`});
-produtos.push({nome:`Couve Manteiga Fatiada Resfr.`,info:`Legumes & Vegetais • Unidade`,preco:`R$ 4,99`});
-produtos.push({nome:`Repolho Roxo Fatiado Resfr.`,info:`Legumes & Vegetais • Unidade`,preco:`R$ 4,99`});
-produtos.push({nome:`Repolho Branco Fatiado Resfr.`,info:`Legumes & Vegetais • Unidade`,preco:`R$ 4,99`});
-produtos.push({nome:`Acelga Fatiada Resfr.`,info:`Legumes & Vegetais • Unidade`,preco:`R$ 4,99`});
-produtos.push({nome:`Moedor Sal do Himalaia Tradicional 90gr Soul Chef`,info:`Temperos • Unidade`,preco:`R$ 21,49`});
-produtos.push({nome:`Moedor Sal do Himalaia Com Pimenta Preta Tradicional 90gr Soul Chef`,info:`Temperos • Unidade`,preco:`R$ 21,49`});
-produtos.push({nome:`Moedor Sal do Mix de Pimentas Tradicional 45gr Soul Chef`,info:`Temperos • Unidade`,preco:`R$ 26,49`});
-produtos.push({nome:`Tomate Pelado Sofruta 400gr`,info:`Molhos e Geléias • Unidade`,preco:`R$ 6,99`});
-produtos.push({nome:`Esfiha Gourmet KBL Sabor Carne (10 unidades)`,info:`Dia-a-Dia • Unidade`,preco:`R$ 32,99`});
-produtos.push({nome:`Esfiha Gourmet KBL Sabor Queijo (10 unidades)`,info:`Dia-a-Dia • Unidade`,preco:`R$ 32,99`});
-produtos.push({nome:`Vinagre Defumado Spray Gonzalo 150ml`,info:`Temperos • Unidade`,preco:`R$ 14,99`});
-produtos.push({nome:`Couve Flor Wings Sadia 275gr Cong.`,info:`Dia-a-Dia • Unidade`,preco:`R$ 12,99`});
-produtos.push({nome:`Almôndega Bovina Sadia 500gr Cong.`,info:`Dia-a-Dia • Unidade`,preco:`R$ 23,99`});
-produtos.push({nome:`Fetuccini Bolonhesa Perdigão 300gr Cong.`,info:`Dia-a-Dia • Unidade`,preco:`R$ 9,99`});
-produtos.push({nome:`Iscas de Frango Tempura Sadia 300gr Cong.`,info:`Dia-a-Dia • Unidade`,preco:`R$ 16,99`});
-produtos.push({nome:`Kibe Bovino Sadia 500gr Cong.`,info:`Dia-a-Dia • Unidade`,preco:`R$ 24,99`});
-produtos.push({nome:`Lasanha de Frango Perdigão 600gr Cong.`,info:`Dia-a-Dia • Unidade`,preco:`R$ 18,99`});
-produtos.push({nome:`Lasanha 4 Queijos Sadia 600gr Cong.`,info:`Dia-a-Dia • Unidade`,preco:`R$ 18,99`});
-produtos.push({nome:`Nuggets de Frango Com Queijo Sadia 300gr`,info:`Dia-a-Dia • Unidade`,preco:`R$ 9,99`});
-produtos.push({nome:`Penne Parisiense Perdigão 300gr Cong`,info:`Dia-a-Dia • Unidade`,preco:`R$ 9,99`});
-produtos.push({nome:`Pop Nuggets de Frango Sadia 275gr Cong.`,info:`Dia-a-Dia • Unidade`,preco:`R$ 9,99`});
-produtos.push({nome:`Cerveja Eisenhugel NEIPA 500ml`,info:`Bebidas • Unidade`,preco:`R$ 22,99`});
-produtos.push({nome:`Cerveja Eisenhugel Weiss 500ml`,info:`Bebidas • Unidade`,preco:`R$ 22,99`});
-produtos.push({nome:`Anéis de Cebola Empanados Bem Brasil 1,05kg Cong.`,info:`Dia-a-Dia • Unidade`,preco:`R$ 29,99`});
-produtos.push({nome:`Polenta Tolete Prontinha 1kg Cong.`,info:`Dia-a-Dia • Unidade`,preco:`R$ 15,99`});
-produtos.push({nome:`Batata Carinha Bem Brasil 400gr Cong.`,info:`Dia-a-Dia • Unidade`,preco:`R$ 9,99`});
-produtos.push({nome:`Batata Palito Bem Brasil 1,5kg Cong.`,info:`Dia-a-Dia • Unidade`,preco:`R$ 24,99`});
-produtos.push({nome:`Mandioca Premium Prontinha 1,2kg Cong.`,info:`Dia-a-Dia • Unidade`,preco:`R$ 22,99`});
-produtos.push({nome:`Smirnoff Ice Original 275ml`,info:`Bebidas • Unidade`,preco:`R$ 9,99`});
-produtos.push({nome:`Sal de Parrilla Cebola & Salsa Churrasquero 450gr`,info:`Temperos • Unidade`,preco:`R$ 13,99`});
+/* ========= PRODUTOS (EXEMPLO) =========
+   👉 Substitua pelos produtos da planilha
+====================================== */
+const produtos = [
+  {
+  nome: "Chorizo Estância 92 Resfr.",
+  categoria: "Bovinos",
+  unidade: "Kilograma",
+  preco: 76.99
+},
+{
+  nome: "Steak Chorizo Estância 92 Angus Resfr.",
+  categoria: "Bovinos",
+  unidade: "Kilograma",
+  preco: 82.99
+},
+{
+  nome: "Picanha Estância 92 Resfr.",
+  categoria: "Picanhas Nacionais",
+  unidade: "Kilograma",
+  preco: 134.99
+},
+{
+  nome: "Ling Cuiabana Suína Frigo Espanha 600gr Cong.",
+  categoria: "Linguiças Especiais",
+  unidade: "Unidade",
+  preco: 26.99
+},
+{
+  nome: "Ling Requeijão, Cerveja e Bacon Specialli 400gr Cong.",
+  categoria: "Linguiças Especiais",
+  unidade: "Unidade",
+  preco: 39.99
+},
+{
+  nome: "Ling Tex Mex (Cheddar & Pimenta Jalapeño) Specialli 400gr Cong.",
+  categoria: "Linguiças Especiais",
+  unidade: "Unidade",
+  preco: 39.99
+},
+{
+  nome: "Ling Suína Pimenta Biquinho Frigo Espanha 600gr Cong.",
+  categoria: "Linguiças Especiais",
+  unidade: "Unidade",
+  preco: 22.99
+},
+{
+  nome: "Espeto Queijo Coalho Quatá (7 espetos) Resfr.",
+  categoria: "Espetos Especiais",
+  unidade: "Unidade",
+  preco: 29.99
+},
+{
+  nome: "Espeto Coração de Frango Temperado Kispeto 500gr Cong.",
+  categoria: "Espetos Especiais",
+  unidade: "Unidade",
+  preco: 34.99
+},
+{
+  nome: "Espeto Mussarela Bolinha Defumada Coqueiros (5 espetos) Resfr.",
+  categoria: "Espetos Especiais",
+  unidade: "Unidade",
+  preco: 36.99
+},
+{
+  nome: "Espeto Provolone Defumado Coqueiros (5 espetos) Resfr.",
+  categoria: "Espetos Especiais",
+  unidade: "Unidade",
+  preco: 36.99
+},
+{
+  nome: "Espeto Medalhão Provolone com Bacon DaHora 350gr Cong.",
+  categoria: "Espetos Especiais",
+  unidade: "Unidade",
+  preco: 44.99
+},
+{
+  nome: "Paleta de Cordeiro Estância 92 Cong.",
+  categoria: "Cordeiros",
+  unidade: "Kilograma",
+  preco: 87.99
+},
+{
+  nome: "Filezinho Frango Empanado Baita 700gr Cong.",
+  categoria: "Dia-a-Dia",
+  unidade: "Unidade",
+  preco: 28.99
+},
+{
+  nome: "Chicken de Frango Empanado Baita 700gr Cong.",
+  categoria: "Dia-a-Dia",
+  unidade: "Unidade",
+  preco: 19.99
+},
+{
+  nome: "Picanha PAR Pul Resfr.",
+  categoria: "Picanhas Importadas",
+  unidade: "Kilograma",
+  preco: 79.99
+},
+{
+  nome: "Filé de Merluza Pul 600gr Cong.",
+  categoria: "Dia-a-Dia",
+  unidade: "Unidade",
+  preco: 27.99
+},
+{
+  nome: "Filé de Panga Pul 600gr Cong.",
+  categoria: "Dia-a-Dia",
+  unidade: "Unidade",
+  preco: 24.99
+},
+{
+  nome: "Filé de Tilápia Pul 600gr Cong.",
+  categoria: "Dia-a-Dia",
+  unidade: "Unidade",
+  preco: 34.99
+},
+{
+  nome: "Espeto Peito de Frango Temperado Kispeto 500gr Cong.",
+  categoria: "Espetos Especiais",
+  unidade: "Unidade",
+  preco: 26.99
+},
+{
+  nome: "Filé de Salmão Chile Cong.",
+  categoria: "Pescados",
+  unidade: "Kilograma",
+  preco: 119.99
+},
+{
+  nome: "Costelinha Suína Barbecue Cong.",
+  categoria: "Dia-a-Dia",
+  unidade: "Kilograma",
+  preco: 74.99
+},
+{
+  nome: "Sardela 130gr",
+  categoria: "Molhos e Geléias",
+  unidade: "Unidade",
+  preco: 24.99
+},
+{
+  nome: "Patê Alho Poró 130gr",
+  categoria: "Molhos e Geléias",
+  unidade: "Unidade",
+  preco: 21.99
+},
+{
+  nome: "Patê Ervas Finas 130gr",
+  categoria: "Molhos e Geléias",
+  unidade: "Unidade",
+  preco: 21.99
+},
+{
+  nome: "Patê Azeitonas 130gr",
+  categoria: "Molhos e Geléias",
+  unidade: "Unidade",
+  preco: 21.99
+},
+{
+  nome: "Patê Cebola Com Mostarda 130gr",
+  categoria: "Molhos e Geléias",
+  unidade: "Unidade",
+  preco: 21.99
+},
+{
+  nome: "Bife de Lombo de Cordeiro URU Nirea Cong.",
+  categoria: "Cordeiros",
+  unidade: "Kilograma",
+  preco: 167.99
+},
+{
+  nome: "Entrecôte (Ancho) BBQ Secrets Grass Feed Resfr.",
+  categoria: "Bovinos",
+  unidade: "Kilograma",
+  preco: 81.99
+},
+{
+  nome: "Prime Steak BBQ Secrets Angus Resfr.",
+  categoria: "Bovinos",
+  unidade: "Kilograma",
+  preco: 85.99
+},
+{
+  nome: "Pão de Alho Tradicional Aurora 340gr Resfr.",
+  categoria: "Acompanhamentos",
+  unidade: "Unidade",
+  preco: 13.99
+},
+{
+  nome: "Filezinho Sassami Aurora 1kg Cong.",
+  categoria: "Dia-a-Dia",
+  unidade: "Unidade",
+  preco: 28.99
+},
+{
+  nome: "Molho Pesto De Manjericão 130gr",
+  categoria: "Molhos e Geléias",
+  unidade: "Unidade",
+  preco: 24.99
+},
+{
+  nome: "Peito de Frango Cozido Desfiado Aurora 360gr Cong.",
+  categoria: "Dia-a-Dia",
+  unidade: "Unidade",
+  preco: 17.99
+},
+{
+  nome: "Meio da Asa (Tulipa) Temperada Aurora 800gr Cong.",
+  categoria: "Dia-a-Dia",
+  unidade: "Unidade",
+  preco: 26.99
+},
+{
+  nome: "Coxinha da Asa Temperada Aurora 800gr Cong.",
+  categoria: "Dia-a-Dia",
+  unidade: "Unidade",
+  preco: 20.99
+},
+{
+  nome: "Pão de Alho Santa Massa Tradicional 400g Resfr.",
+  categoria: "Acompanhamentos",
+  unidade: "Unidade",
+  preco: 17.99
+},
+{
+  nome: "Picanha 481 Cong.",
+  categoria: "Picanhas Nacionais",
+  unidade: "Kilograma",
+  preco: 264.99
+},
+{
+  nome: "Espeto Medalhão Romeu & Julieta (Queijo com Goiabada) DaHora 450gr Cong.",
+  categoria: "Espetos Especiais",
+  unidade: "Unidade",
+  preco: 42.99
+},
+{
+  nome: "Ling Cuiabana Bovina Frigo Espanha 600gr Cong.",
+  categoria: "Linguiças Especiais",
+  unidade: "Unidade",
+  preco: 27.99
+},
+{
+  nome: "Ling Cuiabana Frango Frigo Espanha 600gr Cong.",
+  categoria: "Linguiças Especiais",
+  unidade: "Unidade",
+  preco: 25.99
+},
+{
+  nome: "Espeto Kafta Bovina Frigo Espanha 600gr Cong.",
+  categoria: "Espetos Especiais",
+  unidade: "Unidade",
+  preco: 31.99
+},
+{
+  nome: "Espeto Kafta Bovina com Queijo Frigo Espanha (5 espetos) Cong.",
+  categoria: "Espetos Especiais",
+  unidade: "Unidade",
+  preco: 33.99
+},
+{
+  nome: "Acendedor Da Hora",
+  categoria: "Acessórios",
+  unidade: "Unidade",
+  preco: 1.99
+},
+{
+  nome: "Alho Crocante Gonzalo 100gr",
+  categoria: "Molhos e Geléias",
+  unidade: "Unidade",
+  preco: 28.99
+},
+{
+  nome: "Aluminio Wyda 30cm x 4mt",
+  categoria: "Acessórios",
+  unidade: "Unidade",
+  preco: 4.99
+},
+{
+  nome: "Azeite Alma Lusa 500ml",
+  categoria: "Temperos",
+  unidade: "Unidade",
+  preco: 35.99
+},
+{
+  nome: "Carvão Prime 2kg",
+  categoria: "Acessórios",
+  unidade: "Unidade",
+  preco: 16.99
+},
+{
+  nome: "Carvão Prime 4kg",
+  categoria: "Acessórios",
+  unidade: "Unidade",
+  preco: 31.99
+},
+{
+  nome: "Dry Rub Redneck Gonzalo 250gr",
+  categoria: "Temperos",
+  unidade: "Unidade",
+  preco: 34.99
+},
+{
+  nome: "Farofa Picante Churrasquero 200gr",
+  categoria: "Farofas",
+  unidade: "Unidade",
+  preco: 9.99
+},
+{
+  nome: "Farofa Torresmo Churrasquero 200gr",
+  categoria: "Farofas",
+  unidade: "Unidade",
+  preco: 9.99
+},
+{
+  nome: "Farofa Tradicional Churrasquero 200gr",
+  categoria: "Farofas",
+  unidade: "Unidade",
+  preco: 9.99
+},
+{
+  nome: "Filme de PVC Wyda 28cm x 15mt",
+  categoria: "Acessórios",
+  unidade: "Unidade",
+  preco: 5.49
+},
+{
+  nome: "Fósforo Longo Fiat Lux 200un",
+  categoria: "Acessórios",
+  unidade: "Unidade",
+  preco: 5.49
+},
+{
+  nome: "Fumaça Líquida Spray Gonzalo 150ml",
+  categoria: "Temperos",
+  unidade: "Unidade",
+  preco: 23.99
+},
+{
+  nome: "Gel Acendedor Luar Fire 440gr",
+  categoria: "Acessórios",
+  unidade: "Unidade",
+  preco: 9.99
+},
+{
+  nome: "Molho Chimichurri Gonzalo 200gr",
+  categoria: "Molhos e Geléias",
+  unidade: "Unidade",
+  preco: 34.99
+},
+{
+  nome: "Molho Hortelã Nonna Pasqua 130gr",
+  categoria: "Molhos e Geléias",
+  unidade: "Unidade",
+  preco: 23.99
+},
+{
+  nome: "Molho Pimenta Buffalo Sauce Gonzalo 280gr",
+  categoria: "Molhos e Geléias",
+  unidade: "Unidade",
+  preco: 27.99
+},
+{
+  nome: "Molho Pimenta Cana Quente Gonzalo 280gr",
+  categoria: "Molhos e Geléias",
+  unidade: "Unidade",
+  preco: 27.99
+},
+{
+  nome: "Molho Pimenta Chimi Chilli Gonzalo 280gr",
+  categoria: "Molhos e Geléias",
+  unidade: "Unidade",
+  preco: 27.99
+},
+{
+  nome: "Molho Pimenta Pico de Gallo Gonzalo 280gr",
+  categoria: "Molhos e Geléias",
+  unidade: "Unidade",
+  preco: 27.99
+},
+{
+  nome: "Molho Salsa Mexicana Gonzalo 230gr",
+  categoria: "Molhos e Geléias",
+  unidade: "Unidade",
+  preco: 38.99
+},
+{
+  nome: "Shoyu Defumado Spray Gonzalo 150ml",
+  categoria: "Temperos",
+  unidade: "Unidade",
+  preco: 18.99
+},
+{
+  nome: "Hambúrguer Costela Angus Cara Preta 360gr Cong.",
+  categoria: "Hambúrguer",
+  unidade: "Unidade",
+  preco: 24.99
+},
+{
+  nome: "Hambúrguer Brisket Angus Cara Preta 360gr Cong.",
+  categoria: "Hambúrguer",
+  unidade: "Unidade",
+  preco: 24.99
+},
+{
+  nome: "Hambúrguer Tradicional Angus Cara Preta 120gr Cong.",
+  categoria: "Hambúrguer",
+  unidade: "Unidade",
+  preco: 8.99
+},
+{
+  nome: "Hambúrguer Tradicional Angus Cara Preta 360gr Cong.",
+  categoria: "Hambúrguer",
+  unidade: "Unidade",
+  preco: 23.99
+},
+{
+  nome: "Ling Costela Bovina Cara Preta 300gr Cong.",
+  categoria: "Linguiças Especiais",
+  unidade: "Unidade",
+  preco: 16.99
+},
+{
+  nome: "Molho Chimichurri Tradicional Trend 330gr",
+  categoria: "Molhos e Geléias",
+  unidade: "Unidade",
+  preco: 28.99
+},
+{
+  nome: "Molho Chimichurri Picante Trend 330gr",
+  categoria: "Molhos e Geléias",
+  unidade: "Unidade",
+  preco: 28.99
+},
+{
+  nome: "Antepasto de Beringela Iscas 130gr",
+  categoria: "Molhos e Geléias",
+  unidade: "Unidade",
+  preco: 17.99
+},
+{
+  nome: "Sal de Parrilla Tradicional Churrasquero 450gr",
+  categoria: "Temperos",
+  unidade: "Unidade",
+  preco: 14.99
+},
+{
+  nome: "Sal de Parrilla Chimichurri Churrasquero 450gr",
+  categoria: "Temperos",
+  unidade: "Unidade",
+  preco: 13.99
+},
+{
+  nome: "Sal de Parrilla Alho Granulado Churrasquero 450gr",
+  categoria: "Temperos",
+  unidade: "Unidade",
+  preco: 13.99
+},
+{
+  nome: "Sal de Parrilla Pimenta Churrasquero 450gr",
+  categoria: "Temperos",
+  unidade: "Unidade",
+  preco: 13.99
+},
+{
+  nome: "Sal Grosso Lebre 1kg",
+  categoria: "Temperos",
+  unidade: "Unidade",
+  preco: 5.49
+},
+{
+  nome: "Ling Suína Toscana Frigo Espanha 600gr Cong.",
+  categoria: "Linguiças Especiais",
+  unidade: "Unidade",
+  preco: 19.99
+},
+{
+  nome: "Ling Pernil Cordeiro Tradicional Cara Preta 300gr Cong.",
+  categoria: "Linguiças Especiais",
+  unidade: "Unidade",
+  preco: 23.99
+},
+{
+  nome: "Hambúrguer Costela Angus Cara Preta 120gr Cong.",
+  categoria: "Hambúrguer",
+  unidade: "Unidade",
+  preco: 8.99
+},
+{
+  nome: "Fraldinha Estância 92 Resfr.",
+  categoria: "Bovinos",
+  unidade: "Kilograma",
+  preco: 69.99
+},
+{
+  nome: "Baby Beef Cabaña Las Lilas Resfr.",
+  categoria: "Bovinos",
+  unidade: "Kilograma",
+  preco: 69.99
+},
+{
+  nome: "Lasanha Bolonhesa Perdigão 600gr Cong.",
+  categoria: "Dia-a-Dia",
+  unidade: "Unidade",
+  preco: 18.99
+},
+{
+  nome: "Meio da Asa (Tulipa) Sadia 1kg Cong.",
+  categoria: "Dia-a-Dia",
+  unidade: "Unidade",
+  preco: 28.99
+},
+{
+  nome: "Maminha Estância 92 Resfr.",
+  categoria: "Bovinos",
+  unidade: "Kilograma",
+  preco: 62.99
+},
+{
+  nome: "Bolinho de Bacalhau Ribera Alves 300gr Cong.",
+  categoria: "Dia-a-Dia",
+  unidade: "Unidade",
+  preco: 25.99
+},
+{
+  nome: "Iscas de Panga Empanado Baita 700gr Cong.",
+  categoria: "Dia-a-Dia",
+  unidade: "Unidade",
+  preco: 39.99
+},
+{
+  nome: "Ling Parmesão e Rúcula Specialli 400gr Cong.",
+  categoria: "Linguiças Especiais",
+  unidade: "Unidade",
+  preco: 39.99
+},
+{
+  nome: "Ling Bovina 4 Queijos Frigo Espanha 600gr Cong.",
+  categoria: "Linguiças Especiais",
+  unidade: "Unidade",
+  preco: 29.99
+},
+{
+  nome: "Ling de Frango Mineira Specialli 300gr Cong.",
+  categoria: "Linguiças Especiais",
+  unidade: "Unidade",
+  preco: 29.99
+},
+{
+  nome: "Shoulder Steak Estância 92 Resfr.",
+  categoria: "Bovinos",
+  unidade: "Kilograma",
+  preco: 95.99
+},
+{
+  nome: "Panceta Suína Aurora Premium Cong.",
+  categoria: "Suínos",
+  unidade: "Kilograma",
+  preco: 45.99
+},
+{
+  nome: "Meio da Asa (Tulipa) Sweet Chilli Aurora Premium 800gr Cong.",
+  categoria: "Dia-a-Dia",
+  unidade: "Unidade",
+  preco: 29.99
+},
+{
+  nome: "Copo Eisenhugel",
+  categoria: "Acessórios",
+  unidade: "Unidade",
+  preco: 39.00
+},
+{
+  nome: "Torresmo Santa Massa 40gr",
+  categoria: "Snacks",
+  unidade: "Unidade",
+  preco: 8.99
+},
+{
+  nome: "Coxinha da Asa Aurora Premium Apimentada 800gr Cong.",
+  categoria: "Dia-a-Dia",
+  unidade: "Unidade",
+  preco: 18.99
+},
+{
+  nome: "Filé de Sobrecoxa Aurora Premium Chimichurri 800gr Cong.",
+  categoria: "Dia-a-Dia",
+  unidade: "Unidade",
+  preco: 21.99
+},
+{
+  nome: "Picanha Dom Glutão Extra Resfr.",
+  categoria: "Picanhas Nacionais",
+  unidade: "Kilograma",
+  preco: 93.99
+},
+{
+  nome: "Cerveja Eisenhugel English IPA 500ml",
+  categoria: "Bebidas",
+  unidade: "Unidade",
+  preco: 22.99
+},
+{
+  nome: "Coração de Frango Aurora Bandeja 1kg Cong.",
+  categoria: "Dia-a-Dia",
+  unidade: "Unidade",
+  preco: 37.99
+},
+{
+  nome: "Melado De Cana Carolina Black 300ml",
+  categoria: "Molhos e Geléias",
+  unidade: "Unidade",
+  preco: 36.99
+},
+{
+  nome: "Espeto Carne Bovina Tudo Em Carnes 600gr Cong.",
+  categoria: "Espetos Especiais",
+  unidade: "Unidade",
+  preco: 43.99
+},
+{
+  nome: "Espeto Panceta Suína Tudo Em Carnes 600gr Cong.",
+  categoria: "Espetos Especiais",
+  unidade: "Unidade",
+  preco: 42.99
+},
+{
+  nome: "Espeto Frango com Bacon Tudo Em Carnes 500gr Cong.",
+  categoria: "Espetos Especiais",
+  unidade: "Unidade",
+  preco: 49.99
+},
+{
+  nome: "Torresmo De Rolo Aurora Premium Cong.",
+  categoria: "Suínos",
+  unidade: "Kilograma",
+  preco: 64.99
+},
+{
+  nome: "Bananinha Dom Glutão Classic Line Resfr.",
+  categoria: "Bovinos",
+  unidade: "Kilograma",
+  preco: 59.99
+},
+{
+  nome: "Picanha Oranges Especial Resfr.",
+  categoria: "Picanhas Nacionais",
+  unidade: "Kilograma",
+  preco: 109.99
+},
+{
+  nome: "Picanha URU Las Piedras Family Selection Cong.",
+  categoria: "Picanhas Importadas",
+  unidade: "Kilograma",
+  preco: 239.99
+},
+{
+  nome: "Picanha Suína Perdigão Na Brasa Cong.",
+  categoria: "Suínos",
+  unidade: "Kilograma",
+  preco: 43.99
+},
+{
+  nome: "Entrecôte (Ancho) Estância 92 Angus Resfr.",
+  categoria: "Bovinos",
+  unidade: "Kilograma",
+  preco: 119.99
+},
+{
+  nome: "Brocolis Nova Mesa 2kg Cong.",
+  categoria: "Legumes & Vegetais",
+  unidade: "Unidade",
+  preco: 38.99
+},
+{
+  nome: "Couve Flor Nova Mesa 2kg Cong.",
+  categoria: "Legumes & Vegetais",
+  unidade: "Unidade",
+  preco: 33.99
+},
+{
+  nome: "Seleta de Legumes Nova Mesa 2kg Cong.",
+  categoria: "Legumes & Vegetais",
+  unidade: "Unidade",
+  preco: 36.99
+},
+{
+  nome: "Frango Passarinho Aurora 800gr Cong.",
+  categoria: "Dia-a-Dia",
+  unidade: "Unidade",
+  preco: 18.99
+},
+{
+  nome: "Picanha Suína Temperada Aurora Cong.",
+  categoria: "Suínos",
+  unidade: "Kilograma",
+  preco: 41.99
+},
+{
+  nome: "Coxa e Sobrecoxa Aurora Cong.",
+  categoria: "Dia-a-Dia",
+  unidade: "Kilograma",
+  preco: 13.59
+},
+{
+  nome: "Ling Suína Toscana Sadia 700gr Cong.",
+  categoria: "Linguiças Especiais",
+  unidade: "Unidade",
+  preco: 27.99
+},
+{
+  nome: "Alho Inteiro Campos Del Plata 1,05kg Cong.",
+  categoria: "Legumes & Vegetais",
+  unidade: "Unidade",
+  preco: 29.99
+},
+{
+  nome: "Cenoura Fatiada Campos Del Plata 1,05kg Cong.",
+  categoria: "Legumes & Vegetais",
+  unidade: "Unidade",
+  preco: 13.99
+},
+{
+  nome: "Vagem Campos Del Plata 1,05kg Cong.",
+  categoria: "Legumes & Vegetais",
+  unidade: "Unidade",
+  preco: 19.99
+},
+{
+  nome: "Abacaxi Campos Del Plata 1,05kg Cong.",
+  categoria: "Frutas",
+  unidade: "Unidade",
+  preco: 23.99
+},
+{
+  nome: "Amora Campos Del Plata 1,05kg Cong.",
+  categoria: "Frutas",
+  unidade: "Unidade",
+  preco: 33.99
+},
+{
+  nome: "Pessego Campos Del Plata 1,05kg Cong.",
+  categoria: "Frutas",
+  unidade: "Unidade",
+  preco: 24.99
+},
+{
+  nome: "Morango Campos Del Plata 1,05kg Cong.",
+  categoria: "Frutas",
+  unidade: "Unidade",
+  preco: 20.99
+},
+{
+  nome: "Picanha ARG Alabrasa Cong.",
+  categoria: "Picanhas Importadas",
+  unidade: "Kilograma",
+  preco: 184.99
+},
+{
+  nome: "Picanha URU Steakhouse Cong.",
+  categoria: "Picanhas Importadas",
+  unidade: "Kilograma",
+  preco: 114.99
+},
+{
+  nome: "Kani Kama Seapro 250gr Cong.",
+  categoria: "Dia-a-Dia",
+  unidade: "Unidade",
+  preco: 7.99
+},
+{
+  nome: "Ling Suína Apimentada Nutibras 500gr Cong.",
+  categoria: "Linguiças Especiais",
+  unidade: "Unidade",
+  preco: 18.99
+},
+{
+  nome: "Picanha ARG Pul Selection Cong.",
+  categoria: "Picanhas Importadas",
+  unidade: "Kilograma",
+  preco: 127.99
+},
+{
+  nome: "Patê Quatro Queijos 130gr",
+  categoria: "Molhos e Geléias",
+  unidade: "Unidade",
+  preco: 21.99
+},
+{
+  nome: "Alcatra (Picanha) de Cordeiro Estância 92 Cong.",
+  categoria: "Cordeiros",
+  unidade: "Kilograma",
+  preco: 124.99
+},
+{
+  nome: "Alga Marinha Ocean Treasure 10FL",
+  categoria: "Dia-a-Dia",
+  unidade: "Unidade",
+  preco: 20.99
+},
+{
+  nome: "Bolinho de Salmão 320gr Cong.",
+  categoria: "Dia-a-Dia",
+  unidade: "Unidade",
+  preco: 27.99
+},
+{
+  nome: "Camarão 7 Barbas Descascado Mar & Rio 400gr Cong.",
+  categoria: "Pescados",
+  unidade: "Unidade",
+  preco: 41.99
+},
+{
+  nome: "Chá Verde Limão Siciliano Com Hortelã YAI 1L",
+  categoria: "Bebidas",
+  unidade: "Unidade",
+  preco: 11.99
+},
+{
+  nome: "Chá Verde Laranja Com Gengibre YAI 1L",
+  categoria: "Bebidas",
+  unidade: "Unidade",
+  preco: 11.99
+},
+{
+  nome: "Chá Verde Frutas Vermelhas YAI 1L",
+  categoria: "Bebidas",
+  unidade: "Unidade",
+  preco: 11.99
+},
+{
+  nome: "Chá Verde Jabuticaba YAI 1L",
+  categoria: "Bebidas",
+  unidade: "Unidade",
+  preco: 11.99
+},
+{
+  nome: "Clip Hashi Mix Color Taichi",
+  categoria: "Acessórios",
+  unidade: "Unidade",
+  preco: 0.50
+},
+{
+  nome: "Couve Flor Pratigel 1,020kg Cong.",
+  categoria: "Legumes & Vegetais",
+  unidade: "Unidade",
+  preco: 21.99
+},
+{
+  nome: "Coxinha de Camarão 320gr Cong.",
+  categoria: "Dia-a-Dia",
+  unidade: "Unidade",
+  preco: 27.99
+},
+{
+  nome: "Croquete de Atum 320gr Cong.",
+  categoria: "Dia-a-Dia",
+  unidade: "Unidade",
+  preco: 27.99
+},
+{
+  nome: "Hashi Bambu Redondo 4.5 Ganesh",
+  categoria: "Acessórios",
+  unidade: "Unidade",
+  preco: 0.50
+},
+{
+  nome: "Sachê De Wasabi Em Pasta 2,5gr Taichi",
+  categoria: "Molhos e Geléias",
+  unidade: "Unidade",
+  preco: 0.50
+},
+{
+  nome: "Shoyu Tradicional Mitsuwa 250ml",
+  categoria: "Molhos e Geléias",
+  unidade: "Unidade",
+  preco: 13.99
+},
+{
+  nome: "Alho Dourado Crocante Soul Chef 200gr",
+  categoria: "Dia-a-Dia",
+  unidade: "Unidade",
+  preco: 29.99
+},
+{
+  nome: "Risoto De Funghi Secchi Cookit 260gr",
+  categoria: "Dia-a-Dia",
+  unidade: "Unidade",
+  preco: 39.99
+},
+{
+  nome: "Risoto De Tomate Seco, Alho Poró e Manjericão Cookit 260gr",
+  categoria: "Dia-a-Dia",
+  unidade: "Unidade",
+  preco: 39.99
+},
+{
+  nome: "Risoto De Beterraba Com Alecrim Cookit 260gr",
+  categoria: "Dia-a-Dia",
+  unidade: "Unidade",
+  preco: 39.99
+},
+{
+  nome: "Risoto De Abobrinha Com Lemon Pepper Cookit 260gr",
+  categoria: "Dia-a-Dia",
+  unidade: "Unidade",
+  preco: 39.99
+},
+{
+  nome: "Risoto De Damasco Com Castanha do Brasil Cookit 260gr",
+  categoria: "Dia-a-Dia",
+  unidade: "Unidade",
+  preco: 39.99
+},
+{
+  nome: "Queijo Mozzarella Cerejinha Bufalat 500gr",
+  categoria: "Laticinios & Charcutaria",
+  unidade: "Unidade",
+  preco: 33.99
+},
+{
+  nome: "Queijo Mozzarella Bocconcini Bufalat 500gr",
+  categoria: "Laticinios & Charcutaria",
+  unidade: "Unidade",
+  preco: 33.99
+},
+{
+  nome: "Queijo Mozzarella Bocconcini Defumado Bufalat 500gr",
+  categoria: "Laticinios & Charcutaria",
+  unidade: "Unidade",
+  preco: 33.99
+},
+{
+  nome: "Queijo Tipo Burrata Bufalat Pote 190gr",
+  categoria: "Laticinios & Charcutaria",
+  unidade: "Unidade",
+  preco: 33.99
+},
+{
+  nome: "Queijo Tipo Pallone de Gravina Bufalat",
+  categoria: "Laticinios & Charcutaria",
+  unidade: "Kilograma",
+  preco: 129.99
+},
+{
+  nome: "Queijo Tipo Caccio Cavalo Bufalat",
+  categoria: "Laticinios & Charcutaria",
+  unidade: "Kilograma",
+  preco: 129.99
+},
+{
+  nome: "Costela Suína Em Tira Sadia Cong.",
+  categoria: "Suínos",
+  unidade: "Kilograma",
+  preco: 28.99
+},
+{
+  nome: "Sal de Parrilla Cordeiro Gonzalo 500gr",
+  categoria: "Temperos",
+  unidade: "Unidade",
+  preco: 26.99
+},
+{
+  nome: "Empada De Palmito Eccellenza (10 unidades)",
+  categoria: "Dia-a-Dia",
+  unidade: "Unidade",
+  preco: 34.99
+},
+{
+  nome: "Empada De Frango Com Requeijão Eccellenza (10 unidades)",
+  categoria: "Dia-a-Dia",
+  unidade: "Unidade",
+  preco: 34.99
+},
+{
+  nome: "Nhoque Tradicional Eccellenza 500gr",
+  categoria: "Massas",
+  unidade: "Unidade",
+  preco: 13.99
+},
+{
+  nome: "Nhoque Recheado Eccellenza Com Queijo 500gr",
+  categoria: "Massas",
+  unidade: "Unidade",
+  preco: 21.99
+},
+{
+  nome: "Ling Gorgonzola Specialli 400gr Cong.",
+  categoria: "Linguiças Especiais",
+  unidade: "Unidade",
+  preco: 39.99
+},
+{
+  nome: "Salsicha Com Queijo Kasewurst Specialli 320gr Resfr.",
+  categoria: "Laticinios & Charcutaria",
+  unidade: "Unidade",
+  preco: 34.99
+},
+{
+  nome: "Salsicha De Carne Bovina All Beef Specialli 290gr Resfr.",
+  categoria: "Laticinios & Charcutaria",
+  unidade: "Unidade",
+  preco: 36.99
+},
+{
+  nome: "Salame Fatiado Specialli 100gr",
+  categoria: "Laticinios & Charcutaria",
+  unidade: "Unidade",
+  preco: 15.99
+},
+{
+  nome: "Culatello Fatiado Specialli 100gr",
+  categoria: "Laticinios & Charcutaria",
+  unidade: "Unidade",
+  preco: 26.99
+},
+{
+  nome: "Ketchup Specialli 200ml",
+  categoria: "Molhos e Geléias",
+  unidade: "Unidade",
+  preco: 18.99
+},
+{
+  nome: "Mostarda Amarela Specialli 200ml",
+  categoria: "Molhos e Geléias",
+  unidade: "Unidade",
+  preco: 18.99
+},
+{
+  nome: "Molho American Burguer Specialli 200ml",
+  categoria: "Molhos e Geléias",
+  unidade: "Unidade",
+  preco: 18.99
+},
+{
+  nome: "Salsicha Com Alho Specialli 220gr",
+  categoria: "Laticinios & Charcutaria",
+  unidade: "Unidade",
+  preco: 19.99
+},
+{
+  nome: "Pastrami de Picanha Specialli 100gr",
+  categoria: "Laticinios & Charcutaria",
+  unidade: "Unidade",
+  preco: 29.99
+},
+{
+  nome: "Pão de Alho Santa Massa Picante 400g Resfr.",
+  categoria: "Acompanhamentos",
+  unidade: "Unidade",
+  preco: 17.99
+},
+{
+  nome: "Cottage Tirolez 200gr",
+  categoria: "Laticinios & Charcutaria",
+  unidade: "Unidade",
+  preco: 16.99
+},
+{
+  nome: "Requeijão Cremoso Tirolez 200gr",
+  categoria: "Laticinios & Charcutaria",
+  unidade: "Unidade",
+  preco: 9.99
+},
+{
+  nome: "Provolonete Tirolez 335gr",
+  categoria: "Laticinios & Charcutaria",
+  unidade: "Unidade",
+  preco: 54.99
+},
+{
+  nome: "Brie Fracionado Tirolez 125gr",
+  categoria: "Laticinios & Charcutaria",
+  unidade: "Unidade",
+  preco: 25.99
+},
+{
+  nome: "Gouda Fracionado Tirolez",
+  categoria: "Laticinios & Charcutaria",
+  unidade: "Kilograma",
+  preco: 184.99
+},
+{
+  nome: "Queijo Parmesão Fracionado Tirolez",
+  categoria: "Laticinios & Charcutaria",
+  unidade: "Kilograma",
+  preco: 184.99
+},
+{
+  nome: "Manteiga Sem Sal Tirolez 200gr",
+  categoria: "Laticinios & Charcutaria",
+  unidade: "Unidade",
+  preco: 13.99
+},
+{
+  nome: "Manteiga Com Sal Tirolez 200gr",
+  categoria: "Laticinios & Charcutaria",
+  unidade: "Unidade",
+  preco: 13.99
+},
+{
+  nome: "Creme de Leite Fresco Tirolez 500gr",
+  categoria: "Laticinios & Charcutaria",
+  unidade: "Unidade",
+  preco: 21.99
+},
+{
+  nome: "Hamburguer Angus 180gr (4 unid) Cong.",
+  categoria: "Hamburguer",
+  unidade: "Unidade",
+  preco: 39.99
+},
+{
+  nome: "Hamburguer Wagyu 150gr (2 unid) Cong.",
+  categoria: "Hamburguer",
+  unidade: "Unidade",
+  preco: 79.99
+},
+{
+  nome: "Hamburguer Costela 150gr (4 unid) Cong.",
+  categoria: "Hamburguer",
+  unidade: "Unidade",
+  preco: 44.99
+},
+{
+  nome: "Hamburguer Frango 120gr (6 unid) Cong.",
+  categoria: "Hamburguer",
+  unidade: "Unidade",
+  preco: 29.99
+},
+{
+  nome: "Pão Brioche Burguer Santa Massa (4 unid)",
+  categoria: "Hamburguer",
+  unidade: "Unidade",
+  preco: 14.99
+},
+{
+  nome: "Pão Australiano Burguer Santa Massa (4 unid)",
+  categoria: "Hamburguer",
+  unidade: "Unidade",
+  preco: 15.99
+},
+{
+  nome: "Bacon Fatiado Sadia 1kg",
+  categoria: "Suínos",
+  unidade: "Kilograma",
+  preco: 39.99
+},
+{
+  nome: "Bacon Cubos Sadia 1kg",
+  categoria: "Suínos",
+  unidade: "Kilograma",
+  preco: 39.99
+},
+{
+  nome: "Peito de Frango Desfiado Sadia 400gr",
+  categoria: "Dia-a-Dia",
+  unidade: "Unidade",
+  preco: 19.99
+},
+{
+  nome: "Filé de Peito de Frango Sadia Cong.",
+  categoria: "Dia-a-Dia",
+  unidade: "Kilograma",
+  preco: 21.99
+},
+{
+  nome: "Coxinha da Asa Sadia Cong.",
+  categoria: "Dia-a-Dia",
+  unidade: "Kilograma",
+  preco: 22.99
+},
+{
+  nome: "Sobrecoxa Desossada Sadia Cong.",
+  categoria: "Dia-a-Dia",
+  unidade: "Kilograma",
+  preco: 23.99
+},
+{
+  nome: "Linguiça Calabresa Sadia 700gr",
+  categoria: "Linguiças Especiais",
+  unidade: "Unidade",
+  preco: 27.99
+},
+{
+  nome: "Linguiça Toscana Sadia 700gr",
+  categoria: "Linguiças Especiais",
+  unidade: "Unidade",
+  preco: 27.99
+},
+{
+  nome: "Linguiça Pernil Sadia 700gr",
+  categoria: "Linguiças Especiais",
+  unidade: "Unidade",
+  preco: 27.99
+},
+{
+  nome: "Pizza Margherita Artesanal 450gr",
+  categoria: "Dia-a-Dia",
+  unidade: "Unidade",
+  preco: 29.99
+},
+{
+  nome: "Pizza Calabresa Artesanal 450gr",
+  categoria: "Dia-a-Dia",
+  unidade: "Unidade",
+  preco: 29.99
+},
+{
+  nome: "Pizza Quatro Queijos Artesanal 450gr",
+  categoria: "Dia-a-Dia",
+  unidade: "Unidade",
+  preco: 31.99
+},
+{
+  nome: "Batata Palito Bem Brasil 2kg",
+  categoria: "Acompanhamentos",
+  unidade: "Unidade",
+  preco: 27.99
+},
+{
+  nome: "Batata Crinkle Bem Brasil 2kg",
+  categoria: "Acompanhamentos",
+  unidade: "Unidade",
+  preco: 29.99
+},
+{
+  nome: "Polenta Palito Cong. 2kg",
+  categoria: "Acompanhamentos",
+  unidade: "Unidade",
+  preco: 24.99
+},
+{
+  nome: "Batata Smile Bem Brasil 2kg",
+  categoria: "Acompanhamentos",
+  unidade: "Unidade",
+  preco: 29.99
+},
+{
+  nome: "Onion Rings Bem Brasil 1,05kg",
+  categoria: "Acompanhamentos",
+  unidade: "Unidade",
+  preco: 24.99
+},
+{
+  nome: "Mandioca Palito Cong. 2kg",
+  categoria: "Acompanhamentos",
+  unidade: "Unidade",
+  preco: 22.99
+},
+{
+  nome: "Farofa Pronta Tradicional Yoki 500gr",
+  categoria: "Acompanhamentos",
+  unidade: "Unidade",
+  preco: 9.99
+},
+{
+  nome: "Farofa Pronta Bacon Yoki 500gr",
+  categoria: "Acompanhamentos",
+  unidade: "Unidade",
+  preco: 11.99
+},
+{
+  nome: "Arroz Branco Tio João 1kg",
+  categoria: "Mercearia",
+  unidade: "Unidade",
+  preco: 6.99
+},
+{
+  nome: "Arroz Integral Tio João 1kg",
+  categoria: "Mercearia",
+  unidade: "Unidade",
+  preco: 7.99
+},
+{
+  nome: "Feijão Carioca Kicaldo 1kg",
+  categoria: "Mercearia",
+  unidade: "Unidade",
+  preco: 8.99
+},
+{
+  nome: "Feijão Preto Kicaldo 1kg",
+  categoria: "Mercearia",
+  unidade: "Unidade",
+  preco: 8.99
+},
+{
+  nome: "Azeite Extra Virgem Andorinha 500ml",
+  categoria: "Mercearia",
+  unidade: "Unidade",
+  preco: 29.99
+},
+{
+  nome: "Sal Grosso Churrasco Cisne 1kg",
+  categoria: "Temperos",
+  unidade: "Unidade",
+  preco: 6.99
+},
+{
+  nome: "Sal Fino Refinado Cisne 1kg",
+  categoria: "Temperos",
+  unidade: "Unidade",
+  preco: 3.99
+},
+{
+  nome: "Pimenta do Reino Moída Kitano 50gr",
+  categoria: "Temperos",
+  unidade: "Unidade",
+  preco: 8.99
+},
+{
+  nome: "Alho Granulado Kitano 50gr",
+  categoria: "Temperos",
+  unidade: "Unidade",
+  preco: 7.99
+},
+{
+  nome: "Cebola Granulada Kitano 50gr",
+  categoria: "Temperos",
+  unidade: "Unidade",
+  preco: 7.99
+},
+{
+  nome: "Papel Toalha Snob (2 rolos)",
+  categoria: "Utilidades",
+  unidade: "Unidade",
+  preco: 9.99
+},
+{
+  nome: "Guardanapo Snob (50 folhas)",
+  categoria: "Utilidades",
+  unidade: "Unidade",
+  preco: 4.99
+},
+{
+  nome: "Carvão Vegetal Premium 4kg",
+  categoria: "Churrasco",
+  unidade: "Unidade",
+  preco: 24.99
+},
+{
+  nome: "Acendedor Churrasco Líquido 1L",
+  categoria: "Churrasco",
+  unidade: "Unidade",
+  preco: 14.99
+},
+{
+  nome: "Espeto Simples Inox",
+  categoria: "Churrasco",
+  unidade: "Unidade",
+  preco: 19.99
+},
+{
+  nome: "Grelha Inox Média",
+  categoria: "Churrasco",
+  unidade: "Unidade",
+  preco: 49.99
+},
+{
+  nome: "Tábua de Corte Madeira",
+  categoria: "Churrasco",
+  unidade: "Unidade",
+  preco: 59.99
+},
 
-render();
+];
+
+const carrinho = {};
+
+function renderProdutos() {
+  const termo = busca.value.toLowerCase();
+  lista.innerHTML = "";
+
+  const categorias = [...new Set(produtos.map(p => p.categoria))];
+
+  categorias.forEach(cat => {
+    const filtrados = produtos.filter(p =>
+      p.categoria === cat &&
+      p.nome.toLowerCase().includes(termo)
+    );
+
+    if (!filtrados.length) return;
+
+    lista.innerHTML += `<h2>${cat}</h2>`;
+
+    filtrados.forEach(p => {
+      const q = carrinho[p.nome] || 0;
+      lista.innerHTML += `
+        <div class="produto">
+          <div>
+            <strong>${p.nome}</strong><br>
+            R$ ${p.preco.toFixed(2)}
+          </div>
+          <div>
+            <button onclick="menos('${p.nome}')">-</button>
+            ${q}
+            <button onclick="mais('${p.nome}')">+</button>
+          </div>
+        </div>
+      `;
+    });
+  });
+
+  atualizarResumo();
+}
+
+function mais(nome) {
+  carrinho[nome] = (carrinho[nome] || 0) + 1;
+  renderProdutos();
+}
+
+function menos(nome) {
+  if (carrinho[nome]) {
+    carrinho[nome]--;
+    if (carrinho[nome] <= 0) delete carrinho[nome];
+  }
+  renderProdutos();
+}
+
+function atualizarResumo() {
+  let total = 0;
+  let qtd = 0;
+
+  for (let nome in carrinho) {
+    const p = produtos.find(x => x.nome === nome);
+    total += p.preco * carrinho[nome];
+    qtd += carrinho[nome];
+  }
+
+  total.innerText = total.toFixed(2);
+  count.innerText = qtd;
+  totalFinal.innerText = total.toFixed(2);
+}
+
+function abrirCarrinho() {
+  itens.innerHTML = "";
+
+  for (let nome in carrinho) {
+    const p = produtos.find(x => x.nome === nome);
+    const q = carrinho[nome];
+    const sub = q * p.preco;
+
+    itens.innerHTML += `
+      <div class="item">
+        <strong>${nome}</strong><br>
+        ${q} x R$ ${p.preco.toFixed(2)} = R$ ${sub.toFixed(2)}<br>
+        <button onclick="mais('${nome}')">+</button>
+        <button onclick="menos('${nome}')">-</button>
+      </div>
+    `;
+  }
+
+  modal.style.display = "block";
+}
+
+function fecharCarrinho() {
+  modal.style.display = "none";
+}
+
+function finalizar() {
+  let tipo = prompt("Entrega ou Retirada?");
+  let endereco = "";
+
+  if (tipo && tipo.toLowerCase() === "entrega") {
+    endereco = prompt("Digite o endereço:");
+  }
+
+  let pagamento = prompt(
+    "Forma de pagamento:\nDébito, Crédito, Vale Alimentação, Vale Refeição ou Pix"
+  );
+
+  let msg = "Pedido:%0A";
+  let total = 0;
+
+  for (let nome in carrinho) {
+    const p = produtos.find(x => x.nome === nome);
+    const q = carrinho[nome];
+    const sub = q * p.preco;
+    total += sub;
+
+    msg += `${nome} | Qtd: ${q} | Unit: R$ ${p.preco.toFixed(2)} | Sub: R$ ${sub.toFixed(2)}%0A`;
+  }
+
+  msg += `%0ATotal: R$ ${total.toFixed(2)}%0A`;
+  msg += `Tipo: ${tipo}%0A`;
+  if (endereco) msg += `Endereço: ${endereco}%0A`;
+  msg += `Pagamento: ${pagamento}`;
+
+  window.open("https://wa.me/5511999562721?text=" + msg);
+}
+
+renderProdutos();
 </script>
 
 </body>
