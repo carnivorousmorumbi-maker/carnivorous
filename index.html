@@ -131,41 +131,41 @@ header input, header select {
 <script>
 // ================= PRODUTOS =================
 const produtos = [
+<!-- PAPA PARSE -->
+<script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+
 <script>
-// ================= PRODUTOS VIA PLANILHA =================
-const PLANILHA_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTsqDIhOoTibb56-QuExYbR9PfD1Fbu4y5x1a9k3X5BcLdl3rRA7tGmCQNI_Gn-uAlkYdUr1FtMigyA/pub?output=csv";
+const PLANILHA_URL =
+"https://docs.google.com/spreadsheets/d/e/2PACX-1vTsqDIhOoTibb56-QuExYbR9PfD1Fbu4y5x1a9k3X5BcLdl3rRA7tGmCQNI_Gn-uAlkYdUr1FtMigyA/pub?output=csv";
 
 let produtos = [];
 
-fetch(PLANILHA_URL)
-  .then(res => res.text())
-  .then(csv => {
-    const linhas = csv.split("\n").filter(l => l.trim() !== "");
-    linhas.shift(); // remove cabeçalho
+Papa.parse(PLANILHA_URL, {
+  download: true,
+  header: true,
+  skipEmptyLines: true,
+  complete: function (resultado) {
 
-    produtos = linhas.map(linha => {
-      const col = linha.split(",");
-
-      return {
-        nome: col[0],
-        categoria: col[1],
-        unidade: col[2],
-        preco: parseFloat(
-          col[3]
-            .replace("R$", "")
-            .replace(".", "")
-            .replace(",", ".")
-        ) || 0
-      };
-    });
+    produtos = resultado.data.map(linha => ({
+      nome: linha["nome"] || linha["Nome"] || linha["PRODUTO"],
+      categoria: linha["categoria"] || linha["Categoria"],
+      unidade: linha["unidade"] || linha["Unidade"],
+      preco: parseFloat(
+        String(linha["preco"] || linha["Preço"] || linha["Valor"])
+          .replace("R$", "")
+          .replace(/\./g, "")
+          .replace(",", ".")
+      ) || 0
+    }));
 
     carregarCategorias();
     renderizarProdutos();
-  })
-  .catch(err => {
-    alert("Erro ao carregar planilha");
+  },
+  error: function (err) {
+    alert("Erro ao carregar a planilha");
     console.error(err);
-  });
+  }
+});
 </script>
 
 ];
