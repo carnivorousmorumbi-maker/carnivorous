@@ -117,6 +117,16 @@ const carrinhoDiv = document.getElementById("carrinho");
 let listaProdutos = [];
 const carrinho = {};
 
+function formatarUnidade(unidade) {
+  if (!unidade) return "";
+  const u = unidade.toLowerCase();
+
+  if (u.includes("kilo") || u.includes("kg")) return "Kg";
+  if (u.includes("un")) return "Unidade";
+
+  return unidade;
+}
+
 Papa.parse(PLANILHA, {
   download: true,
   header: true,
@@ -126,13 +136,14 @@ Papa.parse(PLANILHA, {
     listaProdutos = res.data.map(l => ({
       nome: l["Descrição do Produto"],
       categoria: l["Categoria"],
+      unidade: l["Unidade de Venda"],
       preco: Number(
         String(l["Valor Venda"])
           .replace("R$", "")
           .replace(/\./g, "")
           .replace(",", ".")
       )
-    })).filter(p => p.nome && p.categoria && p.preco);
+    })).filter(p => p.nome && p.categoria && p.preco && p.unidade);
 
     carregarCategorias();
     renderizarProdutos();
@@ -141,6 +152,7 @@ Papa.parse(PLANILHA, {
 
 function carregarCategorias() {
   const cats = [...new Set(listaProdutos.map(p => p.categoria))];
+  filtroCategoria.innerHTML = `<option value="">Categorias</option>`;
   cats.forEach(c => {
     filtroCategoria.innerHTML += `<option value="${c}">${c}</option>`;
   });
@@ -163,7 +175,7 @@ function renderizarProdutos(lista = listaProdutos) {
       produtosDiv.innerHTML += `
         <div class="produto">
           <b>${p.nome}</b><br>
-          R$ ${p.preco.toFixed(2)}
+          R$ ${p.preco.toFixed(2)} / ${formatarUnidade(p.unidade)}
           <div class="controle">
             <button onclick="remover('${p.nome}')">−</button>
             <span id="qtd-${id}">0</span>
@@ -222,10 +234,12 @@ function fecharCarrinho() {
 }
 
 function finalizarPedido() {
-  let tipo = prompt("Entrega ou Retirada?").toLowerCase();
-  let entrega = tipo.includes("entrega") || tipo === "1";
+  let tipo = prompt("Entrega ou Retirada?");
+  if (!tipo) return;
 
+  let entrega = tipo.toLowerCase().includes("entrega");
   let endereco = "";
+
   if (entrega) {
     endereco = prompt("Informe o endereço completo:");
     if (!endereco) return;
