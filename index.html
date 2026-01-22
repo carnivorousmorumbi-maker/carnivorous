@@ -38,7 +38,6 @@ header h1 {
 .familia {
   height: 110px;
   object-fit: contain;
-  background: #000;
 }
 
 /* busca e filtro */
@@ -63,9 +62,20 @@ header input, header select {
   border-bottom: 1px solid #222;
 }
 
+/* ===== BOTÕES + - ===== */
 .controle button {
   padding: 4px 12px;
   font-size: 18px;
+  background: #ffcc00;
+  color: #000;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.controle button:hover {
+  background: #ffdd33;
 }
 
 /* ===== CARRINHO ===== */
@@ -90,6 +100,27 @@ header input, header select {
   padding: 20px;
   overflow: auto;
 }
+
+#carrinho button {
+  padding: 10px;
+  margin-top: 10px;
+  width: 100%;
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+}
+
+.confirmar {
+  background: #ffcc00;
+  color: #000;
+}
+
+.fechar {
+  background: #333;
+  color: #fff;
+}
 </style>
 </head>
 
@@ -97,10 +128,8 @@ header input, header select {
 
 <header>
   <img src="logo.png" class="logo" alt="Logo Carnivorous">
-
   <h1>CARNIVOROUS</h1>
 
-  <!-- IMAGEM DA FAMÍLIA -->
   <img src="assets/familia-carnivorous.png"
        alt="Família Carnivorous"
        class="familia">
@@ -120,11 +149,10 @@ header input, header select {
 </div>
 
 <div id="carrinho">
-<h2>Carrinho</h2>
-<div id="listaCarrinho"></div>
-<h3 id="totalFinal"></h3>
-<button onclick="finalizarPedido()">Finalizar no WhatsApp</button>
-<button onclick="fecharCarrinho()">Fechar</button>
+  <h2>Carrinho</h2>
+  <div id="listaCarrinho"></div>
+  <button class="confirmar" onclick="confirmarPedido()">Confirmar pedido</button>
+  <button class="fechar" onclick="fecharCarrinho()">Fechar</button>
 </div>
 
 <script>
@@ -203,7 +231,7 @@ function renderizarProdutos(lista = listaProdutos) {
   }
 }
 
-/* carrinho */
+/* ===== CARRINHO ===== */
 function adicionar(nome, preco) {
   carrinho[nome] = carrinho[nome] || { qtd: 0, preco };
   carrinho[nome].qtd++;
@@ -232,8 +260,50 @@ function atualizar() {
   totalCarrinho.innerText = "R$ " + t.toFixed(2);
 }
 
-function abrirCarrinho() { carrinhoDiv.style.display = "block"; }
-function fecharCarrinho() { carrinhoDiv.style.display = "none"; }
+function abrirCarrinho() {
+  atualizarListaCarrinho();
+  carrinhoDiv.style.display = "block";
+}
+
+function fecharCarrinho() {
+  carrinhoDiv.style.display = "none";
+}
+
+function atualizarListaCarrinho() {
+  let html = "";
+  let total = 0;
+
+  for (const nome in carrinho) {
+    const item = carrinho[nome];
+    const sub = item.qtd * item.preco;
+    total += sub;
+    html += `<div>${item.qtd}x <b>${nome}</b> — R$ ${sub.toFixed(2)}</div>`;
+  }
+
+  html += `<hr><h3>Total: R$ ${total.toFixed(2)}</h3>`;
+  listaCarrinho.innerHTML = html;
+}
+
+function confirmarPedido() {
+  finalizarPedido();
+}
+
+function finalizarPedido() {
+  let msg = "Olá! Segue meu pedido:%0A%0A";
+  let total = 0;
+
+  for (const nome in carrinho) {
+    const item = carrinho[nome];
+    const sub = item.qtd * item.preco;
+    total += sub;
+    msg += `${item.qtd}x ${nome} - R$ ${sub.toFixed(2)}%0A`;
+  }
+
+  msg += `%0A*Total: R$ ${total.toFixed(2)}*%0A%0APor favor, informe o endereço para entrega.`;
+
+  const telefone = "5500000000000"; // COLOQUE O NÚMERO AQUI
+  window.open(`https://wa.me/${telefone}?text=${msg}`, "_blank");
+}
 
 function filtrarProdutos() {
   const t = busca.value.toLowerCase();
