@@ -23,8 +23,6 @@ header {
   border-bottom: 2px solid #111;
 }
 
-header img { height: 70px; }
-
 header input, header select {
   padding: 8px;
   border-radius: 6px;
@@ -33,9 +31,7 @@ header input, header select {
 
 #produtos { padding: 20px; }
 
-.categoria h2 {
-  border-bottom: 2px solid #333;
-}
+.categoria h2 { border-bottom: 2px solid #333; }
 
 .produto {
   border-bottom: 1px solid #222;
@@ -114,6 +110,16 @@ header input, header select {
 </div>
 
 <script>
+/* ===== ELEMENTOS ===== */
+const produtosDiv = document.getElementById("produtos");
+const carrinhoDiv = document.getElementById("carrinho");
+const conteudoCarrinho = document.getElementById("conteudoCarrinho");
+const qtdCarrinho = document.getElementById("qtdCarrinho");
+const totalCarrinho = document.getElementById("totalCarrinho");
+const filtroCategoria = document.getElementById("filtroCategoria");
+const busca = document.getElementById("busca");
+
+/* ===== CONFIG ===== */
 const PLANILHA =
 "https://docs.google.com/spreadsheets/d/15osZ7x4v43t8yFdOs90W4oQnHdY-CJvF3qnTEz1SKjQ/pub?output=csv";
 
@@ -125,50 +131,67 @@ let listaProdutos = [];
 let carrinho = {};
 let totalProdutos = 0;
 
+/* ===== CARREGAR PRODUTOS ===== */
 Papa.parse(PLANILHA, {
   download: true,
   header: true,
   complete: res => {
-    listaProdutos = res.data.filter(p => p["Descrição do Produto"]).map(p => ({
-      nome: p["Descrição do Produto"],
-      categoria: p["Categoria"],
-      preco: parseFloat(String(p["Valor Venda"]).replace(".", "").replace(",", "."))
-    }));
+    listaProdutos = res.data
+      .filter(p => p["Descrição do Produto"] && p["Valor Venda"])
+      .map(p => ({
+        nome: p["Descrição do Produto"],
+        categoria: p["Categoria"] || "Outros",
+        preco: Number(
+          String(p["Valor Venda"])
+            .replace("R$", "")
+            .replace(/\./g, "")
+            .replace(",", ".")
+        )
+      }));
+
     carregarCategorias();
     renderizarProdutos();
   }
 });
 
+/* ===== FUNÇÕES ===== */
 function carregarCategorias() {
   filtroCategoria.innerHTML = `<option value="">Categorias</option>`;
-  [...new Set(listaProdutos.map(p => p.categoria))].forEach(c =>
-    filtroCategoria.innerHTML += `<option>${c}</option>`
-  );
+  [...new Set(listaProdutos.map(p => p.categoria))].forEach(c => {
+    filtroCategoria.innerHTML += `<option value="${c}">${c}</option>`;
+  });
 }
 
 function renderizarProdutos(lista = listaProdutos) {
-  produtos.innerHTML = "";
+  produtosDiv.innerHTML = "";
   const grupo = {};
-  lista.forEach(p => (grupo[p.categoria] = grupo[p.categoria] || []).push(p));
-  for (let c in grupo) {
-    produtos.innerHTML += `<div class="categoria"><h2>${c}</h2></div>`;
-    grupo[c].forEach(p => {
-      const id = p.nome.replace(/\W/g,"");
-      produtos.innerHTML += `
-      <div class="produto">
-        <b>${p.nome}</b><br>R$ ${p.preco.toFixed(2)}
-        <div class="controle">
-          <button onclick="remover('${p.nome}')">−</button>
-          <span id="qtd-${id}">0</span>
-          <button onclick="adicionar('${p.nome}',${p.preco})">+</button>
-        </div>
-      </div>`;
+
+  lista.forEach(p => {
+    grupo[p.categoria] = grupo[p.categoria] || [];
+    grupo[p.categoria].push(p);
+  });
+
+  for (let cat in grupo) {
+    produtosDiv.innerHTML += `<div class="categoria"><h2>${cat}</h2></div>`;
+    grupo[cat].forEach(p => {
+      const id = p.nome.replace(/\W/g, "");
+      produtosDiv.innerHTML += `
+        <div class="produto">
+          <b>${p.nome}</b><br>
+          R$ ${p.preco.toFixed(2)}
+          <div class="controle">
+            <button onclick="remover('${p.nome}')">−</button>
+            <span id="qtd-${id}">0</span>
+            <button onclick="adicionar('${p.nome}', ${p.preco})">+</button>
+          </div>
+        </div>`;
     });
   }
 }
 
+/* ===== CARRINHO ===== */
 function adicionar(nome, preco) {
-  carrinho[nome] = carrinho[nome] || {qtd:0,preco};
+  carrinho[nome] = carrinho[nome] || { qtd: 0, preco };
   carrinho[nome].qtd++;
   atualizar();
 }
@@ -181,99 +204,45 @@ function remover(nome) {
 }
 
 function atualizar() {
-  let q=0, t=0;
-  document.querySelectorAll('[id^="qtd-"]').forEach(e=>e.innerText="0");
+  let q = 0, t = 0;
+  document.querySelectorAll('[id^="qtd-"]').forEach(e => e.innerText = "0");
+
   for (let i in carrinho) {
-    q+=carrinho[i].qtd;
-    t+=carrinho[i].qtd*carrinho[i].preco;
-    document.getElementById("qtd-"+i.replace(/\W/g,"")).innerText=carrinho[i].qtd;
+    q += carrinho[i].qtd;
+    t += carrinho[i].qtd * carrinho[i].preco;
+    const el = document.getElementById("qtd-" + i.replace(/\W/g,""));
+    if (el) el.innerText = carrinho[i].qtd;
   }
-  qtdCarrinho.innerText=q;
-  totalCarrinho.innerText="R$ "+t.toFixed(2);
+
+  qtdCarrinho.innerText = q;
+  totalCarrinho.innerText = "R$ " + t.toFixed(2);
   totalProdutos = t;
 }
 
 function abrirCarrinho() {
-  let html="", total=0;
+  let html = "";
   for (let i in carrinho) {
-    let s=carrinho[i].qtd*carrinho[i].preco;
-    total+=s;
-    html+=`${carrinho[i].qtd}x <b>${i}</b> - R$ ${s.toFixed(2)}<br>`;
+    const s = carrinho[i].qtd * carrinho[i].preco;
+    html += `${carrinho[i].qtd}x <b>${i}</b> - R$ ${s.toFixed(2)}<br>`;
   }
-  html+=`<hr><b>Total produtos: R$ ${total.toFixed(2)}</b>`;
-  conteudoCarrinho.innerHTML=html;
-  carrinho.style.display="block";
+  html += `<hr><b>Total produtos: R$ ${totalProdutos.toFixed(2)}</b>`;
+  conteudoCarrinho.innerHTML = html;
+  carrinhoDiv.style.display = "block";
 }
 
-function fecharCarrinho(){ carrinho.style.display="none"; }
-
-function escolherEntrega(){
-  conteudoCarrinho.innerHTML=`
-    <h3>Entrega ou Retirada?</h3>
-    <button class="verde" onclick="pedirEndereco()">Entrega</button>
-    <button class="amarelo" onclick="escolherPagamento('Retirada',0)">Retirada</button>
-  `;
+function fecharCarrinho() {
+  carrinhoDiv.style.display = "none";
 }
 
-function pedirEndereco(){
-  conteudoCarrinho.innerHTML=`
-    <h3>Endereço para entrega</h3>
-    <input id="enderecoCliente" placeholder="Digite o endereço completo">
-    <button class="verde" onclick="calcularEntrega()">Calcular taxa</button>
-  `;
-}
-
-function calcularEntrega(){
-  const endereco = enderecoCliente.value;
-  const service = new google.maps.DistanceMatrixService();
-  service.getDistanceMatrix({
-    origins:[ENDERECO_LOJA],
-    destinations:[endereco],
-    travelMode:'DRIVING'
-  }, (res,status)=>{
-    if(status!=="OK"){ alert("Erro ao calcular distância"); return;}
-    const km = res.rows[0].elements[0].distance.value / 1000;
-    const taxa = km * TAXA_POR_KM;
-    escolherPagamento("Entrega", taxa, endereco, km);
-  });
-}
-
-function escolherPagamento(tipo, taxa=0, endereco="", km=0){
-  conteudoCarrinho.innerHTML=`
-    <h3>${tipo}</h3>
-    ${tipo==="Entrega" ? `<p>Distância: ${km.toFixed(2)} km<br>Taxa: R$ ${taxa.toFixed(2)}</p>` : ""}
-    <h3>Forma de pagamento</h3>
-    <button onclick="finalizar('${tipo}','Vale Alimentação',${taxa},'${endereco}')">Vale Alimentação</button>
-    <button onclick="finalizar('${tipo}','Débito',${taxa},'${endereco}')">Débito</button>
-    <button onclick="finalizar('${tipo}','Crédito',${taxa},'${endereco}')">Crédito</button>
-    <button onclick="finalizar('${tipo}','Pix',${taxa},'${endereco}')">Pix</button>
-  `;
-}
-
-function finalizar(tipo, pagamento, taxa, endereco){
-  let msg="Pedido:%0A";
-  for(let i in carrinho){
-    let s=carrinho[i].qtd*carrinho[i].preco;
-    msg+=`${carrinho[i].qtd}x ${i} - R$ ${s.toFixed(2)}%0A`;
-  }
-  let total = totalProdutos + taxa;
-  msg+=`%0ATotal produtos: R$ ${totalProdutos.toFixed(2)}`;
-  if(tipo==="Entrega"){
-    msg+=`%0ATaxa entrega: R$ ${taxa.toFixed(2)}`;
-    msg+=`%0AEndereço: ${endereco}`;
-  }
-  msg+=`%0ATotal final: R$ ${total.toFixed(2)}`;
-  msg+=`%0APagamento: ${pagamento}`;
-
-  window.open(`https://wa.me/${WHATSAPP_LOJA}?text=${msg}`,"_blank");
-}
-
-function filtrarProdutos(){
-  const t=busca.value.toLowerCase();
-  const c=filtroCategoria.value;
-  renderizarProdutos(listaProdutos.filter(p =>
-    p.nome.toLowerCase().includes(t) && (!c || p.categoria===c)
-  ));
+function filtrarProdutos() {
+  const t = busca.value.toLowerCase();
+  const c = filtroCategoria.value;
+  renderizarProdutos(
+    listaProdutos.filter(p =>
+      p.nome.toLowerCase().includes(t) &&
+      (!c || p.categoria === c)
+    )
+  );
 }
 </script>
 
