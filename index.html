@@ -96,7 +96,10 @@ header input, header select {
 <body>
 
 <header>
-  <img src="logo.png" class="logo" alt="Logo Carnivorous">
+  <!-- LOGO CORRIGIDA -->
+  <img src="Logo%20Principal%20Fundo%20Preto.jpeg"
+       class="logo"
+       alt="Logo Carnivorous">
 
   <h1>CARNIVOROUS</h1>
 
@@ -201,49 +204,6 @@ function renderizarProdutos(lista = listaProdutos) {
         </div>`;
     });
   }
-}
-
-/* carrinho */
-function adicionar(nome, preco) {
-  carrinho[nome] = carrinho[nome] || { qtd: 0, preco };
-  carrinho[nome].qtd++;
-  atualizar();
-}
-
-function remover(nome) {
-  if (!carrinho[nome]) return;
-  carrinho[nome].qtd--;
-  if (carrinho[nome].qtd <= 0) delete carrinho[nome];
-  atualizar();
-}
-
-function atualizar() {
-  let q = 0, t = 0;
-  document.querySelectorAll('[id^="qtd-"]').forEach(e => e.innerText = "0");
-
-  for (const i in carrinho) {
-    q += carrinho[i].qtd;
-    t += carrinho[i].qtd * carrinho[i].preco;
-    const s = document.getElementById("qtd-" + i.replace(/\W/g,""));
-    if (s) s.innerText = carrinho[i].qtd;
-  }
-
-  qtdCarrinho.innerText = q;
-  totalCarrinho.innerText = "R$ " + t.toFixed(2);
-}
-
-function abrirCarrinho() { carrinhoDiv.style.display = "block"; }
-function fecharCarrinho() { carrinhoDiv.style.display = "none"; }
-
-function filtrarProdutos() {
-  const t = busca.value.toLowerCase();
-  const c = filtroCategoria.value;
-  renderizarProdutos(
-    listaProdutos.filter(p =>
-      p.nome.toLowerCase().includes(t) &&
-      (!c || p.categoria === c)
-    )
-  );
 }
 </script>
 
