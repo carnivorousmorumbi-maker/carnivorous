@@ -122,17 +122,37 @@ Papa.parse(PLANILHA, {
   header: true,
   skipEmptyLines: true,
   complete: function(res) {
-    listaProdutos = res.data.map(l => ({
-      nome: l["Descrição do Produto"],
-      categoria: l["Categoria"],
-      unidade: l["Unidade de Venda"],
-      preco: Number(
-        String(l["Valor Venda"])
-          .replace("R$", "")
-          .replace(/\./g, "")
-          .replace(",", ".")
-      )
-    })).filter(p => p.nome && p.categoria && p.preco);
+
+    listaProdutos = res.data
+      .map(l => {
+        const codigo = (l["Código"] || "").toString().trim();
+        const nome = (l["Descrição do Produto"] || "").trim();
+        const categoria = (l["Categoria"] || "").trim();
+        const unidade = (l["Unidade de Venda"] || "").trim();
+
+        const preco = parseFloat(
+          String(l["Valor Venda"] || "")
+            .replace("R$", "")
+            .replace(/\./g, "")
+            .replace(",", ".")
+        );
+
+        return { codigo, nome, categoria, unidade, preco };
+      })
+      .filter(p => {
+        if (!p.codigo || isNaN(p.codigo)) return false;
+        if (!p.nome || !p.categoria || !p.unidade) return false;
+        if (isNaN(p.preco) || p.preco <= 0) return false;
+
+        const n = p.nome.toLowerCase();
+        if (
+          n.includes("total") ||
+          n.includes("subtotal") ||
+          n.includes("categoria")
+        ) return false;
+
+        return true;
+      });
 
     carregarCategorias();
     renderizarProdutos();
@@ -160,31 +180,31 @@ function renderizarProdutos(lista = listaProdutos) {
     produtosDiv.innerHTML += `<div class="categoria"><h2>${cat}</h2></div>`;
 
     porCat[cat].forEach(p => {
-      const id = p.nome.replace(/\W/g,"");
+      const id = p.codigo;
       produtosDiv.innerHTML += `
         <div class="produto">
           <b>${p.nome}</b><br>
-          R$ ${p.preco.toFixed(2)}
+          R$ ${p.preco.toFixed(2)} / ${p.unidade}
           <div class="controle">
-            <button onclick="remover('${p.nome}')">−</button>
+            <button onclick="remover('${p.codigo}')">−</button>
             <span id="qtd-${id}">0</span>
-            <button onclick="adicionar('${p.nome}', ${p.preco})">+</button>
+            <button onclick="adicionar('${p.codigo}', '${p.nome}', ${p.preco})">+</button>
           </div>
         </div>`;
     });
   }
 }
 
-function adicionar(nome, preco) {
-  carrinho[nome] = carrinho[nome] || { qtd: 0, preco };
-  carrinho[nome].qtd++;
+function adicionar(codigo, nome, preco) {
+  carrinho[codigo] = carrinho[codigo] || { nome, qtd: 0, preco };
+  carrinho[codigo].qtd++;
   atualizar();
 }
 
-function remover(nome) {
-  if (!carrinho[nome]) return;
-  carrinho[nome].qtd--;
-  if (carrinho[nome].qtd <= 0) delete carrinho[nome];
+function remover(codigo) {
+  if (!carrinho[codigo]) return;
+  carrinho[codigo].qtd--;
+  if (carrinho[codigo].qtd <= 0) delete carrinho[codigo];
   atualizar();
 }
 
@@ -195,7 +215,7 @@ function atualizar() {
   for (const i in carrinho) {
     q += carrinho[i].qtd;
     t += carrinho[i].qtd * carrinho[i].preco;
-    const s = document.getElementById("qtd-" + i.replace(/\W/g,""));
+    const s = document.getElementById("qtd-" + i);
     if (s) s.innerText = carrinho[i].qtd;
   }
 
@@ -211,7 +231,7 @@ function abrirCarrinho() {
   for (const i in carrinho) {
     const sub = carrinho[i].qtd * carrinho[i].preco;
     t += sub;
-    listaCarrinho.innerHTML += `${i} x${carrinho[i].qtd} = R$ ${sub.toFixed(2)}<br>`;
+    listaCarrinho.innerHTML += `${carrinho[i].nome} x${carrinho[i].qtd} = R$ ${sub.toFixed(2)}<br>`;
   }
 
   totalFinal.innerText = "TOTAL: R$ " + t.toFixed(2);
@@ -228,11 +248,10 @@ function finalizarPedido() {
   for (const i in carrinho) {
     const sub = carrinho[i].qtd * carrinho[i].preco;
     total += sub;
-    msg += `${i}%0AQtd: ${carrinho[i].qtd}%0ASubtotal: R$ ${sub.toFixed(2)}%0A%0A`;
+    msg += `${carrinho[i].nome}%0AQtd: ${carrinho[i].qtd}%0ASubtotal: R$ ${sub.toFixed(2)}%0A%0A`;
   }
 
   msg += `TOTAL: R$ ${total.toFixed(2)}`;
-
   window.open(`https://wa.me/5511999562721?text=${msg}`);
 }
 
