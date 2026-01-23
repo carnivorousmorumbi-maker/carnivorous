@@ -7,7 +7,12 @@
 <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
 
 <style>
-body { margin:0; font-family:Arial; background:#000; color:#fff; }
+body {
+  margin:0;
+  font-family:Arial, Helvetica, sans-serif;
+  background:#000;
+  color:#fff;
+}
 
 header {
   display:flex;
@@ -17,29 +22,51 @@ header {
   background:#111;
 }
 
-header img { height:70px; }
+header img {
+  height:70px;
+}
 
 header h1 {
-  font-size:48px;
+  font-size:42px;
   margin:0;
   flex:1;
   letter-spacing:2px;
 }
 
-header input, header select {
+header input,
+header select {
   padding:8px;
   border-radius:6px;
   border:none;
 }
 
-#produtos { padding:20px; }
+#produtos {
+  padding:20px;
+}
 
-.categoria { margin-top:30px; }
-.categoria h2 { border-bottom:2px solid #333; }
+.categoria {
+  margin-top:30px;
+}
 
-.produto { border-bottom:1px solid #222; padding:12px 0; }
+.categoria h2 {
+  border-bottom:2px solid #333;
+  padding-bottom:6px;
+}
 
-.controle button { padding:4px 12px; font-size:18px; }
+.produto {
+  border-bottom:1px solid #222;
+  padding:12px 0;
+}
+
+.controle {
+  margin-top:6px;
+}
+
+.controle button {
+  padding:4px 12px;
+  font-size:18px;
+  cursor:pointer;
+}
 
 #botaoCarrinho {
   position:fixed;
@@ -81,16 +108,16 @@ header input, header select {
 <div id="produtos"></div>
 
 <div id="botaoCarrinho" onclick="abrirCarrinho()">
-🛒 <span id="qtdCarrinho">0</span><br>
-<span id="totalCarrinho">R$ 0,00</span>
+  🛒 <span id="qtdCarrinho">0</span><br>
+  <span id="totalCarrinho">R$ 0,00</span>
 </div>
 
 <div id="carrinho">
-<h2>Carrinho</h2>
-<div id="listaCarrinho"></div>
-<h3 id="totalFinal"></h3>
-<button onclick="finalizarPedido()">Finalizar no WhatsApp</button>
-<button onclick="fecharCarrinho()">Fechar</button>
+  <h2>Carrinho</h2>
+  <div id="listaCarrinho"></div>
+  <h3 id="totalFinal"></h3>
+  <button onclick="finalizarPedido()">Finalizar no WhatsApp</button>
+  <button onclick="fecharCarrinho()">Fechar</button>
 </div>
 
 <script>
@@ -102,101 +129,147 @@ const carrinho = {};
 
 const produtosDiv = document.getElementById("produtos");
 const carrinhoDiv = document.getElementById("carrinho");
+const filtroCategoria = document.getElementById("filtroCategoria");
 
 Papa.parse(PLANILHA, {
-  download:true,
-  header:true,
-  skipEmptyLines:true,
-  complete: res => {
+  download: true,
+  header: true,
+  skipEmptyLines: true,
+  complete: function(res) {
 
-    produtos = res.data.map(l => ({
-      nome: l["Descrição do Produto"],
-      categoria: l["Categoria"],
-      preco: Number(
-        String(l["Valor Venda"])
+    const mapa = {}; // elimina duplicados por nome
+
+    res.data.forEach(l => {
+      const nome = (l["Descrição do Produto"] || "").trim();
+      const categoria = (l["Categoria"] || "").trim();
+      const precoTxt = (l["Valor Venda"] || "").toString();
+
+      const preco = Number(
+        precoTxt
           .replace("R$", "")
-          .replace(/\./g,"")
-          .replace(",",".")
-      )
-    })).filter(p => p.nome && p.categoria && p.preco);
+          .replace(/\./g, "")
+          .replace(",", ".")
+          .trim()
+      );
+
+      if (!nome || !categoria || isNaN(preco)) return;
+      if (mapa[nome]) return; // 🔴 ignora duplicados
+
+      mapa[nome] = { nome, categoria, preco };
+    });
+
+    produtos = Object.values(mapa);
 
     carregarCategorias();
-    renderizarProdutos();
+    renderizarProdutos(produtos);
   }
 });
 
 function carregarCategorias(){
-  const cats=[...new Set(produtos.map(p=>p.categoria))];
-  cats.forEach(c=>{
-    filtroCategoria.innerHTML+=`<option value="${c}">${c}</option>`;
+  filtroCategoria.innerHTML = '<option value="">Categorias</option>';
+  [...new Set(produtos.map(p => p.categoria))].forEach(c => {
+    filtroCategoria.innerHTML += `<option value="${c}">${c}</option>`;
   });
 }
 
-function renderizarProdutos(lista=produtos){
-  produtosDiv.innerHTML="";
-  const porCat={};
+function renderizarProdutos(lista){
+  produtosDiv.innerHTML = "";
 
-  lista.forEach(p=>{
-    porCat[p.categoria]=porCat[p.categoria]||[];
-    porCat[p.categoria].push(p);
+  const porCategoria = {};
+  lista.forEach(p => {
+    porCategoria[p.categoria] = porCategoria[p.categoria] || [];
+    porCategoria[p.categoria].push(p);
   });
 
-  for(const c in porCat){
-    produtosDiv.innerHTML+=`<div class="categoria"><h2>${c}</h2></div>`;
-    porCat[c].forEach(p=>{
-      const id=p.nome.replace(/\W/g,"");
-      produtosDiv.innerHTML+=`
-      <div class="produto">
-        <strong>${p.nome}</strong><br>
-        R$ ${p.preco.toFixed(2)}
-        <div class="controle">
-          <button onclick="remover('${p.nome}')">−</button>
-          <span id="qtd-${id}">0</span>
-          <button onclick="adicionar('${p.nome}',${p.preco})">+</button>
+  for (const cat in porCategoria) {
+    produtosDiv.innerHTML += `
+      <div class="categoria">
+        <h2>${cat}</h2>
+      </div>
+    `;
+
+    porCategoria[cat].forEach(p => {
+      const id = p.nome.replace(/\W/g,"");
+      produtosDiv.innerHTML += `
+        <div class="produto">
+          <strong>${p.nome}</strong><br>
+          R$ ${p.preco.toFixed(2)}
+          <div class="controle">
+            <button onclick="remover('${p.nome}')">−</button>
+            <span id="qtd-${id}">0</span>
+            <button onclick="adicionar('${p.nome}', ${p.preco})">+</button>
+          </div>
         </div>
-      </div>`;
+      `;
     });
   }
 }
 
-function adicionar(nome,preco){
-  carrinho[nome]=carrinho[nome]||{qtd:0,preco};
+function adicionar(nome, preco){
+  carrinho[nome] = carrinho[nome] || { qtd:0, preco };
   carrinho[nome].qtd++;
-  atualizar();
+  atualizarCarrinho();
 }
 
 function remover(nome){
-  if(!carrinho[nome])return;
+  if (!carrinho[nome]) return;
   carrinho[nome].qtd--;
-  if(carrinho[nome].qtd<=0) delete carrinho[nome];
-  atualizar();
+  if (carrinho[nome].qtd <= 0) delete carrinho[nome];
+  atualizarCarrinho();
 }
 
-function atualizar(){
-  let q=0,t=0;
-  document.querySelectorAll('[id^="qtd-"]').forEach(e=>e.innerText=0);
+function atualizarCarrinho(){
+  let qtd = 0;
+  let total = 0;
 
-  for(const i in carrinho){
-    q+=carrinho[i].qtd;
-    t+=carrinho[i].qtd*carrinho[i].preco;
-    const s=document.getElementById("qtd-"+i.replace(/\W/g,""));
-    if(s) s.innerText=carrinho[i].qtd;
+  document.querySelectorAll('[id^="qtd-"]').forEach(e => e.innerText = 0);
+
+  for (const nome in carrinho) {
+    const item = carrinho[nome];
+    qtd += item.qtd;
+    total += item.qtd * item.preco;
+
+    const id = nome.replace(/\W/g,"");
+    const span = document.getElementById("qtd-" + id);
+    if (span) span.innerText = item.qtd;
   }
 
-  qtdCarrinho.innerText=q;
-  totalCarrinho.innerText="R$ "+t.toFixed(2);
+  qtdCarrinho.innerText = qtd;
+  totalCarrinho.innerText = "R$ " + total.toFixed(2);
 }
 
-function abrirCarrinho(){ carrinhoDiv.style.display="block"; }
-function fecharCarrinho(){ carrinhoDiv.style.display="none"; }
+function abrirCarrinho(){
+  carrinhoDiv.style.display = "block";
+}
+
+function fecharCarrinho(){
+  carrinhoDiv.style.display = "none";
+}
 
 function filtrarProdutos(){
-  const t=busca.value.toLowerCase();
-  const c=filtroCategoria.value;
-  renderizarProdutos(produtos.filter(p =>
-    p.nome.toLowerCase().includes(t) &&
-    (!c || p.categoria===c)
-  ));
+  const texto = busca.value.toLowerCase();
+  const cat = filtroCategoria.value;
+
+  const filtrados = produtos.filter(p =>
+    p.nome.toLowerCase().includes(texto) &&
+    (!cat || p.categoria === cat)
+  );
+
+  renderizarProdutos(filtrados);
+}
+
+function finalizarPedido(){
+  let msg = "Pedido:\n";
+  let total = 0;
+
+  for (const nome in carrinho) {
+    const i = carrinho[nome];
+    msg += `${i.qtd}x ${nome} - R$ ${(i.qtd * i.preco).toFixed(2)}\n`;
+    total += i.qtd * i.preco;
+  }
+
+  msg += `\nTotal: R$ ${total.toFixed(2)}`;
+  window.open("https://wa.me/55SEUNUMERO?text=" + encodeURIComponent(msg));
 }
 </script>
 
