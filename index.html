@@ -8,23 +8,9 @@
 
 <style>
 body { margin:0; font-family:Arial; background:#000; color:#fff; }
-
-header {
-  display:flex;
-  align-items:center;
-  gap:15px;
-  padding:15px;
-  background:#111;
-}
-
+header { display:flex; align-items:center; gap:15px; padding:15px; background:#111; }
 header img { height:70px; }
-
-header h1 {
-  font-size:48px;
-  margin:0;
-  flex:1;
-  letter-spacing:2px;
-}
+header h1 { font-size:42px; margin:0; flex:1; }
 
 header input, header select {
   padding:8px;
@@ -33,13 +19,14 @@ header input, header select {
 }
 
 #produtos { padding:20px; }
+#loading { padding:20px; text-align:center; color:#aaa; }
 
 .categoria { margin-top:30px; }
-.categoria h2 { border-bottom:2px solid #333; }
+.categoria h2 { border-bottom:2px solid #333; padding-bottom:5px; }
 
 .produto { border-bottom:1px solid #222; padding:12px 0; }
-
-.controle button { padding:4px 12px; font-size:18px; }
+.controle { margin-top:6px; }
+.controle button { padding:4px 12px; font-size:18px; cursor:pointer; }
 
 #botaoCarrinho {
   position:fixed;
@@ -50,8 +37,8 @@ header input, header select {
   padding:15px;
   border-radius:14px;
   cursor:pointer;
-  text-align:center;
   font-weight:bold;
+  text-align:center;
 }
 
 #carrinho {
@@ -70,14 +57,13 @@ header input, header select {
 <header>
   <img src="logo.png">
   <h1>CARNIVOROUS</h1>
-
   <input id="busca" placeholder="Buscar produto..." onkeyup="filtrarProdutos()">
-
   <select id="filtroCategoria" onchange="filtrarProdutos()">
     <option value="">Categorias</option>
   </select>
 </header>
 
+<div id="loading">Carregando produtos…</div>
 <div id="produtos"></div>
 
 <div id="botaoCarrinho" onclick="abrirCarrinho()">
@@ -86,11 +72,11 @@ header input, header select {
 </div>
 
 <div id="carrinho">
-<h2>Carrinho</h2>
-<div id="listaCarrinho"></div>
-<h3 id="totalFinal"></h3>
-<button onclick="finalizarPedido()">Finalizar no WhatsApp</button>
-<button onclick="fecharCarrinho()">Fechar</button>
+  <h2>Carrinho</h2>
+  <div id="listaCarrinho"></div>
+  <h3 id="totalFinal"></h3>
+  <button onclick="finalizarPedido()">Finalizar no WhatsApp</button>
+  <button onclick="fecharCarrinho()">Fechar</button>
 </div>
 
 <script>
@@ -98,10 +84,16 @@ const PLANILHA =
 "https://docs.google.com/spreadsheets/d/e/2PACX-1vTsqDIhOoTibb56-QuExYbR9PfD1Fbu4y5x1a9k3X5BcLdl3rRA7tGmCQNI_Gn-uAlkYdUr1FtMigyA/pub?output=csv";
 
 let produtos = [];
-const carrinho = {};
+let carrinho = {};
 
 const produtosDiv = document.getElementById("produtos");
+const loadingDiv = document.getElementById("loading");
 const carrinhoDiv = document.getElementById("carrinho");
+const listaCarrinho = document.getElementById("listaCarrinho");
+const totalFinal = document.getElementById("totalFinal");
+const filtroCategoria = document.getElementById("filtroCategoria");
+
+const brl = v => "R$ " + v.toFixed(2).replace(".",",");
 
 Papa.parse(PLANILHA, {
   download:true,
@@ -109,94 +101,152 @@ Papa.parse(PLANILHA, {
   skipEmptyLines:true,
   complete: res => {
 
-    produtos = res.data.map(l => ({
-      nome: l["Descrição do Produto"],
-      categoria: l["Categoria"],
-      preco: Number(
-        String(l["Valor Venda"])
-          .replace("R$", "")
-          .replace(/\./g,"")
-          .replace(",",".")
-      )
-    })).filter(p => p.nome && p.categoria && p.preco);
+    const mapa = {};
 
+    res.data.forEach(l => {
+      const nome = (l["Descrição do Produto"] || "").trim();
+      const categoria = (l["Categoria"] || "").trim();
+      const precoTxt = (l["Valor Venda"] || "").toString();
+
+      const preco = Number(
+        precoTxt.replace("R$","").replace(/\./g,"").replace(",",".")
+      );
+
+      if (!nome || !categoria || isNaN(preco)) return;
+      if (mapa[nome]) return;
+
+      mapa[nome] = { nome, categoria, preco };
+    });
+
+    produtos = Object.values(mapa);
+    loadingDiv.style.display = "none";
     carregarCategorias();
-    renderizarProdutos();
+    renderizarProdutos(produtos);
   }
 });
 
 function carregarCategorias(){
-  const cats=[...new Set(produtos.map(p=>p.categoria))];
-  cats.forEach(c=>{
-    filtroCategoria.innerHTML+=`<option value="${c}">${c}</option>`;
+  filtroCategoria.innerHTML = '<option value="">Categorias</option>';
+  [...new Set(produtos.map(p => p.categoria))].forEach(c => {
+    filtroCategoria.innerHTML += `<option value="${c}">${c}</option>`;
   });
 }
 
-function renderizarProdutos(lista=produtos){
-  produtosDiv.innerHTML="";
-  const porCat={};
+function renderizarProdutos(lista){
+  produtosDiv.innerHTML = "";
+  const porCat = {};
 
-  lista.forEach(p=>{
-    porCat[p.categoria]=porCat[p.categoria]||[];
+  lista.forEach(p => {
+    porCat[p.categoria] = porCat[p.categoria] || [];
     porCat[p.categoria].push(p);
   });
 
-  for(const c in porCat){
-    produtosDiv.innerHTML+=`<div class="categoria"><h2>${c}</h2></div>`;
-    porCat[c].forEach(p=>{
-      const id=p.nome.replace(/\W/g,"");
-      produtosDiv.innerHTML+=`
-      <div class="produto">
-        <strong>${p.nome}</strong><br>
-        R$ ${p.preco.toFixed(2)}
-        <div class="controle">
-          <button onclick="remover('${p.nome}')">−</button>
-          <span id="qtd-${id}">0</span>
-          <button onclick="adicionar('${p.nome}',${p.preco})">+</button>
-        </div>
-      </div>`;
+  for (const c in porCat) {
+    produtosDiv.innerHTML += `<div class="categoria"><h2>${c}</h2></div>`;
+    porCat[c].forEach(p => {
+      const id = p.nome.replace(/\W/g,"");
+      produtosDiv.innerHTML += `
+        <div class="produto">
+          <strong>${p.nome}</strong><br>
+          ${brl(p.preco)}
+          <div class="controle">
+            <button onclick="remover('${p.nome}')">−</button>
+            <span id="qtd-${id}">0</span>
+            <button onclick="adicionar('${p.nome}', ${p.preco})">+</button>
+          </div>
+        </div>`;
     });
   }
 }
 
-function adicionar(nome,preco){
-  carrinho[nome]=carrinho[nome]||{qtd:0,preco};
+function adicionar(nome, preco){
+  carrinho[nome] = carrinho[nome] || { qtd:0, preco };
   carrinho[nome].qtd++;
   atualizar();
 }
 
 function remover(nome){
-  if(!carrinho[nome])return;
+  if (!carrinho[nome]) return;
   carrinho[nome].qtd--;
-  if(carrinho[nome].qtd<=0) delete carrinho[nome];
+  if (carrinho[nome].qtd <= 0) delete carrinho[nome];
   atualizar();
 }
 
 function atualizar(){
-  let q=0,t=0;
-  document.querySelectorAll('[id^="qtd-"]').forEach(e=>e.innerText=0);
+  let qtd = 0, total = 0;
+  listaCarrinho.innerHTML = "";
+  document.querySelectorAll('[id^="qtd-"]').forEach(e => e.innerText = 0);
 
-  for(const i in carrinho){
-    q+=carrinho[i].qtd;
-    t+=carrinho[i].qtd*carrinho[i].preco;
-    const s=document.getElementById("qtd-"+i.replace(/\W/g,""));
-    if(s) s.innerText=carrinho[i].qtd;
+  for (const i in carrinho) {
+    const item = carrinho[i];
+    qtd += item.qtd;
+    total += item.qtd * item.preco;
+
+    const id = i.replace(/\W/g,"");
+    const span = document.getElementById("qtd-" + id);
+    if (span) span.innerText = item.qtd;
+
+    listaCarrinho.innerHTML += `<p>${item.qtd}x ${i} — ${brl(item.qtd*item.preco)}</p>`;
   }
 
-  qtdCarrinho.innerText=q;
-  totalCarrinho.innerText="R$ "+t.toFixed(2);
+  qtdCarrinho.innerText = qtd;
+  totalCarrinho.innerText = brl(total);
+  totalFinal.innerText = "Total parcial: " + brl(total);
 }
 
 function abrirCarrinho(){ carrinhoDiv.style.display="block"; }
 function fecharCarrinho(){ carrinhoDiv.style.display="none"; }
 
 function filtrarProdutos(){
-  const t=busca.value.toLowerCase();
-  const c=filtroCategoria.value;
+  const t = busca.value.toLowerCase();
+  const c = filtroCategoria.value;
   renderizarProdutos(produtos.filter(p =>
     p.nome.toLowerCase().includes(t) &&
-    (!c || p.categoria===c)
+    (!c || p.categoria === c)
   ));
+}
+
+function finalizarPedido(){
+  if (Object.keys(carrinho).length === 0) {
+    alert("Carrinho vazio");
+    return;
+  }
+
+  const entrega = confirm("O pedido é para ENTREGA?\n\n(Cancelar = retirada)");
+  let taxa = 0;
+  let endereco = "";
+
+  if (entrega) {
+    alert("ATENÇÃO: pedido com taxa de entrega");
+    const v = prompt("Informe o valor da taxa de entrega:");
+    taxa = Number((v || "0").replace(",","."));
+    if (isNaN(taxa)) taxa = 0;
+
+    endereco = prompt("Informe o ENDEREÇO COMPLETO para entrega:");
+    if (!endereco) endereco = "Endereço não informado";
+  }
+
+  let msg = "Pedido:\n";
+  let total = 0;
+
+  for (const i in carrinho) {
+    const it = carrinho[i];
+    msg += `${it.qtd}x ${i} - ${brl(it.qtd*it.preco)}\n`;
+    total += it.qtd * it.preco;
+  }
+
+  if (entrega) {
+    msg += `\nEntrega`;
+    msg += `\nEndereço: ${endereco}`;
+    msg += `\nTaxa de entrega: ${brl(taxa)}`;
+    total += taxa;
+  } else {
+    msg += `\nRetirada no local`;
+  }
+
+  msg += `\n\nTotal final: ${brl(total)}`;
+
+  window.open("https://wa.me/55SEUNUMERO?text=" + encodeURIComponent(msg));
 }
 </script>
 
